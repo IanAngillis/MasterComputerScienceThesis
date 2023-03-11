@@ -270,6 +270,7 @@ export class DockerParser {
             const arg = line.getArguments()[i];
             let type: DockerCopyTarget | DockerCopySource;
             if (i === line.getArguments().length - 1) {
+              //TODO -- update/keep path for target.
               type = new DockerCopyTarget();
             } else {
               type = new DockerCopySource();
@@ -297,7 +298,11 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
-
+          
+          //TODO test want ADD niet in example dockerfile
+          console.log("ADD");
+          console.log(line.getArguments());
+          console.log("STOP");
           for (let i = 0; i < line.getArguments().length; i++) {
             const arg = line.getArguments()[i];
             let type: DockerAddTarget | DockerAddSource;
