@@ -220,6 +220,16 @@ export abstract class DockerOpsNode {
 
   public isChanged = false;
 
+  /**
+   * The absolute path to the current working directory -- THESIS
+   */
+  absolutePath: string = "/";
+  
+  /**
+   * The logical layer in which the node resides -- THESIS
+   */
+  layer: number = -1;
+
   private _position: Position;
 
   readonly annotations: string[] = [];

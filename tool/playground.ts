@@ -5,7 +5,7 @@ import * as ding from '../Dinghy-main/Dinghy-main/build/index.js';
 async function main(){
     const ast = await ding.dockerfileParser.parseDocker("C:\\Users\\Ian Angillis\\Workspace\\MasterComputerScienceThesis\\tool\\Dockerfile");
 
-    console.log(ast);
+    //console.log(ast);
 }
 
 main()

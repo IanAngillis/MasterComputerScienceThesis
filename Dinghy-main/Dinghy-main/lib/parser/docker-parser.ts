@@ -108,31 +108,47 @@ export class DockerParser {
       return dockerfileAST;
 
     const lines = DockerfileParser.parse(this.file.content);
+
     if (!lines.getRange()) return dockerfileAST;
     const document = (lines as any).document;
+
+    //The position encompasses the whole file.
     const p = new Position(
       0,
       0,
       document.lineCount - 1,
       this.file.content.split("\n").pop().length
     );
+
     p.file = this.file;
     dockerfileAST.setPosition(p);
 
+    // Contains all the lines that have an instruction
     const instructionLines = new Set<number>();
+ 
+    // For every instruction
     for (const line of lines.getInstructions()) {
+
       const position = this.rangeToPos(line.getRange());
       for (let line = position.lineStart; line <= position.lineEnd; line++) {
         instructionLines.add(line);
       }
+
       position.file = this.file;
 
       const command = line.getKeyword().toLowerCase();
+      
       switch (command) {
         case "from":
           const from = line as From;
 
+          console.log("**");
+          console.log(from);
+          console.log("**");
+
           const fromNode = new DockerFrom().setPosition(position);
+          console.log(fromNode);
+          console.log("***")
           this.addFlag2Node(from, fromNode);
 
           fromNode.addChild(
@@ -582,11 +598,14 @@ export class DockerParser {
 export async function parseDocker(file: string | File) {
   let parser: DockerParser = undefined;
   if (file instanceof File) {
+    console.log("intance of file");
     parser = new DockerParser(file);
   } else {
     if (existsSync(file)) {
+      console.log("Not an instance of file and path does exist");
       parser = new DockerParser(new File(file));
     } else {
+      console.log("Not an instance of file and path does not exist");
       parser = new DockerParser(new File(undefined, file));
     }
   }

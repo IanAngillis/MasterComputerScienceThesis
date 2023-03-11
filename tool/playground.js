@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+// Just doing import * from /path/ gives error that the file we are importing does not export a default or does not have a default export. (it has multiple in our case)
 var ding = require("../Dinghy-main/Dinghy-main/build/index.js");
 function main() {
     return __awaiter(this, void 0, void 0, function () {
@@ -45,7 +46,6 @@ function main() {
                 case 0: return [4 /*yield*/, ding.dockerfileParser.parseDocker("C:\\Users\\Ian Angillis\\Workspace\\MasterComputerScienceThesis\\tool\\Dockerfile")];
                 case 1:
                     ast = _a.sent();
-                    console.log(ast);
                     return [2 /*return*/];
             }
         });
