@@ -80,10 +80,18 @@ export class DockerParser {
     return p;
   }
 
+  /**
+   * It does something from the representation of the previous AST into the new one
+   * @param instruction 
+   * @param node 
+   */
   private addFlag2Node(
     instruction: ModifiableInstruction,
     node: DockerOpsNode
   ) {
+    //console.log("FLAGS START");
+    //console.log(instruction.getFlags());
+    //console.log("FLAGS END");
     instruction.getFlags().forEach((flag) => {
       node.addChild(
         new DockerFlag()
@@ -103,7 +111,16 @@ export class DockerParser {
   }
 
   async parse(): Promise<DockerFile> {
+    
+    // Keeping track of the logical layer
+    var currentLayer = 1;
+
+    // Keeping track of the path of the current working directory
+    var currentAbsolutePath = "/";
+
     const dockerfileAST: DockerFile = new DockerFile();
+    dockerfileAST.layer = currentLayer;
+
     if (!this.file || this.file.content?.trim().length == 0)
       return dockerfileAST;
 
@@ -142,13 +159,9 @@ export class DockerParser {
         case "from":
           const from = line as From;
 
-          console.log("**");
-          console.log(from);
-          console.log("**");
+          // This is the new node
+          const fromNode = new DockerFrom().setPosition(position); 
 
-          const fromNode = new DockerFrom().setPosition(position);
-          console.log(fromNode);
-          console.log("***")
           this.addFlag2Node(from, fromNode);
 
           fromNode.addChild(
@@ -193,9 +206,14 @@ export class DockerParser {
               )
             );
           }
+
+          fromNode.layer = currentLayer;
+          fromNode.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(fromNode);
           break;
         case "run":
+          currentLayer += 1;
           const dockerRun = new DockerRun().setPosition(position);
           this.addFlag2Node(line as Run, dockerRun);
 
@@ -204,6 +222,10 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
+
+          dockerRun.layer = currentLayer;
+          dockerRun.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(dockerRun);
           if (line.getRawArgumentsContent() == null) {
             break;
@@ -223,12 +245,16 @@ export class DockerParser {
             this.rangeToPos(line.getArgumentsRange())
           );
           const shellNode = await shellParser.parse();
+          shellNode.layer = currentLayer;
+          shellNode.absolutePath = currentAbsolutePath;
           dockerRun.addChild(shellNode);
           // happen all errors
           shellParser.errors.forEach((v) => this.errors.push(v));
 
           break;
         case "copy":
+          currentLayer += 1;
+
           const copy = new DockerCopy().setPosition(position);
           this.addFlag2Node(line as Copy, copy);
 
@@ -237,6 +263,8 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
+
+          console.log(line.getArguments());
 
           for (let i = 0; i < line.getArguments().length; i++) {
             const arg = line.getArguments()[i];
@@ -253,9 +281,14 @@ export class DockerParser {
             );
             copy.addChild(type);
           }
+
+          copy.absolutePath = currentAbsolutePath;
+          copy.layer = currentLayer;
+
           dockerfileAST.addChild(copy);
           break;
         case "add":
+          currentLayer += 1;
           const add = new DockerAdd().setPosition(position);
           this.addFlag2Node(line as Add, add);
 
@@ -276,6 +309,10 @@ export class DockerParser {
             type.addChild(new DockerPath(arg.getValue()));
             add.addChild(type);
           }
+
+          add.layer = currentLayer;
+          add.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(add);
           break;
         case "expose":
@@ -292,10 +329,14 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
+          
+          expose.layer = currentLayer;
+          expose.absolutePath = currentAbsolutePath;
 
           dockerfileAST.addChild(expose);
           break;
         case "workdir":
+          currentAbsolutePath = line.getArgumentsContent();
           const wkd = new DockerWorkdir().addChild(
             new DockerPath(line.getArgumentsContent()).setPosition(
               this.rangeToPos(line.getArgumentsRange())
@@ -308,6 +349,9 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
+          
+          wkd.layer = currentLayer;
+          wkd.absolutePath = currentAbsolutePath;
 
           dockerfileAST.addChild(wkd);
           break;
@@ -324,6 +368,10 @@ export class DockerParser {
           for (const arg of line.getArguments()) {
             volume.addChild(new DockerPath(arg.toString()));
           }
+
+          volume.layer = currentLayer;
+          volume.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(volume);
           break;
         case "arg":
@@ -342,6 +390,10 @@ export class DockerParser {
               new DockerLiteral(line.getArgumentsContent().split("=")[1].trim())
             );
           }
+
+          arg.layer = currentLayer;
+          arg.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(arg);
           break;
         case "env":
@@ -369,6 +421,9 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
+          
+          env.layer = currentLayer;
+          env.absolutePath = currentAbsolutePath;
 
           dockerfileAST.addChild(env);
           break;
@@ -398,6 +453,10 @@ export class DockerParser {
               );
             }
           }
+          
+          entrypoint.layer = currentLayer;
+          entrypoint.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(entrypoint);
           break;
         case "cmd":
@@ -429,6 +488,10 @@ export class DockerParser {
           for (const arg of argus) {
             cmd.addChild(new DockerCmdArg(arg.getValue()));
           }
+          
+          cmd.layer = currentLayer;
+          cmd.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(cmd);
           break;
         case "shell":
@@ -456,6 +519,10 @@ export class DockerParser {
               )
             );
           }
+
+          shell.layer = currentLayer;
+          shell.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(shell);
           break;
         case "user":
@@ -468,6 +535,9 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
+          
+          user.layer = currentLayer;
+          user.absolutePath = currentAbsolutePath;
 
           dockerfileAST.addChild(user);
           break;
@@ -483,6 +553,11 @@ export class DockerParser {
           healthcheck.addChild(
             (await parseDocker(line.getRawArgumentsContent())).children[0]
           );
+
+
+          healthcheck.layer = currentLayer;
+          healthcheck.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(healthcheck);
           break;
         case "stopsignal":
@@ -495,6 +570,9 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
+          
+          stopsignal.layer = currentLayer;
+          stopsignal.absolutePath = currentAbsolutePath;
 
           dockerfileAST.addChild(stopsignal);
           break;
@@ -509,6 +587,9 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
+
+          onbuild.layer = currentLayer;
+          onbuild.absolutePath = currentAbsolutePath;
 
           dockerfileAST.addChild(onbuild);
           break;
@@ -538,6 +619,9 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
+          
+          dockerLabel.layer = currentLayer;
+          dockerLabel.absolutePath = currentAbsolutePath;
 
           dockerfileAST.addChild(dockerLabel);
           break;
@@ -554,6 +638,9 @@ export class DockerParser {
                 this.rangeToPos(line.getInstructionRange())
               )
             );
+          
+          maintainer.layer = currentLayer;
+          maintainer.absolutePath = currentAbsolutePath;
 
           dockerfileAST.addChild(maintainer);
           break;
@@ -561,6 +648,14 @@ export class DockerParser {
           const e = new Error(`Unhandled Docker command: ${command}`);
           (e as any).node = line;
           this.errors.push(e);
+          
+          var unknownnode = new Unknown()
+                            .setPosition(position)
+                            .addChild(new DockerLiteral(command))
+          
+          unknownnode.layer = currentLayer;
+          unknownnode.absolutePath = currentAbsolutePath;
+
           dockerfileAST.addChild(
             new Unknown()
               .setPosition(position)
