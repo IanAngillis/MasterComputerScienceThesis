@@ -240,13 +240,22 @@ export class DockerParser {
             .replace(/\\([ \t]+)\n/gm, "$1\\\n")
             // empty line
             .replace(/^([ \t]*)\n/gm, "$1\\\n");
+
           const shellParser = new ShellParser(
             shellString,
             this.rangeToPos(line.getArgumentsRange())
           );
           const shellNode = await shellParser.parse();
+
           shellNode.layer = currentLayer;
           shellNode.absolutePath = currentAbsolutePath;
+          
+          // Sets layer and absolutepath in every node of the parsed shell.
+          shellNode.traverse((node) => {
+            node.layer = currentLayer;
+            node.absolutePath = currentAbsolutePath;
+          });
+
           dockerRun.addChild(shellNode);
           // happen all errors
           shellParser.errors.forEach((v) => this.errors.push(v));
@@ -263,8 +272,6 @@ export class DockerParser {
               this.rangeToPos(line.getInstructionRange())
             )
           );
-
-          console.log(line.getArguments());
 
           for (let i = 0; i < line.getArguments().length; i++) {
             const arg = line.getArguments()[i];
@@ -299,10 +306,6 @@ export class DockerParser {
             )
           );
           
-          //TODO test want ADD niet in example dockerfile
-          console.log("ADD");
-          console.log(line.getArguments());
-          console.log("STOP");
           for (let i = 0; i < line.getArguments().length; i++) {
             const arg = line.getArguments()[i];
             let type: DockerAddTarget | DockerAddSource;

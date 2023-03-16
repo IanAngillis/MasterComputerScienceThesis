@@ -22,9 +22,12 @@ export class PrettyPrinter extends Printer {
   }
 
   print(): string {
+    
     if (!this.originalFile) {
+      console.log("in if statement");
       return reprint(this.root);
     }
+    console.log("not in if-statement");
     this._generate(this.root);
     this.trimSpace();
     return this.output;
@@ -122,5 +125,10 @@ export class PrettyPrinter extends Printer {
 }
 
 export function print(node: DockerOpsNodeType) {
-  return new PrettyPrinter(node).print();
+  console.log("in print");
+  let res =  new PrettyPrinter(node).print();
+  console.log("printing result");
+  console.log(res);
+  console.log("Done printing result");
+  return res;
 }
