@@ -3,6 +3,7 @@ import { print } from "./printer/docker-printer";
 import { print as prettyPrint } from "./printer/docker-pretty-printer";
 import File from "./file";
 
+// Type Alias for all the DockerNodeTypes - but why just not use DockerOpsNode?
 export type DockerOpsNodeType =
   | BashAndIf
   | BashAndMem
@@ -144,6 +145,7 @@ export type DockerOpsNodeType =
   | BashReplace
   | DockerFlag;
 
+  //Query interface, for example: {type: BashCommandCommand, value: "yarn"} 
 export interface QueryI {
   /**
    * The type of the node
@@ -207,6 +209,7 @@ export class Position {
   }
 }
 
+// This is the base class for all the nodes - top of the hierarchy
 export abstract class DockerOpsNode {
   type: Extract<DockerOpsNodeType["type"], {}>;
   /**
@@ -394,7 +397,7 @@ export abstract class DockerOpsNode {
   }
 
   /**
-   * traverse all children recursively
+   * traverse all children recursively (In a breadth-first way)
    *
    * @param callback returns false to stop the traverse
    * @returns false if not everything has been traversed
@@ -415,11 +418,13 @@ export abstract class DockerOpsNode {
       if (a.position.columnStart < b.position.columnStart) return -1;
       return 0;
     });
+    //Check for all the children
     for (let index = 0; index < this.children.length; index++) {
       const child = this.children[index];
       if (child == null) continue;
       if (callback(child) === false) return false;
     }
+    //propagate to all the children children
     for (let index = 0; index < this.children.length; index++) {
       const child = this.children[index];
       if (child == null) continue;
@@ -455,6 +460,7 @@ export abstract class DockerOpsNode {
    * @returns this
    */
   remove() {
+    // IndexInparent means the index of the node of the children in the parent
     const indexInParent = this.parent.children.indexOf(
       this as DockerOpsNodeType
     );
@@ -469,9 +475,10 @@ export abstract class DockerOpsNode {
    * @returns true if this node matches the query
    */
   public match(query: QueryI) {
-    const type =
+    const type : string =
       typeof query.type === "string" ? query.type : new query.type().type;
 
+    // Checking for types that are clearly not specific Docker/Bash related types
     if (type === "ONE" || type === "_") {
       return query.children.every((sub) =>
         this.children.some((child) => child.match(sub))
@@ -505,13 +512,15 @@ export abstract class DockerOpsNode {
     //     if (node.match(query.children[0])) return false;
     //   });
     // }
+
+    // Actual code that runs when the type is not ONE, ALL, ANY, * OR _
     if (
-      this.type !== type &&
-      !this.annotations.includes(type) &&
-      query.value == undefined
+      this.type !== type &&               // Not the same type
+      !this.annotations.includes(type) && // Annotations do not include the type
+      query.value == undefined            // Query value is undefined
     )
       return false;
-    if (query.value !== undefined && (this as any).value !== query.value)
+    if (query.value !== undefined && (this as any).value !== query.value) //if value is undefined and this.value does not equal the query value
       return false;
 
     // if the type and value match, check that all the sub-queries match the children
@@ -520,6 +529,8 @@ export abstract class DockerOpsNode {
         this.children.some((currentChild) => currentChild.match(toMatchChild))
       );
     }
+
+    // In case there are no children in the query, and the type and value match, return true.
     return true;
   }
   /**

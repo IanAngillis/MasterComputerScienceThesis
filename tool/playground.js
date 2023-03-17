@@ -52,7 +52,7 @@ function main() {
                     //         console.log(node);
                     //     }
                     // })
-                    console.log(ast.find(ding.nodeType.Q(ding.nodeType.BashCommandCommand))[0].layer);
+                    console.log(ast.find({ type: "DOCKER-FROM" }).toString());
                     return [2 /*return*/];
             }
         });

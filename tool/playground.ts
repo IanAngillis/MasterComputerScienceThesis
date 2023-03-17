@@ -1,7 +1,7 @@
 // Just doing import * from /path/ gives error that the file we are importing does not export a default or does not have a default export. (it has multiple in our case)
 import * as ding from '../Dinghy-main/Dinghy-main/build/index.js';
 import * as fs from 'fs';
-import { BashCommand, DockerOpsValueNode } from '../Dinghy-main/Dinghy-main/build/docker-type.js';
+import { BashCommand, BashCommandCommand, BashLiteral, DockerOpsValueNode } from '../Dinghy-main/Dinghy-main/build/docker-type.js';
 
 
 async function main(){
@@ -15,7 +15,7 @@ async function main(){
     //     }
     // })
 
-    console.log(ast.find(ding.nodeType.Q(ding.nodeType.BashCommandCommand))[0].layer);
+    console.log(ast.find({type: "DOCKER-FROM"}).toString());
 
     //let text = printer.print();
     //fs.writeFileSync("NewDockerfile", text);

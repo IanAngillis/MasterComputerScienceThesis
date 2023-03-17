@@ -89,9 +89,6 @@ export class DockerParser {
     instruction: ModifiableInstruction,
     node: DockerOpsNode
   ) {
-    //console.log("FLAGS START");
-    //console.log(instruction.getFlags());
-    //console.log("FLAGS END");
     instruction.getFlags().forEach((flag) => {
       node.addChild(
         new DockerFlag()
