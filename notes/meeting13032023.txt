@@ -1,0 +1,9 @@
+Meeting with advisors Ahmed Zerouali & Ruben Opdebeeck 13/03/2023@1500u
+
+Discussion points:
+	- AST-library: This is not an AST anymore but an enriched AST. It has layers, path and (hopefully) a general abstraction for package managers
+	- Churn smells: this is more low-churn smells. These include these things like COPY . . in the more general case. Make sure to cover this one at least
+			and check other package managers for such smells. (e.g., if you know that it is an NPM application, then you copy json.lock etc first 
+			to do the proper installing, could be generalized.). 
+			Thougt: Enrich the AST with the kind of application that is run.
+	- Background division was ok - can start writing

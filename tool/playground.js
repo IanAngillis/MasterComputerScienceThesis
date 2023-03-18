@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+        while (_) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -38,20 +38,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 // Just doing import * from /path/ gives error that the file we are importing does not export a default or does not have a default export. (it has multiple in our case)
 var ding = require("../Dinghy-main/Dinghy-main/build/index.js");
-var docker_type_js_1 = require("../Dinghy-main/Dinghy-main/build/docker-type.js");
+var fs = require("fs");
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var ast, printer;
+        var counter, folder;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, ding.dockerfileParser.parseDocker("./Dockerfile")];
-                case 1:
-                    ast = _a.sent();
-                    printer = new ding.PrettyPrinter(ast);
-                    //    console.log((ast.find("DockerCmd")[0].children[1] as DockerOpsValueNode).value);
-                    console.log(ast.find({ type: docker_type_js_1.DockerCmd })[0].children[1].value);
-                    return [2 /*return*/];
-            }
+            counter = 0;
+            folder = './../data/binnacle/github/deduplicated-sources/';
+            fs.readdir(folder, function (err, files) {
+                files.forEach(function (file) {
+                    ding.dockerfileParser.parseDocker(file).then(function (r) {
+                        console.log("checking file: ");
+                        console.log(r);
+                        console.log("This was file: " + counter);
+                        counter += 1;
+                    });
+                });
+            });
+            return [2 /*return*/];
         });
     });
 }

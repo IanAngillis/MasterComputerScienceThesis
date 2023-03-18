@@ -24,10 +24,8 @@ export class PrettyPrinter extends Printer {
   print(): string {
     
     if (!this.originalFile) {
-      console.log("in if statement");
       return reprint(this.root);
     }
-    console.log("not in if-statement");
     this._generate(this.root);
     this.trimSpace();
     return this.output;

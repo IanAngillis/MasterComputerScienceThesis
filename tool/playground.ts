@@ -6,12 +6,29 @@ import { BashCommand, BashCommandCommand, BashLiteral, DockerCmd, DockerCmdArg, 
 
 async function main(){
     // Be aware of the path on either Windows or Unix systems
-    const ast = await ding.dockerfileParser.parseDocker("./Dockerfile");
-    let printer = new ding.PrettyPrinter(ast);
+    let counter = 0;
+
+    const folder = './../data/binnacle/github/deduplicated-sources/';
+
+    fs.readdir(folder,  (err, files) => {
+        files.forEach( file => {
+            
+            ding.dockerfileParser.parseDocker(file).then(r => {
+                console.log("checking file: ");
+                console.log(r);
+                console.log("This was file: " + counter);
+                counter += 1;
+            });
+        })
+    })
+
+
+    //const ast = await ding.dockerfileParser.parseDocker("./Dockerfile");
+    //let printer = new ding.PrettyPrinter(ast);
 
     //    console.log((ast.find("DockerCmd")[0].children[1] as DockerOpsValueNode).value);
 
-    console.log((ast.find({type: DockerCmd})[0].children[1] as DockerOpsValueNode).value);
+    //console.log(ast.find({type: DockerCmd}));
     //Could be resolved with union types - this way, I do not necessarily need to haggle with library code
 
     // ast.traverse((node) => {
