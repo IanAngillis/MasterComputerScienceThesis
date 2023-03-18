@@ -41,18 +41,30 @@ var ding = require("../Dinghy-main/Dinghy-main/build/index.js");
 var fs = require("fs");
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var counter, folder;
+        var shellString, counter, folder;
         return __generator(this, function (_a) {
+            shellString = "echo 'deb http://httpredir.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
+    \
+     && apt-get -q update \
+     && apt-get -y -q --no-install-recommends install \
+        # install the jdk and its dependencies\
+        ca-certificates-java \
+        openjdk-${openjdk.version.major}-jdk-headless=${openjdk.version}'*' \
+        # procps is used in the jvm shutdown hook\
+        procps \
+        # other system utilities\
+        netbase \
+        unzip \
+        wget \
+    \
+     # cleanup package manager caches\
+     && apt-get clean \
+     && rm /var/lib/apt/lists/*_*";
             counter = 0;
-            folder = './../data/binnacle/github/deduplicated-sources/';
+            folder = './../data/dockerfiles/';
             fs.readdir(folder, function (err, files) {
                 files.forEach(function (file) {
-                    ding.dockerfileParser.parseDocker(file).then(function (r) {
-                        console.log("checking file: ");
-                        console.log(r);
-                        console.log("This was file: " + counter);
-                        counter += 1;
-                    });
+                    ding.dockerfileParser.parseDocker(folder + file);
                 });
             });
             return [2 /*return*/];

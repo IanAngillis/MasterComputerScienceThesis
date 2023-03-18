@@ -14,7 +14,7 @@ import {
   ModifiableInstruction,
   Copy,
 } from "@tdurieux/dockerfile-ast";
-import { existsSync } from "fs";
+import { existsSync, writeFileSync } from "fs";
 import File from "../file";
 import { ShellParser } from "./docker-bash-parser";
 import {
@@ -245,15 +245,19 @@ export class DockerParser {
             this.rangeToPos(line.getArgumentsRange())
           );
           const shellNode = await shellParser.parse();
-
-          shellNode.layer = currentLayer;
-          shellNode.absolutePath = currentAbsolutePath;
           
-          // Sets layer and absolutepath in every node of the parsed shell.
-          shellNode.traverse((node) => {
-            node.layer = currentLayer;
-            node.absolutePath = currentAbsolutePath;
-          });
+          if(shellNode != undefined){
+            // TODO figure out why 2372f3ba92618b36fcec40d47995dd16c282d9df does not want to parse 
+            shellNode.layer = currentLayer;
+            shellNode.absolutePath = currentAbsolutePath;
+          
+            shellNode.traverse((node) => {
+              node.layer = currentLayer;
+              node.absolutePath = currentAbsolutePath;
+            });
+          } else {
+            console.log("file " + dockerRun.parent.position.file.key + " cannot parse run instruction");
+          }
 
           dockerRun.addChild(shellNode);
           // happen all errors
@@ -680,6 +684,7 @@ export class DockerParser {
           
           unknownnode.layer = currentLayer;
           unknownnode.absolutePath = currentAbsolutePath;
+          console.log("currentlayer: " + currentLayer);
 
           dockerfileAST.addChild(
             new Unknown()
