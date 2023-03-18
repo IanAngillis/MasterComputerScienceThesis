@@ -61,6 +61,7 @@ import {
   DockerMaintainer,
   DockerFlag,
   DockerOpsNode,
+  DockerOpsValueNode,
 } from "../docker-type";
 
 export class DockerParser {
@@ -110,7 +111,7 @@ export class DockerParser {
   async parse(): Promise<DockerFile> {
     
     // Keeping track of the logical layer
-    var currentLayer = 1;
+    var currentLayer = 0;
 
     // Keeping track of the path of the current working directory
     var currentAbsolutePath = "/";
@@ -154,6 +155,7 @@ export class DockerParser {
       
       switch (command) {
         case "from":
+          currentLayer += 1;
           const from = line as From;
 
           // This is the new node
@@ -321,6 +323,7 @@ export class DockerParser {
           dockerfileAST.addChild(add);
           break;
         case "expose":
+          currentLayer += 1;
           const expose = new DockerExpose()
             .setPosition(position)
             .addChild(
@@ -341,6 +344,7 @@ export class DockerParser {
           dockerfileAST.addChild(expose);
           break;
         case "workdir":
+          currentLayer += 1;
           currentAbsolutePath = line.getArgumentsContent();
           const wkd = new DockerWorkdir().addChild(
             new DockerPath(line.getArgumentsContent()).setPosition(
@@ -361,6 +365,7 @@ export class DockerParser {
           dockerfileAST.addChild(wkd);
           break;
         case "volume":
+          currentLayer += 1;
           const volume = new DockerVolume().setPosition(position);
           this.addFlag2Node(line as Volume, volume);
 
@@ -380,6 +385,7 @@ export class DockerParser {
           dockerfileAST.addChild(volume);
           break;
         case "arg":
+          currentLayer += 1;
           const arg = new DockerArg()
             .addChild(new DockerName(line.getArgumentsContent().split("=")[0]))
             .setPosition(position);
@@ -402,6 +408,7 @@ export class DockerParser {
           dockerfileAST.addChild(arg);
           break;
         case "env":
+          currentLayer += 1;
           const args = line.getArguments();
           const env = new DockerEnv().setPosition(position);
 
@@ -433,6 +440,7 @@ export class DockerParser {
           dockerfileAST.addChild(env);
           break;
         case "entrypoint":
+          currentLayer += 1;
           let entrypointArgs: Argument[] = (
             line as JSONInstruction
           ).getJSONStrings();
@@ -465,6 +473,7 @@ export class DockerParser {
           dockerfileAST.addChild(entrypoint);
           break;
         case "cmd":
+          currentLayer += 1;
           const cmd = new DockerCmd().setPosition(position);
           this.addFlag2Node(line as Cmd, cmd);
 
@@ -493,6 +502,9 @@ export class DockerParser {
           for (const arg of argus) {
             cmd.addChild(new DockerCmdArg(arg.getValue()));
           }
+
+          //console.log((cmd.children[1] as DockerOpsValueNode).value);
+          
           
           cmd.layer = currentLayer;
           cmd.absolutePath = currentAbsolutePath;
@@ -500,6 +512,7 @@ export class DockerParser {
           dockerfileAST.addChild(cmd);
           break;
         case "shell":
+          currentLayer += 1;
           const shell = new DockerShell().setPosition(position);
           this.addFlag2Node(line as Shell, shell);
 
@@ -531,6 +544,7 @@ export class DockerParser {
           dockerfileAST.addChild(shell);
           break;
         case "user":
+          currentLayer += 1;
           const user = new DockerUser()
             .addChild(new DockerLiteral(line.getArgumentsContent()))
             .setPosition(position);
@@ -547,6 +561,7 @@ export class DockerParser {
           dockerfileAST.addChild(user);
           break;
         case "healthcheck":
+          currentLayer += 1;
           const healthcheck = new DockerHealthCheck().setPosition(position);
 
           healthcheck.addChild(
@@ -566,6 +581,7 @@ export class DockerParser {
           dockerfileAST.addChild(healthcheck);
           break;
         case "stopsignal":
+          currentLayer += 1;
           const stopsignal = new DockerStopSignal()
             .setPosition(position)
             .addChild(new DockerLiteral(line.getArgumentsContent()));
@@ -582,6 +598,7 @@ export class DockerParser {
           dockerfileAST.addChild(stopsignal);
           break;
         case "onbuild":
+          currentLayer += 1;
           const onbuild = new DockerOnBuild().setPosition(position);
           onbuild.addChild(
             (await parseDocker(line.getRawArgumentsContent())).children[0]
@@ -599,6 +616,7 @@ export class DockerParser {
           dockerfileAST.addChild(onbuild);
           break;
         case "label":
+          currentLayer += 1;
           const labelArgs = (line as Label).getArguments();
 
           const dockerLabel = new DockerLabel().setPosition(position);
@@ -631,6 +649,7 @@ export class DockerParser {
           dockerfileAST.addChild(dockerLabel);
           break;
         case "maintainer":
+          currentLayer += 1;
           const maintainer = new DockerMaintainer()
             .addChild(
               new DockerLiteral(line.getArgumentsContent()).setPosition(
@@ -650,6 +669,7 @@ export class DockerParser {
           dockerfileAST.addChild(maintainer);
           break;
         default:
+          currentLayer += 1;
           const e = new Error(`Unhandled Docker command: ${command}`);
           (e as any).node = line;
           this.errors.push(e);

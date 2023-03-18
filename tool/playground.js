@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 // Just doing import * from /path/ gives error that the file we are importing does not export a default or does not have a default export. (it has multiple in our case)
 var ding = require("../Dinghy-main/Dinghy-main/build/index.js");
+var docker_type_js_1 = require("../Dinghy-main/Dinghy-main/build/docker-type.js");
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var ast, printer;
@@ -47,12 +48,8 @@ function main() {
                 case 1:
                     ast = _a.sent();
                     printer = new ding.PrettyPrinter(ast);
-                    // ast.traverse((node) => {
-                    //     if(node.type = 'DOCKER-PATH'){
-                    //         console.log(node);
-                    //     }
-                    // })
-                    console.log(ast.find({ type: "DOCKER-FROM" }).toString());
+                    //    console.log((ast.find("DockerCmd")[0].children[1] as DockerOpsValueNode).value);
+                    console.log(ast.find({ type: docker_type_js_1.DockerCmd })[0].children[1].value);
                     return [2 /*return*/];
             }
         });
