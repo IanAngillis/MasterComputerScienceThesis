@@ -1,0 +1,38 @@
+[
+    {
+        "command": "apt",
+        "packageVersionFormatSplitter": "=",
+        "preInstall": "apt-get update",
+        "installOption": "install",
+        "installFlags": [
+            "-y"
+        ],
+        "cleanCacheIsInstallFlag": false,
+        "cleanCacheOption": "clean",
+        "afterInstall": "rm -rf /var/lib/apt/lists/*"
+    },
+    {
+        "command": "apt-get",
+        "packageVersionFormatSplitter": "=",
+        "preInstall": "apt-get update",
+        "installOption": "install",
+        "installFlags": [
+            "-y"
+        ],
+        "cleanCacheIsInstallFlag": false,
+        "cleanCacheOption": "clean",
+        "afterInstall": "rm -rf /var/lib/apt/lists/*"
+    },
+    {
+        "command": "apk",
+        "packageVersionFormatSplitter": "=",
+        "preInstall": "",
+        "installOption": "add",
+        "installFlags": [
+            "--no-cache"
+        ],
+        "cleanCacheIsInstallFlag": true,
+        "cleanCacheOption": "",
+        "afterInstall": ""
+    }
+]

@@ -1,10 +1,11 @@
 // Just doing import * from /path/ gives error that the file we are importing does not export a default or does not have a default export. (it has multiple in our case)
 import * as ding from '../Dinghy-main/Dinghy-main/build/index.js';
 import * as fs from 'fs';
-import { BashCommand, BashCommandCommand, BashLiteral, DockerCmd, DockerCmdArg, DockerOpsValueNode } from '../Dinghy-main/Dinghy-main/build/docker-type.js';
-
+import { BashCommand, BashCommandCommand, BashConditionBinary, BashLiteral, BashScript, DockerCmd, DockerCmdArg, DockerOpsValueNode, DockerRun } from '../Dinghy-main/Dinghy-main/build/docker-type.js';
 
 async function main(){
+
+
     const shellString: string= "echo 'deb http://httpredir.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/stretch-backports.list \
     \
      && apt-get -q update \
@@ -27,23 +28,28 @@ async function main(){
 
     const folder = './../data/dockerfiles/';
 
-    fs.readdir(folder,  (err, files) => {
-        files.forEach( file => {
+    // fs.readdir(folder,  (err, files) => {
+    //     files.forEach( file => {
             
-            ding.dockerfileParser.parseDocker(folder + file);
-        })
-    });
+    //         ding.dockerfileParser.parseDocker(folder + file);
+    //     })
+    // });
 
     //const shellAst = await ding.shellParser.parseShell(shellString);
     //console.log(shellAst.children);
+
+    const ast = await ding.dockerfileParser.parseDocker("aptget.Dockerfile");
+    //console.log(ast);
+    let printer = new ding.PrettyPrinter(ast);
+
+    console.log(ast.find({type: BashCommand, value: "apt-get"}));
+
     
+}
 
+main()
 
-    // const ast = await ding.dockerfileParser.parseDocker(folder + "2372f3ba92618b36fcec40d47995dd16c282d9df.Dockerfile");
-    // console.log(ast);
-    //let printer = new ding.PrettyPrinter(ast);
-
-    //    console.log((ast.find("DockerCmd")[0].children[1] as DockerOpsValueNode).value);
+//    console.log((ast.find("DockerCmd")[0].children[1] as DockerOpsValueNode).value);
 
     //console.log(ast.find({type: DockerCmd}));
     //Could be resolved with union types - this way, I do not necessarily need to haggle with library code
@@ -58,6 +64,3 @@ async function main(){
     //console.log(ast);
     //let text = printer.print();
     //fs.writeFileSync("NewDockerfile", text);
-}
-
-main()
