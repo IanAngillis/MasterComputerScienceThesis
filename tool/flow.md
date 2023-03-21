@@ -31,3 +31,7 @@ BashCommand - BashCommandArgs
 Given that whenever there is a binary operation, I can grep all the bash commands. I will know in which layer they are and they do not reference to any other LHS or RHS of a binary LHS. And if they are not part of a binary operation, then BashScript should be their parent.
 
 We can use IsBefore to check if commands are before each other in a layer. Given that we know the layer - we know that they are happening at the same layer and thus we need not check for parents?
+
+# Interesting files with bugs:
+* ff2e95ca857f8c71285d7a4202160b144bd22346.Dockerfile
+    * TF smell - use ADD

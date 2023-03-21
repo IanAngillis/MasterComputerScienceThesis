@@ -3,19 +3,81 @@ import * as ding from './../../Dinghy-main/Dinghy-main/build/index.js';
 import * as fs from 'fs';
 import managers from "./json/managers.json";
 import {PackageManager} from "./models/package-manager";
+import { BashLiteral } from '../../Dinghy-main/Dinghy-main/build/docker-type.js';
+import {BashManagerCommand, BashManagerArgs} from './models/tool-types'
 
+function splitWithoutEmptyString(text: string, delimiter: string): string[] {
+    return text.replace(/\r?\n/g, delimiter).split(delimiter).filter(w => w != "");
+}
+
+async function loop(path) {
+    const dir = await fs.promises.opendir(path)
+    for await (const dirent of dir) {
+      console.log(dirent.name)
+    }
+  }
+
+  // TODO 
+  //    - abstract into a module? 
+  //    - Manually select and verify some files (ground truth dataset is nice, I guess)
+  //    - Do not think yet of restoring file, focus first on enriching and detecting
+  //        - Ideas for detecting, using the layers!
+  //    - Do file analysis
 async function main(){
 
     let packageManagers: PackageManager[] = [];
+    let delimiter: string = " ";
+
+    let folder = "./../data/dockerfiles/";
 
     managers.forEach(pm => {
         packageManagers.push(pm as PackageManager)
     })
 
-    const ast = await ding.dockerfileParser.parseDocker("data/aptget.Dockerfile");
-    let node = ast.find({type:ding.nodeType.BashCommand});
+    const dir = await fs.promises.opendir(folder)
+    for await (const dirent of dir) {
+        let ast = await ding.dockerfileParser.parseDocker(folder + dirent.name);
+        let nodes = ast.find({type:ding.nodeType.BashCommand});
 
-    console.log(node[1].isBefore(node[0]));
+        let bashManagerCommands: BashManagerCommand[] = [];
+
+        nodes.forEach((node) => {
+            packageManagers.forEach((manager) => {
+                let foundNode = node.find({type: ding.nodeType.BashLiteral, value: manager.command});
+                if(foundNode.length > 0){
+                    let bashManagerCommand = new BashManagerCommand();
+                    bashManagerCommand.layer = node.layer;
+                    bashManagerCommand.absolutePath = node.absolutePath;
+                    bashManagerCommand.setPosition(node.position);
+                    bashManagerCommand.source = node;
+
+                    let commands: string[] = splitWithoutEmptyString(node.toString(), delimiter);
+                    
+                    bashManagerCommand.versionSplitter = manager.packageVersionFormatSplitter;
+                    bashManagerCommand.command = manager.command;
+                    bashManagerCommand.option = commands.filter(w => !w.startsWith("-") && w != bashManagerCommand.command)[0];
+                    bashManagerCommand.hasInstallOption = (bashManagerCommand.option == manager.installOption[0]);
+                    bashManagerCommand.flags = commands.filter(w => w.startsWith("-"));
+                    bashManagerCommand.arguments= [];
+                    
+                    // Initialize arguments
+                    commands.filter(w =>    w != bashManagerCommand.command && 
+                                            w != bashManagerCommand.option && 
+                                            !w.startsWith("-"))
+                                            .forEach(w => {
+                                                //let bashManagerArg = new BashManagerArgs();
+                                                //bashManagerArg.argument = w;
+                                                bashManagerCommand.arguments.push(w);
+                                            });
+                    
+                    bashManagerCommands.push(bashManagerCommand)
+                }
+            });
+        });
+
+        console.log(dirent.name + " has got " + bashManagerCommands.length + " package commands");
+        console.log(bashManagerCommands);
+    }
 
     // packageManagers.forEach(x => {
     //     let cmd = x.command;

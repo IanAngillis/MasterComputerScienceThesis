@@ -2,125 +2,100 @@
     {
         "command":"apt",
         "packageVersionFormatSplitter":"=",
-        "preInstall":"apt-get update",
-        "installOption":"install",
-        "installOptionFlags":[
-            "-y",
-            "--no-install-recommends"
-        ],
+        "preInstall": ["apt-get", "update"],
+        "installOption":["install"],
+        "installOptionFlags":["-y", "--no-install-recommends"],
         "cleanCacheIsInstallFlag":false,
-        "cleanCacheOption":"clean",
+        "cleanCacheOption":["clean"],
         "cleanCacheOptionFlags":[],
-        "afterInstall":"rm -rf /var/lib/apt/lists/*"
+        "afterInstall":["rm", "-rf", "/var/lib/apt/lists/*"]
     },
     {
         "command":"apt-get",
         "packageVersionFormatSplitter":"=",
-        "preInstall":"apt-get update",
-        "installOption":"install",
-        "installOptionFlags":[
-           "-y",
-           "--no-install-recommends"
-        ],
+        "preInstall":["apt-get", "update"],
+        "installOption":["install"],
+        "installOptionFlags":["-y", "--no-install-recommends"],
         "cleanCacheIsInstallFlag":false,
-        "cleanCacheOption":"clean",
+        "cleanCacheOption":["clean"],
         "cleanCacheOptionFlags":[],
-        "afterInstall":"rm -rf /var/lib/apt/lists/*"
+        "afterInstall":["rm", "-rf", "/var/lib/apt/lists/*"]
     },
     {
         "command":"apk",
         "packageVersionFormatSplitter":"=",
-        "preInstall":"",
-        "installOption":"add",
-        "installOptionFlags":[
-           "--no-cache"
-        ],
+        "preInstall":[],
+        "installOption":["add"],
+        "installOptionFlags":["--no-cache"],
         "cleanCacheIsInstallFlag":true,
-        "cleanCacheOption":"",
+        "cleanCacheOption":[],
         "cleanCacheOptionFlags":[],
-        "afterInstall":""
+        "afterInstall":[]
     },
     {
         "command":"yum",
         "packageVersionFormatSplitter":"-",
-        "preInstall":"",
-        "installOption":"install",
-        "installOptionFlags":[
-           "-y"
-        ],
+        "preInstall":[],
+        "installOption":["install"],
+        "installOptionFlags":["-y"],
         "cleanCacheIsInstallFlag":false,
-        "cleanCacheOption":"clean all",
+        "cleanCacheOption":["clean", "all"],
         "cleanCacheOptionFlags":[],
-        "afterInstall":""
+        "afterInstall":[]
     },
     {
         "command":"dnf",
         "packageVersionFormatSplitter":"-",
-        "preInstall":"",
-        "installOption":"install",
-        "installOptionFlags":[
-           "-y"
-        ],
+        "preInstall":[],
+        "installOption":["install"],
+        "installOptionFlags":["-y"],
         "cleanCacheIsInstallFlag":false,
-        "cleanCacheOption":"clean all",
+        "cleanCacheOption":["clean", "all"],
         "cleanCacheOptionFlags":[],
-        "afterInstall":""
+        "afterInstall":[]
     },
     {
         "command":"pip3",
         "packageVersionFormatSplitter":"==",
-        "preInstall":"",
-        "installOption":"install",
-        "installOptionFlags":[
-            "--no-input",
-            "--no-cache-dir"
-        ],
+        "preInstall":[],
+        "installOption":["install"],
+        "installOptionFlags":[ "--no-input", "--no-cache-dir"],
         "cleanCacheIsInstallFlag":false,
-        "cleanCacheOption":"",
+        "cleanCacheOption":[],
         "cleanCacheOptionFlags":[],
-        "afterInstall":""
+        "afterInstall":[]
     },
     {
         "command":"pip",
         "packageVersionFormatSplitter":"==",
-        "preInstall":"",
-        "installOption":"install",
-        "installOptionFlags":[
-           "--no-input",
-           "--no-cache-dir"
-        ],
+        "preInstall":[],
+        "installOption":["install"],
+        "installOptionFlags":[ "--no-input", "--no-cache-dir"],
         "cleanCacheIsInstallFlag":false,
-        "cleanCacheOption":"",
+        "cleanCacheOption":[],
         "cleanCacheOptionFlags":[],
-        "afterInstall":""
+        "afterInstall":[]
     },
     {
         "command":"yarn",
         "packageVersionFormatSplitter":"@",
-        "preInstall":"",
-        "installOption":"install",
+        "preInstall":[],
+        "installOption":["install"],
         "installOptionFlags":[],
         "cleanCacheIsInstallFlag":false,
-        "cleanCacheOption":"cache clean",
-        "cleanCacheOptionFlags":[
-            "--all"
-        ],
-        "afterInstall":""
+        "cleanCacheOption":["cache", "clean"],
+        "cleanCacheOptionFlags":["--all"],
+        "afterInstall":[]
     },
     {
         "command":"zypper",
         "packageVersionFormatSplitter":"=",
-        "preInstall":"",
-        "installOption":"install",
-        "installOptionFlags":[
-           "-y",
-           "--no-recommends"
-        ],
+        "preInstall":[],
+        "installOption":["install"],
+        "installOptionFlags":["-y", "--no-recommends"],
         "cleanCacheIsInstallFlag":false,
-        "cleanCacheOption":"clean",
-        "cleanCacheOptionFlags": [
-            "-all"
-        ],
-        "afterInstall":""
+        "cleanCacheOption":["clean"],
+        "cleanCacheOptionFlags": ["-all"],
+        "afterInstall":[]
     }
 ]

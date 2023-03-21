@@ -1,11 +1,11 @@
 export declare class PackageManager {
     command: string;
     packageVersionFormatSplitter: string;
-    preInstall: string;
-    installOption: string;
+    preInstall: string[];
+    installOption: string[];
     installOptionFlags: string[];
     cleanCacheIsInstallFlag: boolean;
-    cleanCacheOption: string;
+    cleanCacheOption: string[];
     cleanCacheOptionFlags: string[];
-    afterInstall: string;
+    afterInstall: string[];
 }

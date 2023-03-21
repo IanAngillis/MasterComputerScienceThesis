@@ -5,9 +5,12 @@ export class BashManagerCommand extends ding.nodeType.DockerOpsNode{
     command: string;
     option: string;
     flags: string[];
-    arguments: BashManagerArgs[];
+    hasInstallOption: boolean;
+    arguments: string[];
+    source: ding.nodeType.DockerOpsNode;
+    versionSplitter: string; 
 }
 
-export class BashManagerArgs extends ding.nodeType.DockerOpsNode{
-    arg: string;
+export class BashManagerArgs{
+    argument: string;
 }
