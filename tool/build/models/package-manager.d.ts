@@ -1,4 +1,4 @@
-export class PackageManager{
+export declare class PackageManager {
     command: string;
     packageVersionFormatSplitter: string;
     preInstall: string;

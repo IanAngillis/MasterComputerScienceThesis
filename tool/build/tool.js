@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -63,19 +63,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var ding = __importStar(require("./../../Dinghy-main/Dinghy-main/build/index.js"));
+var docker_type_js_1 = require("./../../Dinghy-main/Dinghy-main/build/docker-type.js");
 var managers_json_1 = __importDefault(require("./json/managers.json"));
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var folder, ast;
+        var packageManagers, ast;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log(managers_json_1.default);
-                    folder = './../../data/dockerfiles/';
+                    packageManagers = [];
+                    managers_json_1.default.forEach(function (pm) {
+                        packageManagers.push(pm);
+                    });
                     return [4, ding.dockerfileParser.parseDocker("data/aptget.Dockerfile")];
                 case 1:
                     ast = _a.sent();
-                    console.log(ast);
+                    packageManagers.forEach(function (x) {
+                        console.log("looking for command: " + x.command);
+                        var nodes = ast.find({ type: docker_type_js_1.BashCommand, value: x.command });
+                        if (nodes.length != 0) {
+                            console.log("command " + x.command + " found");
+                        }
+                        else {
+                            console.log("command " + x.command + " not found");
+                        }
+                        console.log();
+                    });
                     return [2];
             }
         });
