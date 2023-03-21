@@ -1,7 +1,6 @@
 // Just doing import * from /path/ gives error that the file we are importing does not export a default or does not have a default export. (it has multiple in our case)
 import * as ding from './../../Dinghy-main/Dinghy-main/build/index.js';
 import * as fs from 'fs';
-import { BashCommand, BashCommandCommand, BashConditionBinary, BashLiteral, BashScript, DockerCmd, DockerCmdArg, DockerOpsValueNode, DockerRun } from './../../Dinghy-main/Dinghy-main/build/docker-type.js';
 import managers from "./json/managers.json";
 import {PackageManager} from "./models/package-manager";
 
@@ -14,17 +13,21 @@ async function main(){
     })
 
     const ast = await ding.dockerfileParser.parseDocker("data/aptget.Dockerfile");
+    let node = ast.find({type:ding.nodeType.BashCommand});
 
-    packageManagers.forEach(x => {
-        console.log("looking for command: " + x.command);
-        let nodes = ast.find({type:BashCommand, value: x.command});
-        if(nodes.length != 0){
-            console.log("command " + x.command + " found");
-        }else{
-            console.log("command " + x.command + " not found");
-        }
-        console.log()
-    });
+    console.log(node[1].isBefore(node[0]));
+
+    // packageManagers.forEach(x => {
+    //     let cmd = x.command;
+    //     console.log("looking for command: " + cmd);
+    //     let nodes = ast.find({type:BashCommand, value: cmd});
+    //     console.log(nodes);
+    //     if(nodes.length != 0){
+    //         console.log("command " + x.command + " found");
+    //     }else{
+    //         console.log("command " + x.command + " not found");
+    //     }
+    // });
     //const folder = './../../data/dockerfiles/';
 
 

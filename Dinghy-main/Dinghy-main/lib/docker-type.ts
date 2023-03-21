@@ -598,12 +598,14 @@ export abstract class DockerOpsNode {
    * @returns the list of nodes that match query
    */
   public find(input: QueryI | string) {
+    
     let query: QueryI = undefined;
     if (typeof input === "string") {
       query = { type: input };
     } else {
       query = input;
     }
+
     const out: DockerOpsNodeType[] = [];
     this.traverse(
       (child) => {

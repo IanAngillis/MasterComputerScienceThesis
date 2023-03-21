@@ -358,6 +358,7 @@ export class ShellParser {
             );
           }
           if (CallExpr.Args.length > 0) {
+            console.log("adding new command");
             cmd.addChild(
               new BashCommandCommand()
                 .setPosition(this.pos(CallExpr.Args[0]))

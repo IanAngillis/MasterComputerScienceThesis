@@ -67,7 +67,7 @@ var docker_type_js_1 = require("./../../Dinghy-main/Dinghy-main/build/docker-typ
 var managers_json_1 = __importDefault(require("./json/managers.json"));
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var packageManagers, ast;
+        var packageManagers, ast, node;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -78,17 +78,8 @@ function main() {
                     return [4, ding.dockerfileParser.parseDocker("data/aptget.Dockerfile")];
                 case 1:
                     ast = _a.sent();
-                    packageManagers.forEach(function (x) {
-                        console.log("looking for command: " + x.command);
-                        var nodes = ast.find({ type: docker_type_js_1.BashCommand, value: x.command });
-                        if (nodes.length != 0) {
-                            console.log("command " + x.command + " found");
-                        }
-                        else {
-                            console.log("command " + x.command + " not found");
-                        }
-                        console.log();
-                    });
+                    node = ast.find({ type: docker_type_js_1.BashCommand });
+                    console.log(node[1].isBefore(node[0]));
                     return [2];
             }
         });
