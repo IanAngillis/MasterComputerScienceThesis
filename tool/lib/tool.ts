@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import managers from "./json/managers.json";
 import {PackageManager} from "./models/package-manager";
 import {BashManagerCommand, BashManagerArgs} from './models/tool-types'
-import {rules as RULES} from './rules';
+import {allRules as RULES} from './rules';
 
 function splitWithoutEmptyString(text: string, delimiter: string): string[] {
     return text.replace(/\r?\n/g, delimiter).replace(/\\/g, delimiter).split(delimiter).filter(w => w != "");
@@ -85,6 +85,8 @@ async function main(){
         console.log(text);
         console.log(bashManagerCommands);
     }
+
+    RULES.forEach(r => console.log(r));
 
     // packageManagers.forEach(x => {
     //     let cmd = x.command;

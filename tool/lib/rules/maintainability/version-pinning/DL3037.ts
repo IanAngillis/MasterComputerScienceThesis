@@ -1,4 +1,4 @@
-import { Rule } from "../models/rule"
+import { Rule } from "../../../models/rule"
 
 export default {
     code: "DL3037",
