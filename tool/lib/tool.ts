@@ -3,11 +3,11 @@ import * as ding from './../../Dinghy-main/Dinghy-main/build/index.js';
 import * as fs from 'fs';
 import managers from "./json/managers.json";
 import {PackageManager} from "./models/package-manager";
-import { BashLiteral } from '../../Dinghy-main/Dinghy-main/build/docker-type.js';
 import {BashManagerCommand, BashManagerArgs} from './models/tool-types'
+import {rules as RULES} from './rules';
 
 function splitWithoutEmptyString(text: string, delimiter: string): string[] {
-    return text.replace(/\r?\n/g, delimiter).split(delimiter).filter(w => w != "");
+    return text.replace(/\r?\n/g, delimiter).replace(/\\/g, delimiter).split(delimiter).filter(w => w != "");
 }
 
 async function loop(path) {
@@ -24,6 +24,7 @@ async function loop(path) {
   //        - Ideas for detecting, using the layers!
   //    - Do file analysis
 async function main(){
+    console.log(RULES);
 
     let packageManagers: PackageManager[] = [];
     // can be in a config object
