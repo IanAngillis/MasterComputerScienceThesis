@@ -127,14 +127,24 @@ function loop(path) {
         });
     });
 }
+function createLogName() {
+    var date = new Date();
+    var year = date.getUTCFullYear();
+    var month = date.getUTCMonth() + 1;
+    var day = date.getDate();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var seconds = date.getSeconds();
+    return year.toString() + month.toString() + day.toString() + hour.toString() + minute.toString() + seconds.toString() + "logs.txt";
+}
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var packageManagers, delimiter, folder, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var stream, packageManagers, delimiter, folder, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
-                    console.log(rules_1.allRules);
+                    stream = fs.createWriteStream(createLogName(), { flags: 'a' });
                     packageManagers = [];
                     delimiter = " ";
                     folder = "./../data/dockerfiles/";
@@ -162,7 +172,6 @@ function main() {
                                 case 2:
                                     ast = _f.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
-                                    console.log(nodes.length + " BashCommands found");
                                     bashManagerCommands = [];
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
@@ -191,8 +200,39 @@ function main() {
                                         });
                                     });
                                     text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
-                                    console.log(text);
-                                    console.log(bashManagerCommands);
+                                    stream.write(text + "\n");
+                                    rules_1.allRules.forEach(function (rule) {
+                                        var manager = packageManagers.find(function (pm) { return pm.command == rule.detection.manager; });
+                                        switch (rule.detection.type) {
+                                            case "VERSION-PINNING":
+                                                if (manager == null) {
+                                                }
+                                                else {
+                                                    bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                        var requiresVersionPinning = false;
+                                                        c.arguments.forEach(function (arg) {
+                                                            if (arg.search(manager.packageVersionFormatSplitter) == -1) {
+                                                                stream.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
+                                                                requiresVersionPinning = true;
+                                                            }
+                                                        });
+                                                    });
+                                                }
+                                                break;
+                                            case "NO-INTERACTION":
+                                                break;
+                                            case "CLEAN-CACHE":
+                                                if (manager == null) {
+                                                }
+                                                else {
+                                                }
+                                                break;
+                                            case "NO-RECOMMENDS":
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    });
                                     return [3, 4];
                                 case 3:
                                     _d = true;
@@ -229,7 +269,7 @@ function main() {
                     return [7];
                 case 13: return [7];
                 case 14:
-                    rules_1.allRules.forEach(function (r) { return console.log(r); });
+                    stream.close();
                     return [2];
             }
         });

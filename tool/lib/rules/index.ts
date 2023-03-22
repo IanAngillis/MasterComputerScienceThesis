@@ -1,3 +1,5 @@
 import { Rule } from "../models/rule";
 import {maintainabilityRules as MAINTAINABILITYRULES} from "./maintainability";
-export const allRules: Rule[] = MAINTAINABILITYRULES;
+import {bloaterRules as BLOATERRULES} from "./bloaters";
+
+export const allRules: Rule[] = MAINTAINABILITYRULES.concat(BLOATERRULES);

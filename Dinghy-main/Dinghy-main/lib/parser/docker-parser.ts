@@ -722,14 +722,14 @@ export class DockerParser {
 export async function parseDocker(file: string | File) {
   let parser: DockerParser = undefined;
   if (file instanceof File) {
-    console.log("intance of file");
+    //console.log("intance of file");
     parser = new DockerParser(file);
   } else {
     if (existsSync(file)) {
-      console.log("Not an instance of file and path does exist");
+      //console.log("Not an instance of file and path does exist");
       parser = new DockerParser(new File(file));
     } else {
-      console.log("Not an instance of file and path does not exist");
+      //console.log("Not an instance of file and path does not exist");
       parser = new DockerParser(new File(undefined, file));
     }
   }
