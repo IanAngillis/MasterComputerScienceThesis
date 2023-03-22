@@ -146,7 +146,7 @@ function main() {
                 case 2:
                     _e.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
-                        var dirent, ast, nodes, bashManagerCommands;
+                        var dirent, ast, nodes, bashManagerCommands, text;
                         return __generator(this, function (_f) {
                             switch (_f.label) {
                                 case 0:
@@ -160,11 +160,16 @@ function main() {
                                 case 2:
                                     ast = _f.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
+                                    console.log(nodes.length + " BashCommands found");
                                     bashManagerCommands = [];
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
                                             var foundNode = node.find({ type: ding.nodeType.BashLiteral, value: manager.command });
                                             if (foundNode.length > 0) {
+                                                if (manager.command == "npm") {
+                                                    console.log("found npm package");
+                                                    return;
+                                                }
                                                 var bashManagerCommand_1 = new tool_types_1.BashManagerCommand();
                                                 bashManagerCommand_1.layer = node.layer;
                                                 bashManagerCommand_1.absolutePath = node.absolutePath;
@@ -187,7 +192,8 @@ function main() {
                                             }
                                         });
                                     });
-                                    console.log(dirent.name + " has got " + bashManagerCommands.length + " package commands");
+                                    text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
+                                    console.log(text);
                                     console.log(bashManagerCommands);
                                     return [3, 4];
                                 case 3:

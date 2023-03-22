@@ -97,5 +97,27 @@
         "cleanCacheOption": ["clean"],
         "cleanCacheOptionFlags": ["-all"],
         "afterInstall": []
+    },
+    {
+        "command": "npm",
+        "packageVersionFormatSplitter": "@",
+        "preInstall": [],
+        "installOption": ["install"],
+        "installOptionFlags": ["-q", "-y"],
+        "cleanCacheIsInstallFlag": false,
+        "cleanCacheOption": ["cache", "clean"],
+        "cleanCacheOptionFlags": ["--force"],
+        "afterInstall": []
+    },
+    {
+        "command": "conda",
+        "packageVersionFormatSplitter": "=",
+        "preInstall": [],
+        "installOption": ["install"],
+        "installOptionFlags": [],
+        "cleanCacheIsInstallFlag": false,
+        "cleanCacheOption": ["cache", "clean"],
+        "cleanCacheOptionFlags": ["-a"],
+        "afterInstall": []
     }
 ]

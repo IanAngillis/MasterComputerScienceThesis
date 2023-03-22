@@ -26,10 +26,13 @@ async function loop(path) {
 async function main(){
 
     let packageManagers: PackageManager[] = [];
+    // can be in a config object
     let delimiter: string = " ";
 
+    // Folder which holds the data - should expand to folders eventually
     let folder = "./../data/dockerfiles/";
 
+    // Create package managers as PackageManager objects
     managers.forEach(pm => {
         packageManagers.push(pm as PackageManager)
     })
@@ -38,6 +41,7 @@ async function main(){
     for await (const dirent of dir) {
         let ast = await ding.dockerfileParser.parseDocker(folder + dirent.name);
         let nodes = ast.find({type:ding.nodeType.BashCommand});
+        console.log(nodes.length + " BashCommands found");
 
         let bashManagerCommands: BashManagerCommand[] = [];
 
@@ -75,7 +79,9 @@ async function main(){
             });
         });
 
-        console.log(dirent.name + " has got " + bashManagerCommands.length + " package commands");
+         let text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
+        // fs.writeFileSync(dirent.name + ".txt", text);
+        console.log(text);
         console.log(bashManagerCommands);
     }
 

@@ -6,13 +6,13 @@ parseDocker takes a file or a path
 Then it parses:
     Creates Dockerfile AST with root node a Dockerfile node.
 
-
-
-
-
 BashCommand - bashCommandCommand - bashWord - BashLiteral
 
 BashCommand - BashCommandArgs
+
+## Dockerfile TF smell analysis
+We have different options here. One would be to emulate incorporate the exact method proposed in the tf smell paper as some sort of stateless static analysis.
+
 
 ## BashScript
 * BASH-CONDITION-BINARY
@@ -35,3 +35,6 @@ We can use IsBefore to check if commands are before each other in a layer. Given
 # Interesting files with bugs:
 * ff2e95ca857f8c71285d7a4202160b144bd22346.Dockerfile
     * TF smell - use ADD
+    * Multiple RUN instruction
+* d5f20238dcdfd87faa94d43e9dfc76c9027901e0.Dockerfile
+    * Something fishy going on with \\ etc...
