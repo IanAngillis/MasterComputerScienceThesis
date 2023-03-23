@@ -42,6 +42,8 @@ async function main(){
     // can be in a config object
     let delimiter: string = " ";
 
+    //console.log(splitWithoutEmptyString("rm -rf /var/list/*", " "));
+
     // Folder which holds the data - should expand to folders eventually
     let folder = "./../data/dockerfiles/";
 
@@ -100,6 +102,7 @@ async function main(){
 
         RULES.forEach(rule => {
             //For now assume package manager smells
+            //TODO Check if manager exists - if not, we can move away from the package manager smells and go to the other smells
             let manager = packageManagers.find(pm => pm.command == rule.detection.manager);
             switch(rule.detection.type){
                 case "VERSION-PINNING":
@@ -120,6 +123,26 @@ async function main(){
                     break;
                 
                 case "NO-INTERACTION":
+                    if(manager!=null){
+                        let noninteractionflag = manager.installOptionFlags.find(flag => flag.type == "NO-INTERACTION");
+                        //console.log(noninteractionflag.value);
+                        if(noninteractionflag != undefined){
+                            bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach( c => {
+
+                                let nonInteractionFlagIsPresent = false;
+                                c.flags.forEach(flag => {
+                                    if(flag == noninteractionflag.value){
+                                        console.log("noninteractionflag found");
+                                        nonInteractionFlagIsPresent = true;
+                                    }
+                                });
+
+                                if(!nonInteractionFlagIsPresent){
+                                    console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
+                                }
+                            });
+                        }
+                    }
                     break;
                 
                 case "CLEAN-CACHE":

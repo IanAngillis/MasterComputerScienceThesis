@@ -220,6 +220,23 @@ function main() {
                                                 }
                                                 break;
                                             case "NO-INTERACTION":
+                                                if (manager != null) {
+                                                    var noninteractionflag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "NO-INTERACTION"; });
+                                                    if (noninteractionflag_1 != undefined) {
+                                                        bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                            var nonInteractionFlagIsPresent = false;
+                                                            c.flags.forEach(function (flag) {
+                                                                if (flag == noninteractionflag_1.value) {
+                                                                    console.log("noninteractionflag found");
+                                                                    nonInteractionFlagIsPresent = true;
+                                                                }
+                                                            });
+                                                            if (!nonInteractionFlagIsPresent) {
+                                                                console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
+                                                            }
+                                                        });
+                                                    }
+                                                }
                                                 break;
                                             case "CLEAN-CACHE":
                                                 if (manager == null) {
