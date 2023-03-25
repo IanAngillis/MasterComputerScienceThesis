@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+        while (_) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -78,45 +78,38 @@ function splitWithoutEmptyString(text, delimiter) {
     return text.replace(/\r?\n/g, delimiter).replace(/\\/g, delimiter).split(delimiter).filter(function (w) { return w != ""; });
 }
 function loop(path) {
-    var _a, e_1, _b, _c;
+    var e_1, _a;
     return __awaiter(this, void 0, void 0, function () {
-        var dir, _d, dir_1, dir_1_1, dirent, e_1_1;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        var dir, dir_1, dir_1_1, dirent, e_1_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0: return [4, fs.promises.opendir(path)];
                 case 1:
-                    dir = _e.sent();
-                    _e.label = 2;
+                    dir = _b.sent();
+                    _b.label = 2;
                 case 2:
-                    _e.trys.push([2, 7, 8, 13]);
-                    _d = true, dir_1 = __asyncValues(dir);
-                    _e.label = 3;
+                    _b.trys.push([2, 7, 8, 13]);
+                    dir_1 = __asyncValues(dir);
+                    _b.label = 3;
                 case 3: return [4, dir_1.next()];
                 case 4:
-                    if (!(dir_1_1 = _e.sent(), _a = dir_1_1.done, !_a)) return [3, 6];
-                    _c = dir_1_1.value;
-                    _d = false;
-                    try {
-                        dirent = _c;
-                        console.log(dirent.name);
-                    }
-                    finally {
-                        _d = true;
-                    }
-                    _e.label = 5;
+                    if (!(dir_1_1 = _b.sent(), !dir_1_1.done)) return [3, 6];
+                    dirent = dir_1_1.value;
+                    console.log(dirent.name);
+                    _b.label = 5;
                 case 5: return [3, 3];
                 case 6: return [3, 13];
                 case 7:
-                    e_1_1 = _e.sent();
+                    e_1_1 = _b.sent();
                     e_1 = { error: e_1_1 };
                     return [3, 13];
                 case 8:
-                    _e.trys.push([8, , 11, 12]);
-                    if (!(!_d && !_a && (_b = dir_1.return))) return [3, 10];
-                    return [4, _b.call(dir_1)];
+                    _b.trys.push([8, , 11, 12]);
+                    if (!(dir_1_1 && !dir_1_1.done && (_a = dir_1.return))) return [3, 10];
+                    return [4, _a.call(dir_1)];
                 case 9:
-                    _e.sent();
-                    _e.label = 10;
+                    _b.sent();
+                    _b.label = 10;
                 case 10: return [3, 12];
                 case 11:
                     if (e_1) throw e_1.error;
@@ -138,13 +131,13 @@ function createLogName() {
     return year.toString() + month.toString() + day.toString() + hour.toString() + minute.toString() + seconds.toString() + "logs.txt";
 }
 function main() {
-    var _a, e_2, _b, _c;
+    var e_2, _a;
     return __awaiter(this, void 0, void 0, function () {
-        var stream, packageManagers, delimiter, folder, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        var stream, packageManagers, delimiter, folder, dir, _loop_1, dir_2, dir_2_1, e_2_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    stream = fs.createWriteStream(createLogName(), { flags: 'a' });
+                    stream = fs.createWriteStream("./logs/" + createLogName(), { flags: 'a' });
                     packageManagers = [];
                     delimiter = " ";
                     folder = "./../data/dockerfiles/";
@@ -153,24 +146,19 @@ function main() {
                     });
                     return [4, fs.promises.opendir(folder)];
                 case 1:
-                    dir = _e.sent();
-                    _e.label = 2;
+                    dir = _b.sent();
+                    _b.label = 2;
                 case 2:
-                    _e.trys.push([2, 8, 9, 14]);
+                    _b.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
                         var dirent, ast, nodes, bashManagerCommands, text;
-                        return __generator(this, function (_f) {
-                            switch (_f.label) {
+                        return __generator(this, function (_c) {
+                            switch (_c.label) {
                                 case 0:
-                                    _c = dir_2_1.value;
-                                    _d = false;
-                                    _f.label = 1;
-                                case 1:
-                                    _f.trys.push([1, , 3, 4]);
-                                    dirent = _c;
+                                    dirent = dir_2_1.value;
                                     return [4, ding.dockerfileParser.parseDocker(folder + dirent.name)];
-                                case 2:
-                                    ast = _f.sent();
+                                case 1:
+                                    ast = _c.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
                                     bashManagerCommands = [];
                                     nodes.forEach(function (node) {
@@ -206,6 +194,7 @@ function main() {
                                         switch (rule.detection.type) {
                                             case "VERSION-PINNING":
                                                 if (manager == null) {
+                                                    console.log("No such manager found");
                                                 }
                                                 else {
                                                     bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
@@ -214,6 +203,8 @@ function main() {
                                                             if (arg.search(manager.packageVersionFormatSplitter) == -1) {
                                                                 stream.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
                                                                 requiresVersionPinning = true;
+                                                            }
+                                                            else {
                                                             }
                                                         });
                                                     });
@@ -227,59 +218,94 @@ function main() {
                                                             var nonInteractionFlagIsPresent = false;
                                                             c.flags.forEach(function (flag) {
                                                                 if (flag == noninteractionflag_1.value) {
-                                                                    console.log("noninteractionflag found");
                                                                     nonInteractionFlagIsPresent = true;
                                                                 }
                                                             });
                                                             if (!nonInteractionFlagIsPresent) {
-                                                                console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
                                                             }
                                                         });
                                                     }
                                                 }
                                                 break;
                                             case "CLEAN-CACHE":
-                                                if (manager == null) {
-                                                }
-                                                else {
+                                                if (manager != null) {
+                                                    if (manager.cleanCacheIsInstallFlag) {
+                                                        var installFlag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "CLEAN-CACHE"; });
+                                                        if (installFlag_1 != undefined) {
+                                                            var found_1 = false;
+                                                            bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                                if (c.arguments.find(function (arg) { return arg == installFlag_1.value; }) != undefined) {
+                                                                    console.log("clean cache flag found");
+                                                                    found_1 = true;
+                                                                }
+                                                            });
+                                                            if (!found_1) {
+                                                                "No CLEAN CACHE FLAG FOUND";
+                                                            }
+                                                        }
+                                                    }
+                                                    else {
+                                                        bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (ic) {
+                                                            var hasCleanCacheCommand = false;
+                                                            bashManagerCommands.filter(function (cc) { return ic.layer == cc.layer && ic.command == cc.command && cc.option == manager.cleanCacheOption[0]; })
+                                                                .forEach(function (x) {
+                                                                if (ic.source.isBefore(x.source)) {
+                                                                    hasCleanCacheCommand = true;
+                                                                }
+                                                            });
+                                                            if (!hasCleanCacheCommand) {
+                                                                console.log(dirent.name);
+                                                                console.log("No Clean cache command found for: " + manager.command);
+                                                            }
+                                                        });
+                                                    }
                                                 }
                                                 break;
                                             case "NO-RECOMMENDS":
+                                                if (manager != null) {
+                                                    var norecommendsflag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "NO-RECOMMENDS"; });
+                                                    if (norecommendsflag_1 != undefined) {
+                                                        var found_2 = false;
+                                                        bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                            if (c.arguments.find(function (arg) { return arg == norecommendsflag_1.value; }) != undefined) {
+                                                                found_2 = true;
+                                                            }
+                                                        });
+                                                        if (!found_2) {
+                                                        }
+                                                    }
+                                                }
                                                 break;
                                             default:
                                                 break;
                                         }
                                     });
-                                    return [3, 4];
-                                case 3:
-                                    _d = true;
-                                    return [7];
-                                case 4: return [2];
+                                    return [2];
                             }
                         });
                     };
-                    _d = true, dir_2 = __asyncValues(dir);
-                    _e.label = 3;
+                    dir_2 = __asyncValues(dir);
+                    _b.label = 3;
                 case 3: return [4, dir_2.next()];
                 case 4:
-                    if (!(dir_2_1 = _e.sent(), _a = dir_2_1.done, !_a)) return [3, 7];
+                    if (!(dir_2_1 = _b.sent(), !dir_2_1.done)) return [3, 7];
                     return [5, _loop_1()];
                 case 5:
-                    _e.sent();
-                    _e.label = 6;
+                    _b.sent();
+                    _b.label = 6;
                 case 6: return [3, 3];
                 case 7: return [3, 14];
                 case 8:
-                    e_2_1 = _e.sent();
+                    e_2_1 = _b.sent();
                     e_2 = { error: e_2_1 };
                     return [3, 14];
                 case 9:
-                    _e.trys.push([9, , 12, 13]);
-                    if (!(!_d && !_a && (_b = dir_2.return))) return [3, 11];
-                    return [4, _b.call(dir_2)];
+                    _b.trys.push([9, , 12, 13]);
+                    if (!(dir_2_1 && !dir_2_1.done && (_a = dir_2.return))) return [3, 11];
+                    return [4, _a.call(dir_2)];
                 case 10:
-                    _e.sent();
-                    _e.label = 11;
+                    _b.sent();
+                    _b.label = 11;
                 case 11: return [3, 13];
                 case 12:
                     if (e_2) throw e_2.error;

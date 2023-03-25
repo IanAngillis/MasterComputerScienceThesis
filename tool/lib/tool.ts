@@ -36,11 +36,27 @@ function createLogName(){
   //    - Do not think yet of restoring file, focus first on enriching and detecting
   //        - Ideas for detecting, using the layers!
   //    - Do file analysis
+  //    - Create detailed report for smells!
 async function main(){
-    let stream : fs.WriteStream = fs.createWriteStream(createLogName(), {flags: 'a'});
+    let log : fs.WriteStream = fs.createWriteStream("./logs/" + createLogName(), {flags: 'a'});
     let packageManagers: PackageManager[] = [];
     // can be in a config object
     let delimiter: string = " ";
+
+    //delete reports (for now, don't do this in end product)
+    fs.readdir("./reports", (err, files) => {
+        if (err) throw err;
+      
+        for (const file of files) {
+          fs.unlink("./reports/" + file, (err) => {
+            if (err) throw err;
+          });
+        }
+      });
+      
+
+
+  
 
     //console.log(splitWithoutEmptyString("rm -rf /var/list/*", " "));
 
@@ -97,7 +113,7 @@ async function main(){
 
 
         let text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
-        stream.write(text + "\n");
+        log.write(text + "\n");
         //console.log(text);
 
         RULES.forEach(rule => {
@@ -107,14 +123,17 @@ async function main(){
             switch(rule.detection.type){
                 case "VERSION-PINNING":
                     if(manager == null){
-                        //console.log("No such manager found");
+                        console.log("No such manager found");
                     }else{
                         bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach(c => {
                             let requiresVersionPinning: boolean = false;
                             c.arguments.forEach(arg => {
                                 if(arg.search(manager.packageVersionFormatSplitter) == -1){
-                                    stream.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
+                                    //console.log("no pinned version found");
+                                    log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
                                     requiresVersionPinning = true;
+                                }else {
+                                    //console.log("pinned version found");
                                 }
                             });
 
@@ -132,13 +151,13 @@ async function main(){
                                 let nonInteractionFlagIsPresent = false;
                                 c.flags.forEach(flag => {
                                     if(flag == noninteractionflag.value){
-                                        console.log("noninteractionflag found");
+                                        //console.log("noninteractionflag found");
                                         nonInteractionFlagIsPresent = true;
                                     }
                                 });
 
                                 if(!nonInteractionFlagIsPresent){
-                                    console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
+                                    //console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
                                 }
                             });
                         }
@@ -146,18 +165,70 @@ async function main(){
                     break;
                 
                 case "CLEAN-CACHE":
-                    if(manager == null){
-
-                    }else{
+                    if(manager != null){
                         /** Whats the plan here?
                          * Check if it is a flag in install - TODO tomorrow
-                         * 
-                         * 
                          */
+
+                        // If isinstallFlag - we check if flag is present, can be a higher order function really.
+                        if(manager.cleanCacheIsInstallFlag){
+                            let installFlag = manager.installOptionFlags.find(flag => flag.type == "CLEAN-CACHE");
+                            if(installFlag != undefined){
+                                let found = false;
+                                bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach(c => {
+                                    if(c.arguments.find(arg => arg==installFlag.value) != undefined){
+                                        console.log("clean cache flag found");
+                                        found = true;
+                                    }
+                                })
+
+                                if(!found){
+                                    "No CLEAN CACHE FLAG FOUND";
+                                }
+                            }
+                        }else{
+                            // Check that there is an appropriate install command (one that comes before in the same layer);
+                            bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach(ic => {
+                                //Found a clean option
+                                
+                                // Find an install command that came before it.
+                                // If there is no clean cache command that adheres to the condition this means that there is just none at all.
+                                let hasCleanCacheCommand = false;
+                                bashManagerCommands.filter(cc => ic.layer == cc.layer && ic.command == cc.command && cc.option == manager.cleanCacheOption[0])
+                                .forEach(x => {
+                                    if(ic.source.isBefore(x.source)){
+                                        hasCleanCacheCommand = true;
+                                    }
+                                });
+
+                                if(!hasCleanCacheCommand){
+                                    console.log(dirent.name);
+                                    console.log("No Clean cache command found for: " + manager.command);
+                                }
+                            });
+                        }
                     }
                     break;
 
                 case "NO-RECOMMENDS":
+                    if(manager != null){
+                        //console.log("Checking for no-recommends");
+                        let norecommendsflag = manager.installOptionFlags.find(flag => flag.type == "NO-RECOMMENDS");
+                        if(norecommendsflag != undefined){
+                            let found = false;
+                            bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach( c => {
+                                if(c.arguments.find(arg => arg == norecommendsflag.value) != undefined){
+                                    //console.log("Recommends found");
+                                    found = true;
+                                }
+                            });
+
+                            if(!found){
+                                //console.log("NO RECOMMENDS");
+                            }
+                        }
+
+                    }
                     break;
                 
                 default:
@@ -171,7 +242,7 @@ async function main(){
 
     }
 
-    stream.close();
+    log.close();
 
     // packageManagers.forEach(x => {
     //     let cmd = x.command;

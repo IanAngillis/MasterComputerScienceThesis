@@ -7,7 +7,7 @@ export class BashManagerCommand extends ding.nodeType.DockerOpsNode{
     flags: string[];
     hasInstallOption: boolean;
     arguments: string[];
-    source: ding.nodeType.DockerOpsNode;
+    source: ding.nodeType.DockerOpsNodeType;
     versionSplitter: string; 
 }
 
