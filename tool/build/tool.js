@@ -133,13 +133,24 @@ function createLogName() {
 function main() {
     var e_2, _a;
     return __awaiter(this, void 0, void 0, function () {
-        var stream, packageManagers, delimiter, folder, dir, _loop_1, dir_2, dir_2_1, e_2_1;
+        var log, packageManagers, delimiter, folder, dir, _loop_1, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    stream = fs.createWriteStream("./logs/" + createLogName(), { flags: 'a' });
+                    log = fs.createWriteStream("./logs/" + createLogName(), { flags: 'a' });
                     packageManagers = [];
                     delimiter = " ";
+                    fs.readdir("./reports", function (err, files) {
+                        if (err)
+                            throw err;
+                        for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
+                            var file = files_1[_i];
+                            fs.unlink("./reports/" + file, function (err) {
+                                if (err)
+                                    throw err;
+                            });
+                        }
+                    });
                     folder = "./../data/dockerfiles/";
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
@@ -151,11 +162,12 @@ function main() {
                 case 2:
                     _b.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
-                        var dirent, ast, nodes, bashManagerCommands, text;
+                        var dirent, fileReport, ast, nodes, bashManagerCommands, text;
                         return __generator(this, function (_c) {
                             switch (_c.label) {
                                 case 0:
                                     dirent = dir_2_1.value;
+                                    fileReport = "Report for: " + dirent.name + "\n";
                                     return [4, ding.dockerfileParser.parseDocker(folder + dirent.name)];
                                 case 1:
                                     ast = _c.sent();
@@ -188,8 +200,9 @@ function main() {
                                         });
                                     });
                                     text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
-                                    stream.write(text + "\n");
+                                    log.write(text + "\n");
                                     rules_1.allRules.forEach(function (rule) {
+                                        fileReport += "Checking rule " + rule.code + " -- " + rule.message + ":\n";
                                         var manager = packageManagers.find(function (pm) { return pm.command == rule.detection.manager; });
                                         switch (rule.detection.type) {
                                             case "VERSION-PINNING":
@@ -201,7 +214,8 @@ function main() {
                                                         var requiresVersionPinning = false;
                                                         c.arguments.forEach(function (arg) {
                                                             if (arg.search(manager.packageVersionFormatSplitter) == -1) {
-                                                                stream.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
+                                                                log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
+                                                                fileReport += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                                 requiresVersionPinning = true;
                                                             }
                                                             else {
@@ -222,6 +236,7 @@ function main() {
                                                                 }
                                                             });
                                                             if (!nonInteractionFlagIsPresent) {
+                                                                fileReport += "\tVOILATION DETECTED: " + noninteractionflag_1.value + " missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                             }
                                                         });
                                                     }
@@ -232,16 +247,14 @@ function main() {
                                                     if (manager.cleanCacheIsInstallFlag) {
                                                         var installFlag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "CLEAN-CACHE"; });
                                                         if (installFlag_1 != undefined) {
-                                                            var found_1 = false;
+                                                            var found = false;
                                                             bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                                 if (c.arguments.find(function (arg) { return arg == installFlag_1.value; }) != undefined) {
-                                                                    console.log("clean cache flag found");
-                                                                    found_1 = true;
+                                                                }
+                                                                else {
+                                                                    fileReport += "\tVOILATION DETECTED: " + installFlag_1.value + " missing at position:" + c.position.toString() + " for command " + c.command + "\n";
                                                                 }
                                                             });
-                                                            if (!found_1) {
-                                                                "No CLEAN CACHE FLAG FOUND";
-                                                            }
                                                         }
                                                     }
                                                     else {
@@ -254,8 +267,7 @@ function main() {
                                                                 }
                                                             });
                                                             if (!hasCleanCacheCommand) {
-                                                                console.log(dirent.name);
-                                                                console.log("No Clean cache command found for: " + manager.command);
+                                                                fileReport += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
                                                             }
                                                         });
                                                     }
@@ -265,14 +277,15 @@ function main() {
                                                 if (manager != null) {
                                                     var norecommendsflag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "NO-RECOMMENDS"; });
                                                     if (norecommendsflag_1 != undefined) {
-                                                        var found_2 = false;
+                                                        var found_1 = false;
                                                         bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                             if (c.arguments.find(function (arg) { return arg == norecommendsflag_1.value; }) != undefined) {
-                                                                found_2 = true;
+                                                                found_1 = true;
+                                                            }
+                                                            else {
+                                                                fileReport += "\tVOILATION DETECTED: No " + norecommendsflag_1 + " detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                                             }
                                                         });
-                                                        if (!found_2) {
-                                                        }
                                                     }
                                                 }
                                                 break;
@@ -280,6 +293,7 @@ function main() {
                                                 break;
                                         }
                                     });
+                                    fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
                                     return [2];
                             }
                         });
@@ -312,7 +326,7 @@ function main() {
                     return [7];
                 case 13: return [7];
                 case 14:
-                    stream.close();
+                    log.close();
                     return [2];
             }
         });

@@ -71,10 +71,12 @@ async function main(){
     //For loops in for loops - we can improve this on some options, can't we?
     const dir = await fs.promises.opendir(folder)
     for await (const dirent of dir) {
+        let fileReport: string = "Report for: " + dirent.name + "\n";
         let ast = await ding.dockerfileParser.parseDocker(folder + dirent.name);
         let nodes = ast.find({type:ding.nodeType.BashCommand});
         //console.log(nodes.length + " BashCommands found");
 
+        // Create Bashamangercommands - intermediary representation
         let bashManagerCommands: BashManagerCommand[] = [];
 
         nodes.forEach((node) => {
@@ -111,12 +113,13 @@ async function main(){
             });
         });
 
-
+        // Apply rules
         let text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
         log.write(text + "\n");
         //console.log(text);
 
         RULES.forEach(rule => {
+            fileReport += "Checking rule " + rule.code + " -- " + rule.message +":\n";
             //For now assume package manager smells
             //TODO Check if manager exists - if not, we can move away from the package manager smells and go to the other smells
             let manager = packageManagers.find(pm => pm.command == rule.detection.manager);
@@ -131,6 +134,7 @@ async function main(){
                                 if(arg.search(manager.packageVersionFormatSplitter) == -1){
                                     //console.log("no pinned version found");
                                     log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
+                                    fileReport += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                     requiresVersionPinning = true;
                                 }else {
                                     //console.log("pinned version found");
@@ -157,6 +161,7 @@ async function main(){
                                 });
 
                                 if(!nonInteractionFlagIsPresent){
+                                    fileReport += "\tVOILATION DETECTED: " + noninteractionflag.value + " missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                     //console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
                                 }
                             });
@@ -177,14 +182,11 @@ async function main(){
                                 let found = false;
                                 bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach(c => {
                                     if(c.arguments.find(arg => arg==installFlag.value) != undefined){
-                                        console.log("clean cache flag found");
-                                        found = true;
+                                        //console.log("clean cache flag found");
+                                    }else{
+                                        fileReport += "\tVOILATION DETECTED: " + installFlag.value + " missing at position:" + c.position.toString() + " for command " + c.command +  "\n";
                                     }
                                 })
-
-                                if(!found){
-                                    "No CLEAN CACHE FLAG FOUND";
-                                }
                             }
                         }else{
                             // Check that there is an appropriate install command (one that comes before in the same layer);
@@ -202,8 +204,11 @@ async function main(){
                                 });
 
                                 if(!hasCleanCacheCommand){
-                                    console.log(dirent.name);
-                                    console.log("No Clean cache command found for: " + manager.command);
+                                    //console.log(dirent.name);
+                                    //console.log("No Clean cache command found for: " + manager.command);
+                                    fileReport += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
+
+                                    
                                 }
                             });
                         }
@@ -220,14 +225,11 @@ async function main(){
                                 if(c.arguments.find(arg => arg == norecommendsflag.value) != undefined){
                                     //console.log("Recommends found");
                                     found = true;
+                                } else {
+                                    fileReport += "\tVOILATION DETECTED: No " + norecommendsflag + " detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                 }
                             });
-
-                            if(!found){
-                                //console.log("NO RECOMMENDS");
-                            }
                         }
-
                     }
                     break;
                 
@@ -237,8 +239,7 @@ async function main(){
             }     
         });
 
-        
-        // fs.writeFileSync(dirent.name + ".txt", text);
+        fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
 
     }
 

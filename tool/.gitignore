@@ -3,4 +3,4 @@ coverage
 .vscode/
 build
 logs
-results
+reports
