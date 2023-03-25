@@ -123,10 +123,10 @@ export class PrettyPrinter extends Printer {
 }
 
 export function print(node: DockerOpsNodeType) {
-  console.log("in print");
+  //console.log("in print");
   let res =  new PrettyPrinter(node).print();
-  console.log("printing result");
-  console.log(res);
-  console.log("Done printing result");
+  //console.log("printing result");
+  //console.log(res);
+  //console.log("Done printing result");
   return res;
 }

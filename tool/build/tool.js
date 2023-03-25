@@ -182,7 +182,7 @@ function main() {
                                                 bashManagerCommand_1.absolutePath = node.absolutePath;
                                                 bashManagerCommand_1.setPosition(node.position);
                                                 bashManagerCommand_1.source = node;
-                                                var commands = splitWithoutEmptyString(node.toString(), delimiter);
+                                                var commands = splitWithoutEmptyString(node.toString(true), delimiter);
                                                 bashManagerCommand_1.versionSplitter = manager.packageVersionFormatSplitter;
                                                 bashManagerCommand_1.command = manager.command;
                                                 bashManagerCommand_1.option = commands.filter(function (w) { return !w.startsWith("-") && w != bashManagerCommand_1.command; })[0];
@@ -236,7 +236,7 @@ function main() {
                                                                 }
                                                             });
                                                             if (!nonInteractionFlagIsPresent) {
-                                                                fileReport += "\tVOILATION DETECTED: " + noninteractionflag_1.value + " missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
+                                                                fileReport += "\tVOILATION DETECTED: " + noninteractionflag_1.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                             }
                                                         });
                                                     }
@@ -249,10 +249,10 @@ function main() {
                                                         if (installFlag_1 != undefined) {
                                                             var found = false;
                                                             bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
-                                                                if (c.arguments.find(function (arg) { return arg == installFlag_1.value; }) != undefined) {
+                                                                if (c.flags.find(function (flag) { return flag == installFlag_1.value; }) != undefined) {
                                                                 }
                                                                 else {
-                                                                    fileReport += "\tVOILATION DETECTED: " + installFlag_1.value + " missing at position:" + c.position.toString() + " for command " + c.command + "\n";
+                                                                    fileReport += "\tVOILATION DETECTED: " + installFlag_1.value + " flag missing at position:" + c.position.toString() + " for command " + c.command + "\n";
                                                                 }
                                                             });
                                                         }
@@ -283,7 +283,8 @@ function main() {
                                                                 found_1 = true;
                                                             }
                                                             else {
-                                                                fileReport += "\tVOILATION DETECTED: No " + norecommendsflag_1 + " detected for " + manager.command + " command at " + c.position.toString() + "\n";
+                                                                console.log("found NO-RECOMMENDS issue");
+                                                                fileReport += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                                             }
                                                         });
                                                     }

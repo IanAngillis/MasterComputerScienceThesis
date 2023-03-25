@@ -37,6 +37,8 @@ function createLogName(){
   //        - Ideas for detecting, using the layers!
   //    - Do file analysis
   //    - Create detailed report for smells!
+  //    - Keep track of amount of smells, amount of amount of smells etc in a proper log class?
+  //    - Definitely need to split this up in more functions The package analyzer can be a class of its own - not sure yet what to do about repairing
 async function main(){
     let log : fs.WriteStream = fs.createWriteStream("./logs/" + createLogName(), {flags: 'a'});
     let packageManagers: PackageManager[] = [];
@@ -89,7 +91,8 @@ async function main(){
                     bashManagerCommand.setPosition(node.position);
                     bashManagerCommand.source = node;
 
-                    let commands: string[] = splitWithoutEmptyString(node.toString(), delimiter);
+                    let commands: string[] = splitWithoutEmptyString(node.toString(true), delimiter);
+
                     
                     bashManagerCommand.versionSplitter = manager.packageVersionFormatSplitter;
                     bashManagerCommand.command = manager.command;
@@ -103,6 +106,7 @@ async function main(){
                                             w != bashManagerCommand.option && 
                                             !w.startsWith("-"))
                                             .forEach(w => {
+                                                
                                                 //let bashManagerArg = new BashManagerArgs();
                                                 //bashManagerArg.argument = w;
                                                 bashManagerCommand.arguments.push(w);
@@ -130,6 +134,9 @@ async function main(){
                     }else{
                         bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach(c => {
                             let requiresVersionPinning: boolean = false;
+                            // if(dirent.name == "1c1994e05f61bfab226254e9b510e97547e5d148.Dockerfile"){
+                            //     console.log(c.arguments);
+                            // }
                             c.arguments.forEach(arg => {
                                 if(arg.search(manager.packageVersionFormatSplitter) == -1){
                                     //console.log("no pinned version found");
@@ -161,7 +168,7 @@ async function main(){
                                 });
 
                                 if(!nonInteractionFlagIsPresent){
-                                    fileReport += "\tVOILATION DETECTED: " + noninteractionflag.value + " missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
+                                    fileReport += "\tVOILATION DETECTED: " + noninteractionflag.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                     //console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
                                 }
                             });
@@ -181,10 +188,11 @@ async function main(){
                             if(installFlag != undefined){
                                 let found = false;
                                 bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach(c => {
-                                    if(c.arguments.find(arg => arg==installFlag.value) != undefined){
+                                    
+                                    if(c.flags.find(flag => flag == installFlag.value) != undefined){
                                         //console.log("clean cache flag found");
                                     }else{
-                                        fileReport += "\tVOILATION DETECTED: " + installFlag.value + " missing at position:" + c.position.toString() + " for command " + c.command +  "\n";
+                                        fileReport += "\tVOILATION DETECTED: " + installFlag.value + " flag missing at position:" + c.position.toString() + " for command " + c.command +  "\n";
                                     }
                                 })
                             }
@@ -226,7 +234,8 @@ async function main(){
                                     //console.log("Recommends found");
                                     found = true;
                                 } else {
-                                    fileReport += "\tVOILATION DETECTED: No " + norecommendsflag + " detected for " + manager.command + " command at " + c.position.toString() + "\n";
+                                    console.log("found NO-RECOMMENDS issue");
+                                    fileReport += "\tVOILATION DETECTED: No " + norecommendsflag.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                 }
                             });
                         }
