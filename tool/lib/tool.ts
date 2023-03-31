@@ -5,11 +5,17 @@ import managers from "./json/managers.json";
 import {PackageManager} from "./models/package-manager";
 import {BashManagerCommand, BashManagerArgs} from './models/tool-types'
 import {allRules as RULES} from './rules';
+import { Rule } from './models/rule.js';
+
+//Defining constants
+
+const delimiter: string = " ";
 
 function splitWithoutEmptyString(text: string, delimiter: string): string[] {
     return text.replace(/\r?\n/g, delimiter).replace(/\\/g, delimiter).split(delimiter).filter(w => w != "");
 }
 
+// TODO remove later?
 async function loop(path) {
     const dir = await fs.promises.opendir(path)
     for await (const dirent of dir) {
@@ -30,6 +36,51 @@ function createLogName(){
     return year.toString() + month.toString() + day.toString() + hour.toString() + minute.toString() + seconds.toString() + "logs.txt";
 }
 
+/**
+ * Procedure that convers a node, given a specific manager, into a BashManagerCommand that contains all the information required.
+ * @param node 
+ * @param manager 
+ * @returns 
+ */
+function bashManagerCommandBuilder(node: ding.nodeType.DockerOpsNodeType, manager: PackageManager): BashManagerCommand {
+    let bashManagerCommand = new BashManagerCommand();
+    bashManagerCommand.layer = node.layer;
+    bashManagerCommand.absolutePath = node.absolutePath;
+    bashManagerCommand.setPosition(node.position);
+    bashManagerCommand.source = node;
+
+    let commands: string[] = splitWithoutEmptyString(node.toString(true), delimiter);
+
+    
+    bashManagerCommand.versionSplitter = manager.packageVersionFormatSplitter;
+    bashManagerCommand.command = manager.command;
+    bashManagerCommand.option = commands.filter(w => !w.startsWith("-") && w != bashManagerCommand.command)[0];
+    bashManagerCommand.hasInstallOption = (bashManagerCommand.option == manager.installOption[0]);
+    bashManagerCommand.flags = commands.filter(w => w.startsWith("-"));
+    bashManagerCommand.arguments= [];
+    
+    // Initialize arguments
+    commands.filter(w =>    w != bashManagerCommand.command && 
+                            w != bashManagerCommand.option && 
+                            !w.startsWith("-"))
+                            .forEach(w => {
+                                
+                                //let bashManagerArg = new BashManagerArgs();
+                                //bashManagerArg.argument = w;
+                                bashManagerCommand.arguments.push(w);
+                            });
+    return bashManagerCommand;
+}
+
+function checkIfFlagIsPresent(bashManagerCommands: BashManagerCommand[], 
+    rule: Rule,
+    manager: PackageManager,
+    flag: { value: string, type?:""}
+
+    ): boolean{
+
+}
+
   // TODO 
   //    - abstract into a module? 
   //    - Manually select and verify some files (ground truth dataset is nice, I guess)
@@ -43,8 +94,6 @@ async function main(){
     let log : fs.WriteStream = fs.createWriteStream("./logs/" + createLogName(), {flags: 'a'});
     let packageManagers: PackageManager[] = [];
     // can be in a config object
-    let delimiter: string = " ";
-
     //delete reports (for now, don't do this in end product)
     fs.readdir("./reports", (err, files) => {
         if (err) throw err;
@@ -85,34 +134,7 @@ async function main(){
             packageManagers.forEach((manager) => {
                 let foundNode = node.find({type: ding.nodeType.BashLiteral, value: manager.command});
                 if(foundNode.length > 0){
-                    let bashManagerCommand = new BashManagerCommand();
-                    bashManagerCommand.layer = node.layer;
-                    bashManagerCommand.absolutePath = node.absolutePath;
-                    bashManagerCommand.setPosition(node.position);
-                    bashManagerCommand.source = node;
-
-                    let commands: string[] = splitWithoutEmptyString(node.toString(true), delimiter);
-
-                    
-                    bashManagerCommand.versionSplitter = manager.packageVersionFormatSplitter;
-                    bashManagerCommand.command = manager.command;
-                    bashManagerCommand.option = commands.filter(w => !w.startsWith("-") && w != bashManagerCommand.command)[0];
-                    bashManagerCommand.hasInstallOption = (bashManagerCommand.option == manager.installOption[0]);
-                    bashManagerCommand.flags = commands.filter(w => w.startsWith("-"));
-                    bashManagerCommand.arguments= [];
-                    
-                    // Initialize arguments
-                    commands.filter(w =>    w != bashManagerCommand.command && 
-                                            w != bashManagerCommand.option && 
-                                            !w.startsWith("-"))
-                                            .forEach(w => {
-                                                
-                                                //let bashManagerArg = new BashManagerArgs();
-                                                //bashManagerArg.argument = w;
-                                                bashManagerCommand.arguments.push(w);
-                                            });
-                    
-                    bashManagerCommands.push(bashManagerCommand)
+                    bashManagerCommands.push(bashManagerCommandBuilder(node, manager));
                 }
             });
         });
@@ -126,7 +148,7 @@ async function main(){
             fileReport += "Checking rule " + rule.code + " -- " + rule.message +":\n";
             //For now assume package manager smells
             //TODO Check if manager exists - if not, we can move away from the package manager smells and go to the other smells
-            let manager = packageManagers.find(pm => pm.command == rule.detection.manager);
+            let manager: PackageManager = packageManagers.find(pm => pm.command == rule.detection.manager);
             switch(rule.detection.type){
                 case "VERSION-PINNING":
                     if(manager == null){
@@ -234,7 +256,7 @@ async function main(){
                                     //console.log("Recommends found");
                                     found = true;
                                 } else {
-                                    console.log("found NO-RECOMMENDS issue");
+                                    //console.log("found NO-RECOMMENDS issue");
                                     fileReport += "\tVOILATION DETECTED: No " + norecommendsflag.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                 }
                             });

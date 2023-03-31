@@ -1,0 +1,11 @@
+Idea for analyzing temporary file smell.
+
+Have the commands ordered per layer, every command has info on where it
+taps into the AST. Compare layer number and position to get order.
+
+List of lists - list of commands in earliest layer in earliest slot etc ...
+
+Go through list of lists - keep track of files in state. (how files
+downloaded with grep etc...?)
+
+

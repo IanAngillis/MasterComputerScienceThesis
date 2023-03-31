@@ -74,6 +74,7 @@ var fs = __importStar(require("fs"));
 var managers_json_1 = __importDefault(require("./json/managers.json"));
 var tool_types_1 = require("./models/tool-types");
 var rules_1 = require("./rules");
+var delimiter = " ";
 function splitWithoutEmptyString(text, delimiter) {
     return text.replace(/\r?\n/g, delimiter).replace(/\\/g, delimiter).split(delimiter).filter(function (w) { return w != ""; });
 }
@@ -130,16 +131,36 @@ function createLogName() {
     var seconds = date.getSeconds();
     return year.toString() + month.toString() + day.toString() + hour.toString() + minute.toString() + seconds.toString() + "logs.txt";
 }
+function bashManagerCommandBuilder(node, manager) {
+    var bashManagerCommand = new tool_types_1.BashManagerCommand();
+    bashManagerCommand.layer = node.layer;
+    bashManagerCommand.absolutePath = node.absolutePath;
+    bashManagerCommand.setPosition(node.position);
+    bashManagerCommand.source = node;
+    var commands = splitWithoutEmptyString(node.toString(true), delimiter);
+    bashManagerCommand.versionSplitter = manager.packageVersionFormatSplitter;
+    bashManagerCommand.command = manager.command;
+    bashManagerCommand.option = commands.filter(function (w) { return !w.startsWith("-") && w != bashManagerCommand.command; })[0];
+    bashManagerCommand.hasInstallOption = (bashManagerCommand.option == manager.installOption[0]);
+    bashManagerCommand.flags = commands.filter(function (w) { return w.startsWith("-"); });
+    bashManagerCommand.arguments = [];
+    commands.filter(function (w) { return w != bashManagerCommand.command &&
+        w != bashManagerCommand.option &&
+        !w.startsWith("-"); })
+        .forEach(function (w) {
+        bashManagerCommand.arguments.push(w);
+    });
+    return bashManagerCommand;
+}
 function main() {
     var e_2, _a;
     return __awaiter(this, void 0, void 0, function () {
-        var log, packageManagers, delimiter, folder, dir, _loop_1, dir_2, dir_2_1, e_2_1;
+        var log, packageManagers, folder, dir, _loop_1, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     log = fs.createWriteStream("./logs/" + createLogName(), { flags: 'a' });
                     packageManagers = [];
-                    delimiter = " ";
                     fs.readdir("./reports", function (err, files) {
                         if (err)
                             throw err;
@@ -177,25 +198,7 @@ function main() {
                                         packageManagers.forEach(function (manager) {
                                             var foundNode = node.find({ type: ding.nodeType.BashLiteral, value: manager.command });
                                             if (foundNode.length > 0) {
-                                                var bashManagerCommand_1 = new tool_types_1.BashManagerCommand();
-                                                bashManagerCommand_1.layer = node.layer;
-                                                bashManagerCommand_1.absolutePath = node.absolutePath;
-                                                bashManagerCommand_1.setPosition(node.position);
-                                                bashManagerCommand_1.source = node;
-                                                var commands = splitWithoutEmptyString(node.toString(true), delimiter);
-                                                bashManagerCommand_1.versionSplitter = manager.packageVersionFormatSplitter;
-                                                bashManagerCommand_1.command = manager.command;
-                                                bashManagerCommand_1.option = commands.filter(function (w) { return !w.startsWith("-") && w != bashManagerCommand_1.command; })[0];
-                                                bashManagerCommand_1.hasInstallOption = (bashManagerCommand_1.option == manager.installOption[0]);
-                                                bashManagerCommand_1.flags = commands.filter(function (w) { return w.startsWith("-"); });
-                                                bashManagerCommand_1.arguments = [];
-                                                commands.filter(function (w) { return w != bashManagerCommand_1.command &&
-                                                    w != bashManagerCommand_1.option &&
-                                                    !w.startsWith("-"); })
-                                                    .forEach(function (w) {
-                                                    bashManagerCommand_1.arguments.push(w);
-                                                });
-                                                bashManagerCommands.push(bashManagerCommand_1);
+                                                bashManagerCommands.push(bashManagerCommandBuilder(node, manager));
                                             }
                                         });
                                     });
@@ -283,7 +286,6 @@ function main() {
                                                                 found_1 = true;
                                                             }
                                                             else {
-                                                                console.log("found NO-RECOMMENDS issue");
                                                                 fileReport += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                                             }
                                                         });
