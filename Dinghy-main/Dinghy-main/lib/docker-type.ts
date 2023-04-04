@@ -435,6 +435,46 @@ export abstract class DockerOpsNode {
   }
 
   /**
+   * traverse all children recursively (In a depth-first way)
+   *
+   * @param callback returns false to stop the traverse
+   * @returns false if not everything has been traversed
+   */
+  traverseDF(
+    callback: (node: DockerOpsNodeType) => boolean | void,
+    { includeSelf } = { includeSelf: false },
+    intendation?:string
+  ): boolean {
+    if (includeSelf) {
+      if (callback(this as DockerOpsNodeType) === false) return false;
+    }
+    this.children.sort((a, b) => {
+      if (a.position == undefined) return 0;
+      if (b.position == undefined) return 0;
+      if (a.position.lineStart > b.position.lineStart) return 1;
+      if (a.position.lineStart < b.position.lineStart) return -1;
+      if (a.position.columnStart > b.position.columnStart) return 1;
+      if (a.position.columnStart < b.position.columnStart) return -1;
+      return 0;
+    });
+    //Check for all the children
+    for (let index = 0; index < this.children.length; index++) {
+      const child = this.children[index];
+      if (child == null) continue;
+      if (callback(child) === false) return false;
+      if (child.traverseDF(callback) === false) return false;
+    }
+    //propagate to all the children children
+    // for (let index = 0; index < this.children.length; index++) {
+    //   const child = this.children[index];
+    //   if (child == null) continue;
+      
+    // }
+    // continue
+    return true;
+  }
+
+  /**
    * Replace this by the given node
    * @param node the replacement node
    * @returns this

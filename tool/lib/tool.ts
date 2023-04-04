@@ -50,6 +50,8 @@ function bashManagerCommandBuilder(node: ding.nodeType.DockerOpsNodeType, manage
     bashManagerCommand.source = node;
 
     let commands: string[] = splitWithoutEmptyString(node.toString(true), delimiter);
+    // Remove sudo - is actually a smell and should be detected
+    commands = commands.filter(w => w != "sudo");
 
     
     bashManagerCommand.versionSplitter = manager.packageVersionFormatSplitter;
@@ -70,15 +72,6 @@ function bashManagerCommandBuilder(node: ding.nodeType.DockerOpsNodeType, manage
                                 bashManagerCommand.arguments.push(w);
                             });
     return bashManagerCommand;
-}
-
-function checkIfFlagIsPresent(bashManagerCommands: BashManagerCommand[], 
-    rule: Rule,
-    manager: PackageManager,
-    flag: { value: string, type?:""}
-
-    ): boolean{
-
 }
 
   // TODO 
@@ -125,6 +118,18 @@ async function main(){
         let fileReport: string = "Report for: " + dirent.name + "\n";
         let ast = await ding.dockerfileParser.parseDocker(folder + dirent.name);
         let nodes = ast.find({type:ding.nodeType.BashCommand});
+        let specialNodes = ast.find({type:ding.nodeType.BashScript});
+
+       
+
+
+        // if(specialNodes.length > 0){
+        //     console.log("\n");
+        //     console.log(specialNodes[0].toString());
+        //     console.log(dirent.name);   
+        //     console.log("\n");
+        // }
+
         //console.log(nodes.length + " BashCommands found");
 
         // Create Bashamangercommands - intermediary representation
@@ -139,10 +144,24 @@ async function main(){
             });
         });
 
+        if(dirent.name == "009a89c9164f0d59f86b298486499daabd2cbc3b.Dockerfile"){
+            console.log("*****");
+            console.log(dirent.name);
+            ast.traverseDF(node => {
+                console.log("\n" + node.type);
+                console.log("\n");
+            });
+            console.log("*****");
+        }
+
+
+
         // Apply rules
         let text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
         log.write(text + "\n");
         //console.log(text);
+
+        let set: Set<string> = new Set<string>();
 
         RULES.forEach(rule => {
             fileReport += "Checking rule " + rule.code + " -- " + rule.message +":\n";
@@ -152,7 +171,7 @@ async function main(){
             switch(rule.detection.type){
                 case "VERSION-PINNING":
                     if(manager == null){
-                        console.log("No such manager found");
+                        //console.log("No such manager found");
                     }else{
                         bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach(c => {
                             let requiresVersionPinning: boolean = false;
@@ -161,15 +180,18 @@ async function main(){
                             // }
                             c.arguments.forEach(arg => {
                                 if(arg.search(manager.packageVersionFormatSplitter) == -1){
-                                    //console.log("no pinned version found");
-                                    log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
-                                    fileReport += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
-                                    requiresVersionPinning = true;
+                                    // Check if it is not a requirements.txt file
+                                    if(arg.indexOf(".txt") == -1){
+                                         //We report in case that we apt-install from a link, as we should specify the version. We don't do this when it comes from a file.
+                                         log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
+                                         fileReport += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
+                                         set.add(rule.code);
+                                         requiresVersionPinning = true;
+                                    }
                                 }else {
                                     //console.log("pinned version found");
                                 }
                             });
-
                         });
                     }
                     break;
@@ -190,6 +212,7 @@ async function main(){
                                 });
 
                                 if(!nonInteractionFlagIsPresent){
+                                    set.add(rule.code);
                                     fileReport += "\tVOILATION DETECTED: " + noninteractionflag.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                     //console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
                                 }
@@ -214,6 +237,7 @@ async function main(){
                                     if(c.flags.find(flag => flag == installFlag.value) != undefined){
                                         //console.log("clean cache flag found");
                                     }else{
+                                        set.add(rule.code);
                                         fileReport += "\tVOILATION DETECTED: " + installFlag.value + " flag missing at position:" + c.position.toString() + " for command " + c.command +  "\n";
                                     }
                                 })
@@ -236,6 +260,7 @@ async function main(){
                                 if(!hasCleanCacheCommand){
                                     //console.log(dirent.name);
                                     //console.log("No Clean cache command found for: " + manager.command);
+                                    set.add(rule.code);
                                     fileReport += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
 
                                     
@@ -257,6 +282,7 @@ async function main(){
                                     found = true;
                                 } else {
                                     //console.log("found NO-RECOMMENDS issue");
+                                    set.add(rule.code);
                                     fileReport += "\tVOILATION DETECTED: No " + norecommendsflag.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                 }
                             });
@@ -269,7 +295,9 @@ async function main(){
                     break;
             }     
         });
-
+        //console.log(set);
+        fileReport += "RULE DETECTIONS: ";
+        fileReport += Array.from(set).join(" ");
         fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
 
     }
