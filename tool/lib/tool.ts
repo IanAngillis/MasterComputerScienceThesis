@@ -106,6 +106,7 @@ async function main(){
 
     // Folder which holds the data - should expand to folders eventually
     let folder = "./../data/dockerfiles/";
+    let testFolder = "./../data/testfiles/";
 
     // Create package managers as PackageManager objects
     managers.forEach(pm => {
@@ -144,15 +145,15 @@ async function main(){
             });
         });
 
-        if(dirent.name == "009a89c9164f0d59f86b298486499daabd2cbc3b.Dockerfile"){
-            console.log("*****");
-            console.log(dirent.name);
-            ast.traverseDF(node => {
-                console.log("\n" + node.type);
-                console.log("\n");
-            });
-            console.log("*****");
-        }
+        // if(dirent.name == "009a89c9164f0d59f86b298486499daabd2cbc3b.Dockerfile"){
+        //     console.log("*****");
+        //     console.log(dirent.name);
+        //     ast.traverseDF(node => {
+        //         console.log("\n" + node.type);
+        //         console.log("\n");
+        //     });
+        //     console.log("*****");
+        // }
 
 
 
