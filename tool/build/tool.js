@@ -71,6 +71,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var ding = __importStar(require("./../../Dinghy-main/Dinghy-main/build/index.js"));
 var fs = __importStar(require("fs"));
+var analyzer_1 = require("./models/analyzer");
 var managers_json_1 = __importDefault(require("./json/managers.json"));
 var tool_types_1 = require("./models/tool-types");
 var rules_1 = require("./rules");
@@ -163,7 +164,7 @@ function bashManagerCommandBuilder(node, manager) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var log, packageManagers, folder, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var log, packageManagers, folder, testFolder, analyzer, globalState, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -181,17 +182,20 @@ function main() {
                         }
                     });
                     folder = "./../data/dockerfiles/";
+                    testFolder = "./../data/testfiles/";
+                    analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
                     });
-                    return [4, fs.promises.opendir(folder)];
+                    globalState = [];
+                    return [4, fs.promises.opendir(testFolder)];
                 case 1:
                     dir = _e.sent();
                     _e.label = 2;
                 case 2:
                     _e.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
-                        var dirent, fileReport, ast, nodes, specialNodes, bashManagerCommands, text, set;
+                        var dirent, fileReport, ast, nodes, bashManagerCommands, text, set;
                         return __generator(this, function (_f) {
                             switch (_f.label) {
                                 case 0:
@@ -201,13 +205,14 @@ function main() {
                                 case 1:
                                     _f.trys.push([1, , 3, 4]);
                                     dirent = _c;
+                                    console.log(dirent.name);
                                     fileReport = "Report for: " + dirent.name + "\n";
-                                    return [4, ding.dockerfileParser.parseDocker(folder + dirent.name)];
+                                    return [4, ding.dockerfileParser.parseDocker(testFolder + dirent.name)];
                                 case 2:
                                     ast = _f.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
-                                    specialNodes = ast.find({ type: ding.nodeType.BashScript });
                                     bashManagerCommands = [];
+                                    analyzer.temporaryFileAnalysis(ast);
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
                                             var foundNode = node.find({ type: ding.nodeType.BashLiteral, value: manager.command });
@@ -216,15 +221,6 @@ function main() {
                                             }
                                         });
                                     });
-                                    if (dirent.name == "009a89c9164f0d59f86b298486499daabd2cbc3b.Dockerfile") {
-                                        console.log("*****");
-                                        console.log(dirent.name);
-                                        ast.traverseDF(function (node) {
-                                            console.log("\n" + node.type);
-                                            console.log("\n");
-                                        });
-                                        console.log("*****");
-                                    }
                                     text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
                                     log.write(text + "\n");
                                     set = new Set();

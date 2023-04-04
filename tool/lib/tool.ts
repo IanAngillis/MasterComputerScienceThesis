@@ -1,6 +1,7 @@
 // Just doing import * from /path/ gives error that the file we are importing does not export a default or does not have a default export. (it has multiple in our case)
 import * as ding from './../../Dinghy-main/Dinghy-main/build/index.js';
 import * as fs from 'fs';
+import {Analyzer} from "./models/analyzer";
 import managers from "./json/managers.json";
 import {PackageManager} from "./models/package-manager";
 import {BashManagerCommand, BashManagerArgs} from './models/tool-types'
@@ -108,33 +109,70 @@ async function main(){
     let folder = "./../data/dockerfiles/";
     let testFolder = "./../data/testfiles/";
 
+    let analyzer: Analyzer = new Analyzer();
+
     // Create package managers as PackageManager objects
     managers.forEach(pm => {
         packageManagers.push(pm as PackageManager)
     })
 
+    // global state for file analysis.
+    let globalState: {path: string, extracted?:boolean, deleted?:boolean, layer_imported?:number, layer_deleted?:number}[] = [];
+
     //For loops in for loops - we can improve this on some options, can't we?
-    const dir = await fs.promises.opendir(folder)
+    const dir = await fs.promises.opendir(testFolder);
+
     for await (const dirent of dir) {
+        console.log(dirent.name);
         let fileReport: string = "Report for: " + dirent.name + "\n";
-        let ast = await ding.dockerfileParser.parseDocker(folder + dirent.name);
-        let nodes = ast.find({type:ding.nodeType.BashCommand});
-        let specialNodes = ast.find({type:ding.nodeType.BashScript});
-
-       
-
-
-        // if(specialNodes.length > 0){
-        //     console.log("\n");
-        //     console.log(specialNodes[0].toString());
-        //     console.log(dirent.name);   
-        //     console.log("\n");
-        // }
-
-        //console.log(nodes.length + " BashCommands found");
+        let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(testFolder + dirent.name);
+        let nodes: ding.nodeType.DockerOpsNodeType[] = ast.find({type:ding.nodeType.BashCommand});
 
         // Create Bashamangercommands - intermediary representation
         let bashManagerCommands: BashManagerCommand[] = [];
+        // if(dirent.name = "test.Dockerfile"){
+        //     console.log(ast.children);
+        // }
+
+        analyzer.temporaryFileAnalysis(ast);
+
+        //console.log(ast.children);
+        // ast.children.forEach(dockerInstruction => {
+        //     //The children of the original Dockerfile represent the original layers
+        //     switch (dockerInstruction.type){
+        //         case 'DOCKER-COPY':
+        //             //console.log("DOCKER-COPY");
+        //             console.log(dockerInstruction.toString());
+        //             console.log(dockerInstruction.children);
+        //             break;
+        //         case 'DOCKER-ADD':
+        //             //console.log("DOCKER-ADD");
+        //             let sources: ding.nodeType.DockerAddSource[] = dockerInstruction.find({type:ding.nodeType.DockerAddSource}) as ding.nodeType.DockerAddSource[];
+        //             let target: ding.nodeType.DockerAddTarget = dockerInstruction.children[dockerInstruction.children.length - 1] as ding.nodeType.DockerAddTarget;
+
+        //             // Multiple things are copied to a directory
+        //             if(sources.length > 1){
+        //                 //console.log("many to 1");
+        //             } else {
+        //                 // One thing is copied to directory or renamed - 
+        //                 //console.log("1 to 1");
+        //             }
+
+        //             // console.log("sources");
+        //             // console.log(sources[0].toString());
+        //             //console.log("targets");
+        //             // console.log(target);
+        //             // console.log(dockerInstruction.toString());
+        //             // console.log(dockerInstruction.children);
+        //             break;
+        //         case 'DOCKER-RUN':
+        //             // console.log("DOCKER-RUN");
+        //             // break;
+        //         default:
+        //             //console.log("Type not applicable");
+        //     }
+        // });
+
 
         nodes.forEach((node) => {
             packageManagers.forEach((manager) => {
@@ -144,18 +182,6 @@ async function main(){
                 }
             });
         });
-
-        // if(dirent.name == "009a89c9164f0d59f86b298486499daabd2cbc3b.Dockerfile"){
-        //     console.log("*****");
-        //     console.log(dirent.name);
-        //     ast.traverseDF(node => {
-        //         console.log("\n" + node.type);
-        //         console.log("\n");
-        //     });
-        //     console.log("*****");
-        // }
-
-
 
         // Apply rules
         let text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
