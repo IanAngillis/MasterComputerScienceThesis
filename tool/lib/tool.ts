@@ -100,9 +100,6 @@ async function main(){
       });
       
 
-
-  
-
     //console.log(splitWithoutEmptyString("rm -rf /var/list/*", " "));
 
     // Folder which holds the data - should expand to folders eventually
@@ -127,12 +124,21 @@ async function main(){
         let fileReport: string = "Report for: " + dirent.name + "\n";
         let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(testFolder + dirent.name);
         let nodes: ding.nodeType.DockerOpsNodeType[] = ast.find({type:ding.nodeType.BashCommand});
+        
+        // if(dirent.name == "f955dd09f5e25c76e407b2ae7ae7dbd182a1a893.Dockerfile"){
+        //     nodes.forEach(node => {
+        //         console.log(node.toString());
+        //     })
+        // }
+
+
+        // let deleteNodes = ast.find({type:ding.nodeType.BashCommand, value:"rm"});
+        // deleteNodes.forEach(node => {
+        //     console.log(node.parent.parent.parent.toString());
+        // })
 
         // Create Bashamangercommands - intermediary representation
         let bashManagerCommands: BashManagerCommand[] = [];
-        // if(dirent.name = "test.Dockerfile"){
-        //     console.log(ast.children);
-        // }
 
         analyzer.temporaryFileAnalysis(ast);
 
@@ -172,6 +178,9 @@ async function main(){
         //             //console.log("Type not applicable");
         //     }
         // });
+
+
+        
 
 
         nodes.forEach((node) => {

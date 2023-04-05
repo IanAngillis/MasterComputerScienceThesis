@@ -1,6 +1,2 @@
-let object = {
-    "option1" : 1,
-    "option2" : 2
-}
-
-console.log(object["option1"]);
+let url = 'https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz';
+console.log(url.split("/"));

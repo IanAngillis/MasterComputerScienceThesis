@@ -7,3 +7,7 @@ Discussion points:
 			to do the proper installing, could be generalized.). 
 			Thougt: Enrich the AST with the kind of application that is run.
 	- Background division was ok - can start writing
+
+
+Program:
+	- Does it matter where the extracted file ends up? It's not like when something is extracted that it's going to be a temporary file?
