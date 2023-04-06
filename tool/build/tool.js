@@ -164,10 +164,11 @@ function bashManagerCommandBuilder(node, manager) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var log, packageManagers, folder, testFolder, analyzer, globalState, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, log, packageManagers, folder, testFolder, currentFolder, analyzer, globalState, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
+                    sum = 0;
                     log = fs.createWriteStream("./logs/" + createLogName(), { flags: 'a' });
                     packageManagers = [];
                     fs.readdir("./reports", function (err, files) {
@@ -183,12 +184,13 @@ function main() {
                     });
                     folder = "./../data/dockerfiles/";
                     testFolder = "./../data/testfiles/";
+                    currentFolder = testFolder;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
                     });
                     globalState = [];
-                    return [4, fs.promises.opendir(testFolder)];
+                    return [4, fs.promises.opendir(currentFolder)];
                 case 1:
                     dir = _e.sent();
                     _e.label = 2;
@@ -207,12 +209,12 @@ function main() {
                                     dirent = _c;
                                     console.log(dirent.name);
                                     fileReport = "Report for: " + dirent.name + "\n";
-                                    return [4, ding.dockerfileParser.parseDocker(testFolder + dirent.name)];
+                                    return [4, ding.dockerfileParser.parseDocker(currentFolder + dirent.name)];
                                 case 2:
                                     ast = _f.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
                                     bashManagerCommands = [];
-                                    analyzer.temporaryFileAnalysis(ast);
+                                    sum += analyzer.temporaryFileAnalysis(ast);
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
                                             var foundNode = node.find({ type: ding.nodeType.BashLiteral, value: manager.command });
@@ -361,6 +363,7 @@ function main() {
                     return [7];
                 case 13: return [7];
                 case 14:
+                    console.log("SMELL APPEARED:" + sum);
                     log.close();
                     return [2];
             }

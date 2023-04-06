@@ -16,7 +16,7 @@ export class Analyzer {
     temporaryFileAnalysis(ast:ding.nodeType.DockerFile){
         let args: {key:string, value:string, updatedInLayer?:number}[] = [];
         let envs: {key:string, value:string, updatedInLayer?:number}[] = [];
-        let files: {absolutePath: string, file: string, extractedLayer?:number, introducedLayer?:number, deletedLayer?:number}[] = [];
+        let files: {absolutePath: string, file: string, extractedLayer?:number, introducedLayer?:number, deletedLayer?:number, isDirectory?:boolean}[] = [];
 
         /**
          * Procedure that adds a docker ARG to the ARGS.
@@ -109,22 +109,68 @@ export class Analyzer {
         }
 
         function resolveAddStatement(add: ding.nodeType.DockerAdd){
-            //console.log("Not implemented");
-            //console.log("resolving ADD statement");
+            console.log("*** ADD ****");
+            console.log(add.toString());
+            let sources: ding.nodeType.DockerAddSource[] = add.getChildren(ding.nodeType.DockerAddSource);
+            let target: ding.nodeType.DockerAddTarget = add.getChild(ding.nodeType.DockerAddTarget);
+
+            let finalPath: string = "";
+
+
+            if(target.toString().startsWith("./")){
+                finalPath = add.absolutePath + target.toString().slice(2);
+            } else {
+                finalPath = target.toString();
+            }
+
+            // Tinker with the target path as that is not right yet
+            sources.forEach(source => {
+
+                if(!finalPath.includes(source.toString())){
+                    finalPath += source.toString();
+                }
+
+                files.push({
+                    file: source.toString(),
+                    absolutePath: finalPath,
+                    introducedLayer: add.layer
+                });
+            });
         }
 
+        // Tinker with the target path as that one is not right yet.
         function resolveCopyStatement(copy: ding.nodeType.DockerCopy){
-            //console.log("Not implemented");
-            // Do the normal case where we copy individual files to a directory in target and save those
-            // Keep track of files?
-            //console.log(copy);
-            //console.log("resolving COPY statement");
+            let sources: ding.nodeType.DockerCopySource[] = copy.getChildren(ding.nodeType.DockerCopySource);
+            let target: ding.nodeType.DockerCopyTarget = copy.getChild(ding.nodeType.DockerCopyTarget);
+
+            let finalPath: string = "";
+
+
+            if(target.toString().startsWith("./")){
+                finalPath = copy.absolutePath + target.toString().slice(2);
+            } else {
+                finalPath = target.toString();
+            }
+
+            sources.forEach(source => {
+
+                if(!finalPath.includes(source.toString())){
+                    finalPath += source.toString();
+                }
+
+                files.push({
+                    file: source.toString(),
+                    absolutePath: finalPath,
+                    introducedLayer: copy.layer
+                });
+            });
         }
 
-        function resolveWget(wget: string[], layer: number, path: string){
+        function resolveWget(wget: string[], node: ding.nodeType.BashCommand){
             // Clear all the flags
             wget = wget.filter(w => !w.startsWith("-"));
             
+            // Check for directory?
             wget.forEach(arg => {
                 let cleanArg: string = resolveArgsAndEnvsInString(arg).replace(/\"/g, "");
 
@@ -133,22 +179,39 @@ export class Analyzer {
                     let file: string = splitArg[splitArg.length - 1];
                     
                     files.push({
-                        absolutePath: path + file,
+                        absolutePath: node.absolutePath + file,
                         file: file,
-                        introducedLayer: layer,
+                        introducedLayer: node.layer,
                     })
                 }
             });
         }
 
         
-        function resolveCurl(curl: string[], layer: number, path: string){
-            //console.log(curl);
+        function resolveCurl(curl: string[],  node: ding.nodeType.BashCommand){
+            // Clear all the flags
+            curl = curl.filter(w => !w.startsWith("-"));
+
+            //Check for directory?
+            curl.forEach(arg => {
+                let cleanArg: string = resolveArgsAndEnvsInString(arg).replace(/\"/g, "");
+
+                if(cleanArg.startsWith("https") || cleanArg.startsWith("http")){
+                    let splitArg: string[] = cleanArg.split("/");
+                    let file: string = splitArg[splitArg.length - 1];
+
+                    files.push({
+                        absolutePath: node.absolutePath + file,
+                        file: file, 
+                        introducedLayer: node.layer
+                    });
+                }
+            });
         }
 
-        function resolveTar(tar: string[], layer: number, path: string){
+        function resolveTar(tar: string[],  node: ding.nodeType.BashCommand){
             // If no file is present - it may be so that the tar is piped to the curl or wget which writes to stdout. 
-            tar = tar.filter(w => !w.startsWith("-")).filter(w => w != "tar");
+            tar = tar.filter(w => !w.startsWith("-") && w.length > 1).filter(w => w != "tar");
 
             let matchFound: boolean = false;
 
@@ -158,8 +221,7 @@ export class Analyzer {
                     let resolvedFileName = resolveArgsAndEnvsInString(arg.replace(/\"/g, ""));
                     
                     if(resolvedFileName == file.file){
-                        
-                        file.extractedLayer = layer;
+                        file.extractedLayer = node.layer;
                         matchFound = true;
                     }
                 });
@@ -168,12 +230,35 @@ export class Analyzer {
             if(matchFound){
                 //console.log("match found - adjusting ...");
             }else{
-                //console.log("No match found - check for piping?")
+                // Check for piping - current only checks back 1 statement.
+                if(node.parent.parent != undefined && node.parent.parent.type == "BASH-CONDITION-BINARY"){
+                    if(node.parent.parent.children[1].type == 'BASH-CONDITION-BINARY-OP'){
+                        if(node.parent.parent.children[1].toString() == "|"){
+
+                            let lastFile : {
+                                absolutePath: string;
+                                file: string;
+                                extractedLayer?: number;
+                                introducedLayer?: number;
+                                deletedLayer?: number;
+                            } = files[files.length - 1];
+
+                            let command = node.parent.parent.children[0].toString().toString().replace(/\r?\n/g, " ").replace(/\\/g, " ").split(" ").filter(w => w != "").filter(w => w != "sudo").filter(w => !w.startsWith("-"));
+                            command.forEach(arg => {
+                                let resolvedFileName: string = resolveArgsAndEnvsInString(arg.replace(/\"/g, ""));
+
+                                if(resolvedFileName.includes(lastFile.file)){
+                                    lastFile.extractedLayer = node.layer;
+                                }
+                            });
+                        }
+                    }
+                }
             }
         }
 
 
-        function resolveRm(rm: string[], layer: number, path: string) {
+        function resolveRm(rm: string[],  node: ding.nodeType.BashCommand) {
             rm = rm.filter(w => !w.startsWith("-")).filter(w => w != "rm").map(w => w.replace(/\"/g, ""));
 
             let matchFound: boolean = false;
@@ -182,9 +267,11 @@ export class Analyzer {
                 files.forEach(file => {
                     let resolvedFileName = resolveArgsAndEnvsInString(arg);
 
-                    if(resolvedFileName == file.file){
-                        file.deletedLayer = layer;
+                    if(resolvedFileName == file.file && file.absolutePath == node.absolutePath + resolvedFileName){
+                        file.deletedLayer = node.layer;
                         matchFound = true;
+                    } else if(resolvedFileName == file.file && file.absolutePath != node.absolutePath + resolvedFileName) {
+                        console.log("trying to delete a file that does not exist at this location.");
                     }
                 });
             });
@@ -206,17 +293,15 @@ export class Analyzer {
                 
                 switch(splitCommand[0]){
                     case "wget":
-                        resolveWget(splitCommand, command.layer, command.absolutePath);
+                        resolveWget(splitCommand, command);
                         break;
                     case "tar":
-                        resolveTar(splitCommand, command.layer, command.absolutePath);
+                        resolveTar(splitCommand, command);
                     case "curl":
-                        resolveCurl(splitCommand, command.layer, command.absolutePath);
-                        //console.log(splitCommand.filter(w => !w.startsWith("-")));
+                        resolveCurl(splitCommand, command);
                         break;
                     case "rm":
-                        resolveRm(splitCommand, command.layer, command.absolutePath);
-                        //console.log(splitCommand.filter(w => !w.startsWith("-")));
+                        resolveRm(splitCommand, command);
                         break;
                     default:
                         break;
@@ -273,7 +358,7 @@ export class Analyzer {
             console.log(cleanUrl);
             return cleanUrl.startsWith("https") || cleanUrl.startsWith("http");
         }
-
+        let smell: boolean = false;
         /**
          * Procedure that dumps environmental information to the console
          */
@@ -286,10 +371,26 @@ export class Analyzer {
             console.log(envs);
             console.log("files: ");
             console.log(files);
+            files.forEach(file => {
+                if(file.introducedLayer != undefined && file.deletedLayer != undefined && file.introducedLayer != file.deletedLayer){
+                    smell = true;
+                    console.log("TF Smell Detected");
+                }else if (file.introducedLayer != undefined && file.extractedLayer != undefined && file.deletedLayer == undefined){
+                    console.log("WARNING: introduced compressed file which has been extracted but did not delete it");
+                    //smell = true;
+                }
+            })
             console.log("*****");
         }
 
+        // Needs to be enabled to find smells
         infoDump();
+
+        if(smell){
+            return 1;
+        }else {
+            return 0;
+        }
     }
     
 }

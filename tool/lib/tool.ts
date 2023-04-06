@@ -85,6 +85,7 @@ function bashManagerCommandBuilder(node: ding.nodeType.DockerOpsNodeType, manage
   //    - Keep track of amount of smells, amount of amount of smells etc in a proper log class?
   //    - Definitely need to split this up in more functions The package analyzer can be a class of its own - not sure yet what to do about repairing
 async function main(){
+    let sum: number = 0;
     let log : fs.WriteStream = fs.createWriteStream("./logs/" + createLogName(), {flags: 'a'});
     let packageManagers: PackageManager[] = [];
     // can be in a config object
@@ -106,6 +107,9 @@ async function main(){
     let folder = "./../data/dockerfiles/";
     let testFolder = "./../data/testfiles/";
 
+    // Variable that sets folder for program
+    let currentFolder = testFolder;
+
     let analyzer: Analyzer = new Analyzer();
 
     // Create package managers as PackageManager objects
@@ -117,12 +121,12 @@ async function main(){
     let globalState: {path: string, extracted?:boolean, deleted?:boolean, layer_imported?:number, layer_deleted?:number}[] = [];
 
     //For loops in for loops - we can improve this on some options, can't we?
-    const dir = await fs.promises.opendir(testFolder);
+    const dir = await fs.promises.opendir(currentFolder);
 
     for await (const dirent of dir) {
         console.log(dirent.name);
         let fileReport: string = "Report for: " + dirent.name + "\n";
-        let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(testFolder + dirent.name);
+        let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(currentFolder + dirent.name);
         let nodes: ding.nodeType.DockerOpsNodeType[] = ast.find({type:ding.nodeType.BashCommand});
         
         // if(dirent.name == "f955dd09f5e25c76e407b2ae7ae7dbd182a1a893.Dockerfile"){
@@ -140,7 +144,7 @@ async function main(){
         // Create Bashamangercommands - intermediary representation
         let bashManagerCommands: BashManagerCommand[] = [];
 
-        analyzer.temporaryFileAnalysis(ast);
+        sum += analyzer.temporaryFileAnalysis(ast);
 
         //console.log(ast.children);
         // ast.children.forEach(dockerInstruction => {
@@ -331,13 +335,14 @@ async function main(){
                     break;
             }     
         });
-        //console.log(set);
+
         fileReport += "RULE DETECTIONS: ";
         fileReport += Array.from(set).join(" ");
         fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
 
     }
-
+    //console.log(set);
+    console.log("SMELL APPEARED:" + sum);
     log.close();
 
     // packageManagers.forEach(x => {

@@ -28,6 +28,4 @@ ADD requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
-RUN rm -rf nmap-7.60.tar.bz2
-
 CMD ["/bin/bash"]
