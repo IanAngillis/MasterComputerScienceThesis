@@ -13,11 +13,11 @@ export class Analyzer {
      * Procedure that performs a temporary-file smell analysis on the file.
      * @param ast 
      */
-    temporaryFileAnalysis(ast:ding.nodeType.DockerFile){
+    temporaryFileAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>){
         let args: {key:string, value:string, updatedInLayer?:number}[] = [];
         let envs: {key:string, value:string, updatedInLayer?:number}[] = [];
-        let files: {absolutePath: string, file: string, extractedLayer?:number, introducedLayer?:number, deletedLayer?:number, isDirectory?:boolean}[] = [];
-
+        let files: {absolutePath: string, file: string, extractedLayer?:number, introducedLayer?:number, deletedLayer?:number, isDirectory?:boolean, introducedBy: "COPY"|"ADD"|"BUILT-IN"}[] = [];
+        let containerpath = "/";
         /**
          * Procedure that adds a docker ARG to the ARGS.
          * @param arg DockerArg
@@ -109,8 +109,6 @@ export class Analyzer {
         }
 
         function resolveAddStatement(add: ding.nodeType.DockerAdd){
-            console.log("*** ADD ****");
-            console.log(add.toString());
             let sources: ding.nodeType.DockerAddSource[] = add.getChildren(ding.nodeType.DockerAddSource);
             let target: ding.nodeType.DockerAddTarget = add.getChild(ding.nodeType.DockerAddTarget);
 
@@ -133,7 +131,8 @@ export class Analyzer {
                 files.push({
                     file: source.toString(),
                     absolutePath: finalPath,
-                    introducedLayer: add.layer
+                    introducedLayer: add.layer,
+                    introducedBy: "ADD"
                 });
             });
         }
@@ -161,7 +160,8 @@ export class Analyzer {
                 files.push({
                     file: source.toString(),
                     absolutePath: finalPath,
-                    introducedLayer: copy.layer
+                    introducedLayer: copy.layer,
+                    introducedBy: "COPY"
                 });
             });
         }
@@ -182,7 +182,8 @@ export class Analyzer {
                         absolutePath: node.absolutePath + file,
                         file: file,
                         introducedLayer: node.layer,
-                    })
+                        introducedBy: "BUILT-IN"
+                    });
                 }
             });
         }
@@ -203,7 +204,8 @@ export class Analyzer {
                     files.push({
                         absolutePath: node.absolutePath + file,
                         file: file, 
-                        introducedLayer: node.layer
+                        introducedLayer: node.layer,
+                        introducedBy: "BUILT-IN"
                     });
                 }
             });
@@ -283,6 +285,26 @@ export class Analyzer {
             }
         }
 
+        function resolveCd(cd: string[], node: ding.nodeType.BashCommand){
+            cd = cd.filter(w => !w.startsWith("-")).filter(w => w != "cd");
+
+            let dir: string = cd[0];
+
+            if(dir.startsWith("/")){
+                //TODO
+            } else {
+                //TODO
+            }
+
+
+            console.log(cd);
+        }
+
+        function resolveWorkDir(workdir: ding.nodeType.DockerWorkdir){
+            console.log("WORKDIR");
+            console.log(workdir.toString());
+        }
+
         function resolveRunStatement(run: ding.nodeType.DockerRun){
             //Get all the commands - they are in sequential order and loop/branch insensitive
             let commands: ding.nodeType.BashCommand[] = run.find({type:ding.nodeType.BashCommand}) as ding.nodeType.BashCommand[];
@@ -303,6 +325,8 @@ export class Analyzer {
                     case "rm":
                         resolveRm(splitCommand, command);
                         break;
+                    case "cd":
+                        resolveCd(splitCommand, command);
                     default:
                         break;
                 }
@@ -325,11 +349,14 @@ export class Analyzer {
                     resolveAddStatement(instruction as ding.nodeType.DockerAdd);
                     break;
                 case 'DOCKER-COPY':
+                    console.log("\n" + instruction.toString() + "\n");
                     resolveCopyStatement(instruction as ding.nodeType.DockerCopy);
                     break;
                 case'DOCKER-RUN':
                     resolveRunStatement(instruction as ding.nodeType.DockerRun);
                     break;
+                case 'DOCKER-WORKDIR':
+                    resolveWorkDir(instruction as ding.nodeType.DockerWorkdir);
                 default:
                     break;
             }
@@ -349,20 +376,46 @@ export class Analyzer {
             }
         })
 
-
-
-        function isURL(url: string): boolean {
-            console.log("Checking");
-            console.log(url);
-            let cleanUrl : string = url.startsWith("") ? url.slice(1, url.length - 2) : url;
-            console.log(cleanUrl);
-            return cleanUrl.startsWith("https") || cleanUrl.startsWith("http");
+        function analyseResult(): void{
+            files.forEach(file => {
+                if(file.introducedLayer != undefined && file.deletedLayer != undefined && file.introducedLayer != file.deletedLayer){
+                    switch(file.introducedBy){
+                        case "ADD":
+                            fileReport += "\tVOILATION DETECTED: ADD/rm temporary file smell for file" + file.file + "\n";
+                            set.add("ADD/rm");
+                            break;
+                        case "COPY":
+                            fileReport += "\tVOILATION DETECTED: COPY/rm temporary file smell for file" + file.file + "\n";
+                            set.add("COPY/rm");
+                            break;
+                        case "BUILT-IN":
+                            fileReport += "\tVOILATION DETECTED: BUILT-IN/rm temporary file smell for file" + file.file + "\n";
+                            set.add("BUILT-IN/rm");
+                            break;
+                    }
+                }else if (file.introducedLayer != undefined && file.extractedLayer != undefined && file.deletedLayer == undefined){
+                    switch(file.introducedBy){
+                        case "ADD":
+                            fileReport += "\tVOILATION DETECTED: ADD introduced compressed file which was decompressed:" + file.file + "\n";
+                            set.add("TF0001");
+                            break;
+                        case "COPY":
+                            fileReport += "\tVOILATION DETECTED: COPY introduced compressed file which was decompressed:" + file.file + "\n";
+                            set.add("TF0002");
+                            break;
+                        case "BUILT-IN":
+                            fileReport += "\tVOILATION DETECTED: BUILT-IN introduced compressed file which was decompressed:" + file.file + "\n";
+                            set.add("TF0003");
+                            break;
+                    }
+                }
+            });
         }
-        let smell: boolean = false;
+
         /**
          * Procedure that dumps environmental information to the console
          */
-        function infoDump(){
+        function infoDump(): void{
             console.log("******");
             console.log("This info dump contains all the information about the environment that is being kept on the Dockerfile");
             console.log("Args: ");
@@ -371,26 +424,12 @@ export class Analyzer {
             console.log(envs);
             console.log("files: ");
             console.log(files);
-            files.forEach(file => {
-                if(file.introducedLayer != undefined && file.deletedLayer != undefined && file.introducedLayer != file.deletedLayer){
-                    smell = true;
-                    console.log("TF Smell Detected");
-                }else if (file.introducedLayer != undefined && file.extractedLayer != undefined && file.deletedLayer == undefined){
-                    console.log("WARNING: introduced compressed file which has been extracted but did not delete it");
-                    //smell = true;
-                }
-            })
             console.log("*****");
         }
 
         // Needs to be enabled to find smells
+        analyseResult();
         infoDump();
-
-        if(smell){
-            return 1;
-        }else {
-            return 0;
-        }
     }
     
 }

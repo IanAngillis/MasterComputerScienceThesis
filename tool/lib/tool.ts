@@ -117,9 +117,6 @@ async function main(){
         packageManagers.push(pm as PackageManager)
     })
 
-    // global state for file analysis.
-    let globalState: {path: string, extracted?:boolean, deleted?:boolean, layer_imported?:number, layer_deleted?:number}[] = [];
-
     //For loops in for loops - we can improve this on some options, can't we?
     const dir = await fs.promises.opendir(currentFolder);
 
@@ -128,64 +125,12 @@ async function main(){
         let fileReport: string = "Report for: " + dirent.name + "\n";
         let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(currentFolder + dirent.name);
         let nodes: ding.nodeType.DockerOpsNodeType[] = ast.find({type:ding.nodeType.BashCommand});
+        let set: Set<string> = new Set<string>();
         
-        // if(dirent.name == "f955dd09f5e25c76e407b2ae7ae7dbd182a1a893.Dockerfile"){
-        //     nodes.forEach(node => {
-        //         console.log(node.toString());
-        //     })
-        // }
-
-
-        // let deleteNodes = ast.find({type:ding.nodeType.BashCommand, value:"rm"});
-        // deleteNodes.forEach(node => {
-        //     console.log(node.parent.parent.parent.toString());
-        // })
+        analyzer.temporaryFileAnalysis(ast, fileReport, set);
 
         // Create Bashamangercommands - intermediary representation
         let bashManagerCommands: BashManagerCommand[] = [];
-
-        sum += analyzer.temporaryFileAnalysis(ast);
-
-        //console.log(ast.children);
-        // ast.children.forEach(dockerInstruction => {
-        //     //The children of the original Dockerfile represent the original layers
-        //     switch (dockerInstruction.type){
-        //         case 'DOCKER-COPY':
-        //             //console.log("DOCKER-COPY");
-        //             console.log(dockerInstruction.toString());
-        //             console.log(dockerInstruction.children);
-        //             break;
-        //         case 'DOCKER-ADD':
-        //             //console.log("DOCKER-ADD");
-        //             let sources: ding.nodeType.DockerAddSource[] = dockerInstruction.find({type:ding.nodeType.DockerAddSource}) as ding.nodeType.DockerAddSource[];
-        //             let target: ding.nodeType.DockerAddTarget = dockerInstruction.children[dockerInstruction.children.length - 1] as ding.nodeType.DockerAddTarget;
-
-        //             // Multiple things are copied to a directory
-        //             if(sources.length > 1){
-        //                 //console.log("many to 1");
-        //             } else {
-        //                 // One thing is copied to directory or renamed - 
-        //                 //console.log("1 to 1");
-        //             }
-
-        //             // console.log("sources");
-        //             // console.log(sources[0].toString());
-        //             //console.log("targets");
-        //             // console.log(target);
-        //             // console.log(dockerInstruction.toString());
-        //             // console.log(dockerInstruction.children);
-        //             break;
-        //         case 'DOCKER-RUN':
-        //             // console.log("DOCKER-RUN");
-        //             // break;
-        //         default:
-        //             //console.log("Type not applicable");
-        //     }
-        // });
-
-
-        
-
 
         nodes.forEach((node) => {
             packageManagers.forEach((manager) => {
@@ -200,8 +145,6 @@ async function main(){
         let text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
         log.write(text + "\n");
         //console.log(text);
-
-        let set: Set<string> = new Set<string>();
 
         RULES.forEach(rule => {
             fileReport += "Checking rule " + rule.code + " -- " + rule.message +":\n";
@@ -341,8 +284,7 @@ async function main(){
         fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
 
     }
-    //console.log(set);
-    console.log("SMELL APPEARED:" + sum);
+
     log.close();
 
     // packageManagers.forEach(x => {

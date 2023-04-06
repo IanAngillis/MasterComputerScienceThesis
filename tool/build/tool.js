@@ -164,7 +164,7 @@ function bashManagerCommandBuilder(node, manager) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, log, packageManagers, folder, testFolder, currentFolder, analyzer, globalState, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, log, packageManagers, folder, testFolder, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -189,7 +189,6 @@ function main() {
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
                     });
-                    globalState = [];
                     return [4, fs.promises.opendir(currentFolder)];
                 case 1:
                     dir = _e.sent();
@@ -197,7 +196,7 @@ function main() {
                 case 2:
                     _e.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
-                        var dirent, fileReport, ast, nodes, bashManagerCommands, text, set;
+                        var dirent, fileReport, ast, nodes, set, bashManagerCommands, text;
                         return __generator(this, function (_f) {
                             switch (_f.label) {
                                 case 0:
@@ -213,8 +212,9 @@ function main() {
                                 case 2:
                                     ast = _f.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
+                                    set = new Set();
+                                    analyzer.temporaryFileAnalysis(ast, fileReport, set);
                                     bashManagerCommands = [];
-                                    sum += analyzer.temporaryFileAnalysis(ast);
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
                                             var foundNode = node.find({ type: ding.nodeType.BashLiteral, value: manager.command });
@@ -225,7 +225,6 @@ function main() {
                                     });
                                     text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
                                     log.write(text + "\n");
-                                    set = new Set();
                                     rules_1.allRules.forEach(function (rule) {
                                         fileReport += "Checking rule " + rule.code + " -- " + rule.message + ":\n";
                                         var manager = packageManagers.find(function (pm) { return pm.command == rule.detection.manager; });
@@ -363,7 +362,6 @@ function main() {
                     return [7];
                 case 13: return [7];
                 case 14:
-                    console.log("SMELL APPEARED:" + sum);
                     log.close();
                     return [2];
             }
