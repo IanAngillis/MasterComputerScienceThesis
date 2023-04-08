@@ -116,7 +116,11 @@ export class Analyzer {
 
 
             if(target.toString().startsWith("./")){
-                finalPath = add.absolutePath + target.toString().slice(2);
+                if(containerpath == "/"){
+                    containerpath = "";
+                }
+
+                finalPath = containerpath + "/" + target.toString().slice(2);
             } else {
                 finalPath = target.toString();
             }
@@ -144,9 +148,12 @@ export class Analyzer {
 
             let finalPath: string = "";
 
-
             if(target.toString().startsWith("./")){
-                finalPath = copy.absolutePath + target.toString().slice(2);
+                if(containerpath == "/"){
+                    containerpath = "";
+                }
+
+                finalPath = containerpath + "/" + target.toString().slice(2);
             } else {
                 finalPath = target.toString();
             }
@@ -177,9 +184,13 @@ export class Analyzer {
                 if(cleanArg.startsWith("https") || cleanArg.startsWith("http")){
                     let splitArg: string[] = cleanArg.split("/");
                     let file: string = splitArg[splitArg.length - 1];
+
+                    if(containerpath == "/"){
+                        containerpath = "";
+                    }
                     
                     files.push({
-                        absolutePath: node.absolutePath + file,
+                        absolutePath: containerpath + "/" + file,
                         file: file,
                         introducedLayer: node.layer,
                         introducedBy: "BUILT-IN"
@@ -201,8 +212,12 @@ export class Analyzer {
                     let splitArg: string[] = cleanArg.split("/");
                     let file: string = splitArg[splitArg.length - 1];
 
+                    if(containerpath == "/"){
+                        containerpath = "";
+                    }
+
                     files.push({
-                        absolutePath: node.absolutePath + file,
+                        absolutePath: containerpath + "/" + file,
                         file: file, 
                         introducedLayer: node.layer,
                         introducedBy: "BUILT-IN"
@@ -269,10 +284,10 @@ export class Analyzer {
                 files.forEach(file => {
                     let resolvedFileName = resolveArgsAndEnvsInString(arg);
 
-                    if(resolvedFileName == file.file && file.absolutePath == node.absolutePath + resolvedFileName){
+                    if(resolvedFileName == file.file && file.absolutePath == containerpath  + "/" + resolvedFileName){
                         file.deletedLayer = node.layer;
                         matchFound = true;
-                    } else if(resolvedFileName == file.file && file.absolutePath != node.absolutePath + resolvedFileName) {
+                    } else if(resolvedFileName == file.file && file.absolutePath != containerpath + "/" + resolvedFileName) {
                         console.log("trying to delete a file that does not exist at this location.");
                     }
                 });
@@ -287,22 +302,47 @@ export class Analyzer {
 
         function resolveCd(cd: string[], node: ding.nodeType.BashCommand){
             cd = cd.filter(w => !w.startsWith("-")).filter(w => w != "cd");
-
-            let dir: string = cd[0];
-
-            if(dir.startsWith("/")){
-                //TODO
-            } else {
-                //TODO
-            }
-
-
-            console.log(cd);
+            let dockerPath: string = cd[0];
+            setContainerPath(dockerPath);
         }
 
         function resolveWorkDir(workdir: ding.nodeType.DockerWorkdir){
-            console.log("WORKDIR");
-            console.log(workdir.toString());
+            let dockerPath: string = workdir.getChild(ding.nodeType.DockerPath).value;
+            setContainerPath(dockerPath);
+        }
+
+        function setContainerPath(path: string){
+            // If path is absolute
+            if(path[0] == "/"){
+                // Absolute path
+                containerpath = path;
+                console.log("Handled absolute path");
+            } else {
+                // Relative path
+                console.log("Handled relative path");
+                let containerPathParts: string[] = containerpath.split("/").filter(part => part != "");
+                console.log(containerPathParts);
+                let pathParts: string[] = path.split("/").filter(part => part != "");
+            
+            
+                pathParts.forEach(part => {
+                    switch(part){
+                        case ".":
+                            break;
+                        case "..":
+                            containerPathParts.splice(containerPathParts.length - 1);
+                            break;
+                        default:
+                            containerPathParts.push(part);
+                    }
+                });
+
+                if(containerPathParts.length > 0){
+                    containerpath = "/" + containerPathParts.join("/");
+                }else{
+                    containerpath = "/";
+                }
+            }
         }
 
         function resolveRunStatement(run: ding.nodeType.DockerRun){
@@ -416,12 +456,12 @@ export class Analyzer {
          * Procedure that dumps environmental information to the console
          */
         function infoDump(): void{
-            console.log("******");
-            console.log("This info dump contains all the information about the environment that is being kept on the Dockerfile");
-            console.log("Args: ");
-            console.log(args);
-            console.log("Envs: ");
-            console.log(envs);
+            // console.log("******");
+            // console.log("This info dump contains all the information about the environment that is being kept on the Dockerfile");
+            // console.log("Args: ");
+            // console.log(args);
+            // console.log("Envs: ");
+            // console.log(envs);
             console.log("files: ");
             console.log(files);
             console.log("*****");

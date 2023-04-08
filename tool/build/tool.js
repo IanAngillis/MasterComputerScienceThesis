@@ -184,7 +184,7 @@ function main() {
                     });
                     folder = "./../data/dockerfiles/";
                     testFolder = "./../data/testfiles/";
-                    currentFolder = testFolder;
+                    currentFolder = folder;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
