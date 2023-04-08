@@ -114,8 +114,7 @@ export class Analyzer {
 
             let finalPath: string = "";
 
-
-            if(target.toString().startsWith("./")){
+            if(target.toString().startsWith("./") || target.toString().startsWith(".")){
                 if(containerpath == "/"){
                     containerpath = "";
                 }
@@ -127,13 +126,24 @@ export class Analyzer {
 
             // Tinker with the target path as that is not right yet
             sources.forEach(source => {
+                let file = source.toString();
+                let isUrl = false;
+
+                if(source.toString().startsWith("https") || source.toString().startsWith("http")){
+                    isUrl = true;
+                    console.log("hiiiiit");
+                    let splitSource: string[] = source.toString().split("/");
+                    file = splitSource[splitSource.length-1];
+                }
+
+                file = resolveArgsAndEnvsInString(file);
 
                 if(!finalPath.includes(source.toString())){
-                    finalPath += source.toString();
+                    finalPath += file;
                 }
 
                 files.push({
-                    file: source.toString(),
+                    file: file,
                     absolutePath: finalPath,
                     introducedLayer: add.layer,
                     introducedBy: "ADD"
@@ -141,14 +151,17 @@ export class Analyzer {
             });
         }
 
-        // Tinker with the target path as that one is not right yet.
+        // Tinker with the target path as that one is not right yet. - Lot of duplicated code
+        // Situation in ace64 where files are added by add statement and thus extracted and deleted in the same layer
+        // Remote ADDs are NOT unpacked - therefore it is deleted later. Solution is to download to local context and then add it to directory, or to use WGET or CURL in the same layer.
+        // Couple of recognized compressed tar bal extensions are recognized such that they are extracted - CHECK EXTENSIONS https://docs.docker.com/engine/reference/builder/#add
         function resolveCopyStatement(copy: ding.nodeType.DockerCopy){
             let sources: ding.nodeType.DockerCopySource[] = copy.getChildren(ding.nodeType.DockerCopySource);
             let target: ding.nodeType.DockerCopyTarget = copy.getChild(ding.nodeType.DockerCopyTarget);
 
             let finalPath: string = "";
 
-            if(target.toString().startsWith("./")){
+            if(target.toString().startsWith("./") || target.toString().startsWith(".")){
                 if(containerpath == "/"){
                     containerpath = "";
                 }
@@ -159,13 +172,21 @@ export class Analyzer {
             }
 
             sources.forEach(source => {
+                let file = source.toString();
+
+                if(source.toString().startsWith("https") || source.toString().startsWith("http")){
+                    let splitSource: string[] = source.toString().split("/");
+                    file = splitSource[splitSource.length-1];
+                }
+
+                file = resolveArgsAndEnvsInString(file);
 
                 if(!finalPath.includes(source.toString())){
-                    finalPath += source.toString();
+                    finalPath += file;
                 }
 
                 files.push({
-                    file: source.toString(),
+                    file: file,
                     absolutePath: finalPath,
                     introducedLayer: copy.layer,
                     introducedBy: "COPY"

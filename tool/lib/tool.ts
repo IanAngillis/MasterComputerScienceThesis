@@ -108,7 +108,7 @@ async function main(){
     let testFolder = "./../data/testfiles/";
 
     // Variable that sets folder for program
-    let currentFolder = folder;
+    let currentFolder = testFolder;
 
     let analyzer: Analyzer = new Analyzer();
 
