@@ -87,6 +87,8 @@ function bashManagerCommandBuilder(node: ding.nodeType.DockerOpsNodeType, manage
 async function main(){
     let sum: number = 0;
     let log : fs.WriteStream = fs.createWriteStream("./logs/" + createLogName(), {flags: 'a'});
+    let log2: fs.WriteStream = fs.createWriteStream("./logs/" + "error_files", {flags: 'a'});
+
     let packageManagers: PackageManager[] = [];
     // can be in a config object
     //delete reports (for now, don't do this in end product)
@@ -106,9 +108,10 @@ async function main(){
     // Folder which holds the data - should expand to folders eventually
     let folder = "./../data/dockerfiles/";
     let testFolder = "./../data/testfiles/";
+    let binnacle = "./../data/binnacle/github/deduplicated-sources/"
 
     // Variable that sets folder for program
-    let currentFolder = testFolder;
+    let currentFolder = binnacle;
 
     let analyzer: Analyzer = new Analyzer();
 
@@ -121,6 +124,7 @@ async function main(){
     const dir = await fs.promises.opendir(currentFolder);
 
     for await (const dirent of dir) {
+        try{
         console.log(dirent.name);
         let fileReport: string = "Report for: " + dirent.name + "\n";
         let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(currentFolder + dirent.name);
@@ -282,10 +286,14 @@ async function main(){
         fileReport += "RULE DETECTIONS: ";
         fileReport += Array.from(set).join(" ");
         fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
+    } catch{
+        log2.write(dirent.name)
+    }
 
     }
 
     log.close();
+    log2.close();
 
     // packageManagers.forEach(x => {
     //     let cmd = x.command;

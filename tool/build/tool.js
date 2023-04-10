@@ -164,12 +164,13 @@ function bashManagerCommandBuilder(node, manager) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, log, packageManagers, folder, testFolder, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, log, log2, packageManagers, folder, testFolder, binnacle, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
                     sum = 0;
                     log = fs.createWriteStream("./logs/" + createLogName(), { flags: 'a' });
+                    log2 = fs.createWriteStream("./logs/" + "error_files", { flags: 'a' });
                     packageManagers = [];
                     fs.readdir("./reports", function (err, files) {
                         if (err)
@@ -184,7 +185,8 @@ function main() {
                     });
                     folder = "./../data/dockerfiles/";
                     testFolder = "./../data/testfiles/";
-                    currentFolder = testFolder;
+                    binnacle = "./../data/binnacle/github/deduplicated-sources/";
+                    currentFolder = binnacle;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
@@ -196,51 +198,54 @@ function main() {
                 case 2:
                     _e.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
-                        var dirent, fileReport, ast, nodes, set, bashManagerCommands, text;
-                        return __generator(this, function (_f) {
-                            switch (_f.label) {
+                        var dirent, fileReport_1, ast, nodes, set_1, bashManagerCommands_1, text, _f;
+                        return __generator(this, function (_g) {
+                            switch (_g.label) {
                                 case 0:
                                     _c = dir_2_1.value;
                                     _d = false;
-                                    _f.label = 1;
+                                    _g.label = 1;
                                 case 1:
-                                    _f.trys.push([1, , 3, 4]);
+                                    _g.trys.push([1, , 6, 7]);
                                     dirent = _c;
-                                    console.log(dirent.name);
-                                    fileReport = "Report for: " + dirent.name + "\n";
-                                    return [4, ding.dockerfileParser.parseDocker(currentFolder + dirent.name)];
+                                    _g.label = 2;
                                 case 2:
-                                    ast = _f.sent();
+                                    _g.trys.push([2, 4, , 5]);
+                                    console.log(dirent.name);
+                                    fileReport_1 = "Report for: " + dirent.name + "\n";
+                                    return [4, ding.dockerfileParser.parseDocker(currentFolder + dirent.name)];
+                                case 3:
+                                    ast = _g.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
-                                    set = new Set();
-                                    analyzer.temporaryFileAnalysis(ast, fileReport, set);
-                                    bashManagerCommands = [];
+                                    set_1 = new Set();
+                                    analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1);
+                                    bashManagerCommands_1 = [];
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
                                             var foundNode = node.find({ type: ding.nodeType.BashLiteral, value: manager.command });
                                             if (foundNode.length > 0) {
-                                                bashManagerCommands.push(bashManagerCommandBuilder(node, manager));
+                                                bashManagerCommands_1.push(bashManagerCommandBuilder(node, manager));
                                             }
                                         });
                                     });
-                                    text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
+                                    text = dirent.name + " has got " + bashManagerCommands_1.length + " package commands";
                                     log.write(text + "\n");
                                     rules_1.allRules.forEach(function (rule) {
-                                        fileReport += "Checking rule " + rule.code + " -- " + rule.message + ":\n";
+                                        fileReport_1 += "Checking rule " + rule.code + " -- " + rule.message + ":\n";
                                         var manager = packageManagers.find(function (pm) { return pm.command == rule.detection.manager; });
                                         switch (rule.detection.type) {
                                             case "VERSION-PINNING":
                                                 if (manager == null) {
                                                 }
                                                 else {
-                                                    bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                    bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                         var requiresVersionPinning = false;
                                                         c.arguments.forEach(function (arg) {
                                                             if (arg.search(manager.packageVersionFormatSplitter) == -1) {
                                                                 if (arg.indexOf(".txt") == -1) {
                                                                     log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
-                                                                    fileReport += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
-                                                                    set.add(rule.code);
+                                                                    fileReport_1 += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
+                                                                    set_1.add(rule.code);
                                                                     requiresVersionPinning = true;
                                                                 }
                                                             }
@@ -254,7 +259,7 @@ function main() {
                                                 if (manager != null) {
                                                     var noninteractionflag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "NO-INTERACTION"; });
                                                     if (noninteractionflag_1 != undefined) {
-                                                        bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                        bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                             var nonInteractionFlagIsPresent = false;
                                                             c.flags.forEach(function (flag) {
                                                                 if (flag == noninteractionflag_1.value) {
@@ -262,8 +267,8 @@ function main() {
                                                                 }
                                                             });
                                                             if (!nonInteractionFlagIsPresent) {
-                                                                set.add(rule.code);
-                                                                fileReport += "\tVOILATION DETECTED: " + noninteractionflag_1.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
+                                                                set_1.add(rule.code);
+                                                                fileReport_1 += "\tVOILATION DETECTED: " + noninteractionflag_1.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                             }
                                                         });
                                                     }
@@ -275,28 +280,28 @@ function main() {
                                                         var installFlag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "CLEAN-CACHE"; });
                                                         if (installFlag_1 != undefined) {
                                                             var found = false;
-                                                            bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                            bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                                 if (c.flags.find(function (flag) { return flag == installFlag_1.value; }) != undefined) {
                                                                 }
                                                                 else {
-                                                                    set.add(rule.code);
-                                                                    fileReport += "\tVOILATION DETECTED: " + installFlag_1.value + " flag missing at position:" + c.position.toString() + " for command " + c.command + "\n";
+                                                                    set_1.add(rule.code);
+                                                                    fileReport_1 += "\tVOILATION DETECTED: " + installFlag_1.value + " flag missing at position:" + c.position.toString() + " for command " + c.command + "\n";
                                                                 }
                                                             });
                                                         }
                                                     }
                                                     else {
-                                                        bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (ic) {
+                                                        bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (ic) {
                                                             var hasCleanCacheCommand = false;
-                                                            bashManagerCommands.filter(function (cc) { return ic.layer == cc.layer && ic.command == cc.command && cc.option == manager.cleanCacheOption[0]; })
+                                                            bashManagerCommands_1.filter(function (cc) { return ic.layer == cc.layer && ic.command == cc.command && cc.option == manager.cleanCacheOption[0]; })
                                                                 .forEach(function (x) {
                                                                 if (ic.source.isBefore(x.source)) {
                                                                     hasCleanCacheCommand = true;
                                                                 }
                                                             });
                                                             if (!hasCleanCacheCommand) {
-                                                                set.add(rule.code);
-                                                                fileReport += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
+                                                                set_1.add(rule.code);
+                                                                fileReport_1 += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
                                                             }
                                                         });
                                                     }
@@ -307,13 +312,13 @@ function main() {
                                                     var norecommendsflag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "NO-RECOMMENDS"; });
                                                     if (norecommendsflag_1 != undefined) {
                                                         var found_1 = false;
-                                                        bashManagerCommands.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                        bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                             if (c.arguments.find(function (arg) { return arg == norecommendsflag_1.value; }) != undefined) {
                                                                 found_1 = true;
                                                             }
                                                             else {
-                                                                set.add(rule.code);
-                                                                fileReport += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
+                                                                set_1.add(rule.code);
+                                                                fileReport_1 += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                                             }
                                                         });
                                                     }
@@ -323,14 +328,19 @@ function main() {
                                                 break;
                                         }
                                     });
-                                    fileReport += "RULE DETECTIONS: ";
-                                    fileReport += Array.from(set).join(" ");
-                                    fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
-                                    return [3, 4];
-                                case 3:
+                                    fileReport_1 += "RULE DETECTIONS: ";
+                                    fileReport_1 += Array.from(set_1).join(" ");
+                                    fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport_1);
+                                    return [3, 5];
+                                case 4:
+                                    _f = _g.sent();
+                                    log2.write(dirent.name);
+                                    return [3, 5];
+                                case 5: return [3, 7];
+                                case 6:
                                     _d = true;
                                     return [7];
-                                case 4: return [2];
+                                case 7: return [2];
                             }
                         });
                     };
@@ -363,6 +373,7 @@ function main() {
                 case 13: return [7];
                 case 14:
                     log.close();
+                    log2.close();
                     return [2];
             }
         });

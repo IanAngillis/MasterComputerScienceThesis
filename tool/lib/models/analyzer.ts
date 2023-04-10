@@ -16,7 +16,7 @@ export class Analyzer {
     temporaryFileAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>){
         let args: {key:string, value:string, updatedInLayer?:number}[] = [];
         let envs: {key:string, value:string, updatedInLayer?:number}[] = [];
-        let files: {absolutePath: string, file: string, extractedLayer?:number, introducedLayer?:number, deletedLayer?:number, isDirectory?:boolean, introducedBy: "COPY"|"ADD"|"BUILT-IN"}[] = [];
+        let files: {absolutePath: string, file: string, extractedLayer?:number, introducedLayer?:number, deletedLayer?:number, urlOrigin?:boolean, isDirectory?:boolean, introducedBy: "COPY"|"ADD"|"BUILT-IN"}[] = [];
         let containerpath = "/";
         /**
          * Procedure that adds a docker ARG to the ARGS.
@@ -45,12 +45,15 @@ export class Analyzer {
          * @returns string without ARGS
          */
         function resolveArgsAndEnvsInString(str: string): string{
+
+            let temp: string = str;
+
             let stringUpdated: boolean = false;
             args.forEach(arg => {
                 let substr: string = "${" + arg.key + "}";
                 let idx: number = str.indexOf(substr);
 
-                while(idx != -1){
+                if(idx != -1){
                     str = str.replace(substr, arg.value);
                     idx = str.indexOf(substr);
                     stringUpdated = true;
@@ -61,7 +64,7 @@ export class Analyzer {
                 let substr: string = "$" + env.key;
                 let idx: number = str.indexOf(substr);
 
-                while(idx != -1){
+                if(idx != -1){
                     str = str.replace(substr, env.value);
                     idx = str.indexOf(substr);
                     stringUpdated = true;
@@ -69,10 +72,10 @@ export class Analyzer {
             })
 
             // Keep iterating as replacements may introduce new args until no valid replacement is found
-            if(stringUpdated){
+            if(stringUpdated && temp != str){
                 return resolveArgsAndEnvsInString(str);
             } else {    
-                //console.log(str);
+
                 return str;
             } 
         }
@@ -108,6 +111,16 @@ export class Analyzer {
             });
         }
 
+        function removeExtensions(str: string): string | undefined{
+            let substrings: string[] = str.split(".");
+            for(let i: number = 0; i < substrings.length; i++){
+                if(substrings[i] == "tar"){
+                    substrings.splice(i);
+                    return substrings.join(".");
+                }
+            }
+        }
+
         function resolveAddStatement(add: ding.nodeType.DockerAdd){
             let sources: ding.nodeType.DockerAddSource[] = add.getChildren(ding.nodeType.DockerAddSource);
             let target: ding.nodeType.DockerAddTarget = add.getChild(ding.nodeType.DockerAddTarget);
@@ -124,16 +137,28 @@ export class Analyzer {
                 finalPath = target.toString();
             }
 
-            // Tinker with the target path as that is not right yet
+            // Tinker with the target path as that is not right yet -- does not deal with .
             sources.forEach(source => {
                 let file = source.toString();
                 let isUrl = false;
+                let isDecompressedAndExtracted = false;
+
+                if(file == "." ||file == "./"){
+                    file = "/entire_build_context";
+                }
 
                 if(source.toString().startsWith("https") || source.toString().startsWith("http")){
                     isUrl = true;
-                    console.log("hiiiiit");
                     let splitSource: string[] = source.toString().split("/");
                     file = splitSource[splitSource.length-1];
+                }
+
+                if(source.toString().includes(".tar.gz") || source.toString().includes(".tar.xz") || source.toString().includes(".tar.bzip2")){
+                    if(!isUrl){
+                        isDecompressedAndExtracted = true;
+                        file = removeExtensions(file);
+                        return;
+                    }
                 }
 
                 file = resolveArgsAndEnvsInString(file);
@@ -146,7 +171,8 @@ export class Analyzer {
                     file: file,
                     absolutePath: finalPath,
                     introducedLayer: add.layer,
-                    introducedBy: "ADD"
+                    introducedBy: "ADD",
+                    urlOrigin: isUrl
                 });
             });
         }
@@ -154,7 +180,6 @@ export class Analyzer {
         // Tinker with the target path as that one is not right yet. - Lot of duplicated code
         // Situation in ace64 where files are added by add statement and thus extracted and deleted in the same layer
         // Remote ADDs are NOT unpacked - therefore it is deleted later. Solution is to download to local context and then add it to directory, or to use WGET or CURL in the same layer.
-        // Couple of recognized compressed tar bal extensions are recognized such that they are extracted - CHECK EXTENSIONS https://docs.docker.com/engine/reference/builder/#add
         function resolveCopyStatement(copy: ding.nodeType.DockerCopy){
             let sources: ding.nodeType.DockerCopySource[] = copy.getChildren(ding.nodeType.DockerCopySource);
             let target: ding.nodeType.DockerCopyTarget = copy.getChild(ding.nodeType.DockerCopyTarget);
@@ -174,16 +199,21 @@ export class Analyzer {
             sources.forEach(source => {
                 let file = source.toString();
 
-                if(source.toString().startsWith("https") || source.toString().startsWith("http")){
-                    let splitSource: string[] = source.toString().split("/");
+                if(file == "." ||file == "./"){
+                    file = "/entire_build_context";
+                }
+
+                if(file.startsWith("https") || file.startsWith("http")){
+                    let splitSource: string[] = file.split("/");
                     file = splitSource[splitSource.length-1];
                 }
 
                 file = resolveArgsAndEnvsInString(file);
 
-                if(!finalPath.includes(source.toString())){
+                if(!finalPath.includes(file)){
                     finalPath += file;
                 }
+
 
                 files.push({
                     file: file,
@@ -197,6 +227,7 @@ export class Analyzer {
         function resolveWget(wget: string[], node: ding.nodeType.BashCommand){
             // Clear all the flags
             wget = wget.filter(w => !w.startsWith("-"));
+            
             
             // Check for directory?
             wget.forEach(arg => {
@@ -324,6 +355,10 @@ export class Analyzer {
         function resolveCd(cd: string[], node: ding.nodeType.BashCommand){
             cd = cd.filter(w => !w.startsWith("-")).filter(w => w != "cd");
             let dockerPath: string = cd[0];
+            
+            if(dockerPath == undefined){
+                return;
+            }
             setContainerPath(dockerPath);
         }
 
@@ -334,15 +369,13 @@ export class Analyzer {
 
         function setContainerPath(path: string){
             // If path is absolute
+           
             if(path[0] == "/"){
                 // Absolute path
                 containerpath = path;
-                console.log("Handled absolute path");
             } else {
                 // Relative path
-                console.log("Handled relative path");
                 let containerPathParts: string[] = containerpath.split("/").filter(part => part != "");
-                console.log(containerPathParts);
                 let pathParts: string[] = path.split("/").filter(part => part != "");
             
             
@@ -410,7 +443,6 @@ export class Analyzer {
                     resolveAddStatement(instruction as ding.nodeType.DockerAdd);
                     break;
                 case 'DOCKER-COPY':
-                    console.log("\n" + instruction.toString() + "\n");
                     resolveCopyStatement(instruction as ding.nodeType.DockerCopy);
                     break;
                 case'DOCKER-RUN':
@@ -470,19 +502,24 @@ export class Analyzer {
                             break;
                     }
                 }
+
+                if(file.introducedLayer != undefined && file.introducedBy == "ADD" && file.urlOrigin && file.deletedLayer != undefined){
+                    console.log("ERROR ON TEMP FILE ADDING COMPRESSED FILE FROM URL THROUGH ADD");
+                    
+                }
             });
         }
 
         /**
-         * Procedure that dumps environmental information to the console
+         * Procedure that dumps environmental information to the console -- TODO deal with . being copied over
          */
         function infoDump(): void{
-            // console.log("******");
-            // console.log("This info dump contains all the information about the environment that is being kept on the Dockerfile");
-            // console.log("Args: ");
-            // console.log(args);
-            // console.log("Envs: ");
-            // console.log(envs);
+            console.log("******");
+            console.log("This info dump contains all the information about the environment that is being kept on the Dockerfile");
+            console.log("Args: ");
+            console.log(args);
+            console.log("Envs: ");
+            console.log(envs);
             console.log("files: ");
             console.log(files);
             console.log("*****");
@@ -490,7 +527,7 @@ export class Analyzer {
 
         // Needs to be enabled to find smells
         analyseResult();
-        infoDump();
+        //infoDump();
     }
     
 }

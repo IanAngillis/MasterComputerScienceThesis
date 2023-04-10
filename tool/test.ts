@@ -1,29 +1,13 @@
-let containerPath: string = "/damn";
-let path: string = "test/.."
-
-if(path[0] == "/"){
-    // Absolute path
-    containerPath = path;
-} else {
-    // Relative path
-
-    let containerPathParts: string[] = containerPath.split("/").filter(part => part != "");
-    console.log(containerPathParts);
-    let pathParts: string[] = path.split("/");
-
-
-    pathParts.forEach(part => {
-        switch(part){
-            case ".":
-                break;
-            case "..":
-                containerPathParts.splice(containerPathParts.length - 1);
-                break;
-            default:
-                containerPathParts.push(part);
+function removeExtensions(str: string): string | undefined{
+    let substrings: string[] = str.split(".");
+    for(let i: number = 0; i < substrings.length; i++){
+        if(substrings[i] == "tar"){
+            substrings.splice(i);
+            return substrings.join(".");
         }
-    });
-
-    containerPath = "/" + containerPathParts.join("/") + "/";
-    console.log(containerPath);
+    }
 }
+
+
+let teststring: string = "/go${GOVERSION}.linux-amd64.tar.gz";
+console.log(removeExtensions(teststring));
