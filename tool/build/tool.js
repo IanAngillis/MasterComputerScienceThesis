@@ -164,7 +164,7 @@ function bashManagerCommandBuilder(node, manager) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, log, log2, packageManagers, folder, testFolder, binnacle, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, log, log2, packageManagers, folder, testFolder, binnacle, crashed, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -186,7 +186,8 @@ function main() {
                     folder = "./../data/dockerfiles/";
                     testFolder = "./../data/testfiles/";
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
-                    currentFolder = binnacle;
+                    crashed = "./../data/chrashedfiles/";
+                    currentFolder = crashed;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
@@ -334,7 +335,8 @@ function main() {
                                     return [3, 5];
                                 case 4:
                                     _f = _g.sent();
-                                    log2.write(dirent.name);
+                                    log2.write(dirent.name + "\n");
+                                    console.log("ERROR");
                                     return [3, 5];
                                 case 5: return [3, 7];
                                 case 6:

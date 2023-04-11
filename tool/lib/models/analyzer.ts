@@ -16,6 +16,7 @@ export class Analyzer {
     temporaryFileAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>){
         let args: {key:string, value:string, updatedInLayer?:number}[] = [];
         let envs: {key:string, value:string, updatedInLayer?:number}[] = [];
+        let exports: {key: string, value:string, updateInLayer?:number}[] = [];
         let files: {absolutePath: string, file: string, extractedLayer?:number, introducedLayer?:number, deletedLayer?:number, urlOrigin?:boolean, isDirectory?:boolean, introducedBy: "COPY"|"ADD"|"BUILT-IN"}[] = [];
         let containerpath = "/";
         /**
@@ -45,11 +46,15 @@ export class Analyzer {
          * @returns string without ARGS
          */
         function resolveArgsAndEnvsInString(str: string): string{
-
             let temp: string = str;
 
             let stringUpdated: boolean = false;
             args.forEach(arg => {
+
+                // if(arg.key == str){
+                //     return resolveArgsAndEnvsInString(arg.value);
+                // }
+
                 let substr: string = "${" + arg.key + "}";
                 let idx: number = str.indexOf(substr);
 
@@ -61,6 +66,11 @@ export class Analyzer {
             });
 
             envs.forEach(env => {
+
+                // if(env.key == str){
+                //     return resolveArgsAndEnvsInString(env.value);
+                // }
+
                 let substr: string = "$" + env.key;
                 let idx: number = str.indexOf(substr);
 
@@ -70,6 +80,49 @@ export class Analyzer {
                     stringUpdated = true;
                 }
             })
+
+            envs.forEach(env => {
+                let substr: string = "${" + env.key + "}";
+                let idx: number = str.indexOf(substr);
+
+                if(idx != -1){
+                    str = str.replace(substr, env.value);
+                    idx = str.indexOf(substr);
+                    stringUpdated = true;
+                }
+            });
+
+            exports.forEach(exp => {
+                // // In case that string is key
+                // if(exp.key == str){
+                //     return resolveArgsAndEnvsInString(exp.value);
+                // }
+
+                let substr: string = "${" + exp.key + "}";
+                let idx: number = str.indexOf(substr);
+
+                if(idx != -1){
+                    str = str.replace(substr, exp.value);
+                    idx = str.indexOf(substr);
+                    stringUpdated = true;
+                }
+            });
+
+            exports.forEach(exp => {
+                // // In case that string is key
+                // if(exp.key == str){
+                //     return resolveArgsAndEnvsInString(exp.value);
+                // }
+
+                let substr: string = "$" + exp.key;
+                let idx: number = str.indexOf(substr);
+
+                if(idx != -1){
+                    str = str.replace(substr, exp.value);
+                    idx = str.indexOf(substr);
+                    stringUpdated = true;
+                }
+            });
 
             // Keep iterating as replacements may introduce new args until no valid replacement is found
             if(stringUpdated && temp != str){
@@ -85,6 +138,10 @@ export class Analyzer {
          * @param env 
          */
         function addEvnToEnvs(env: ding.nodeType.DockerEnv){
+            // console.log("ENV**");
+            // console.log(env.children);
+            // console.log("*****");
+            //console.log(env);
             let key: string = (env.getChild(ding.nodeType.DockerName) as ding.nodeType.DockerOpsValueNode).value;
             let value: string = (env.getChild(ding.nodeType.DockerLiteral) as ding.nodeType.DockerOpsValueNode) != undefined ? (env.getChild(ding.nodeType.DockerLiteral) as ding.nodeType.DockerOpsValueNode).value  : "";
 
@@ -98,7 +155,7 @@ export class Analyzer {
                 value = keyValuePair[1];
             }
 
-            let idx = envs.findIndex(x => x.key == key);
+            let idx: number = envs.findIndex(x => x.key == key);
 
             if(idx != -1){
                 envs = envs.splice(idx, 1);
@@ -109,6 +166,31 @@ export class Analyzer {
                 value: value.replace(/\"/g, ""),
                 updatedInLayer: env.layer
             });
+        }
+
+        function addExportToExports(exp: string[], node: ding.nodeType.BashCommand){
+            exp = exp.filter(w => w != "export");
+            
+            if(exp.length == 0){
+                return;
+            }
+
+            let split: string[] = exp[0].split("=");
+            let key: string = split[0];
+            let value: string = split[1];
+
+            let idx: number = exports.findIndex(x => x.key == key);
+
+            if(idx != -1){
+                exports = exports.splice(idx, 1);
+            }
+
+            exports.push({
+                key: key,
+                value: value,
+                updateInLayer: node.layer
+            });
+
         }
 
         function removeExtensions(str: string): string | undefined{
@@ -231,7 +313,7 @@ export class Analyzer {
             
             // Check for directory?
             wget.forEach(arg => {
-                let cleanArg: string = resolveArgsAndEnvsInString(arg).replace(/\"/g, "");
+                let cleanArg: string = resolveArgsAndEnvsInString(arg).replace(/\"/g, "").replace(/\'/g, "");
 
                 if(cleanArg.startsWith("https") || cleanArg.startsWith("http")){
                     let splitArg: string[] = cleanArg.split("/");
@@ -258,11 +340,12 @@ export class Analyzer {
 
             //Check for directory?
             curl.forEach(arg => {
-                let cleanArg: string = resolveArgsAndEnvsInString(arg).replace(/\"/g, "");
+                let cleanArg: string = resolveArgsAndEnvsInString(arg).replace(/\"/g, "").replace(/\'/g, "");
 
                 if(cleanArg.startsWith("https") || cleanArg.startsWith("http")){
                     let splitArg: string[] = cleanArg.split("/");
                     let file: string = splitArg[splitArg.length - 1];
+                    
 
                     if(containerpath == "/"){
                         containerpath = "";
@@ -299,6 +382,7 @@ export class Analyzer {
             if(matchFound){
                 //console.log("match found - adjusting ...");
             }else{
+                //console.log("We are checking for piping");
                 // Check for piping - current only checks back 1 statement.
                 if(node.parent.parent != undefined && node.parent.parent.type == "BASH-CONDITION-BINARY"){
                     if(node.parent.parent.children[1].type == 'BASH-CONDITION-BINARY-OP'){
@@ -399,6 +483,8 @@ export class Analyzer {
             }
         }
 
+
+
         function resolveRunStatement(run: ding.nodeType.DockerRun){
             //Get all the commands - they are in sequential order and loop/branch insensitive
             let commands: ding.nodeType.BashCommand[] = run.find({type:ding.nodeType.BashCommand}) as ding.nodeType.BashCommand[];
@@ -409,19 +495,31 @@ export class Analyzer {
                 
                 switch(splitCommand[0]){
                     case "wget":
+                        //console.log("RUN-WGET");
                         resolveWget(splitCommand, command);
                         break;
                     case "tar":
+                        //infoDump();
+                        //console.log("RUN-TAR");
                         resolveTar(splitCommand, command);
                     case "curl":
+                        //console.log("RUN-CURL");
                         resolveCurl(splitCommand, command);
                         break;
                     case "rm":
+                        //console.log("RUN-RM");
                         resolveRm(splitCommand, command);
                         break;
                     case "cd":
+                        //console.log("RUN-CD");
                         resolveCd(splitCommand, command);
+                    case "export":
+                        //console.log("RUN-EXPORT");
+                        addExportToExports(splitCommand, command);
                     default:
+                        if(splitCommand[0].includes("=")){
+                            addExportToExports(splitCommand, command);
+                        }
                         break;
                 }
             });
@@ -434,21 +532,28 @@ export class Analyzer {
         function handleInstruction(instruction: ding.nodeType.DockerOpsNodeType){
             switch(instruction.type){
                 case 'DOCKER-ARG': 
+                    //console.log("ARG");
                     addArgToArgs(instruction as ding.nodeType.DockerArg);
                     break;
                 case 'DOCKER-ENV':
+                    //console.log("ENV");
+                    //console.log(instruction.toString());
                     addEvnToEnvs(instruction as ding.nodeType.DockerEnv);
                     break;
                 case 'DOCKER-ADD':
+                    //console.log("ADD");
                     resolveAddStatement(instruction as ding.nodeType.DockerAdd);
                     break;
                 case 'DOCKER-COPY':
+                    //console.log("COPY");
                     resolveCopyStatement(instruction as ding.nodeType.DockerCopy);
                     break;
                 case'DOCKER-RUN':
+                    //console.log("RUN");
                     resolveRunStatement(instruction as ding.nodeType.DockerRun);
                     break;
                 case 'DOCKER-WORKDIR':
+                    //console.log("WORKDIR");
                     resolveWorkDir(instruction as ding.nodeType.DockerWorkdir);
                 default:
                     break;
@@ -520,6 +625,8 @@ export class Analyzer {
             console.log(args);
             console.log("Envs: ");
             console.log(envs);
+            console.log("Exports: ");
+            console.log(exports);
             console.log("files: ");
             console.log(files);
             console.log("*****");

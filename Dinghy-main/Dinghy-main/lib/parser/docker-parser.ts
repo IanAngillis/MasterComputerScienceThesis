@@ -414,6 +414,7 @@ export class DockerParser {
         case "env":
           currentLayer += 1;
           const args = line.getArguments();
+          //console.log(args);
           const env = new DockerEnv().setPosition(position);
 
           if (args.length > 0) {

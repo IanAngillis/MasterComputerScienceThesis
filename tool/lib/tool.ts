@@ -108,10 +108,11 @@ async function main(){
     // Folder which holds the data - should expand to folders eventually
     let folder = "./../data/dockerfiles/";
     let testFolder = "./../data/testfiles/";
-    let binnacle = "./../data/binnacle/github/deduplicated-sources/"
+    let binnacle = "./../data/binnacle/github/deduplicated-sources/";
+    let crashed = "./../data/chrashedfiles/";
 
     // Variable that sets folder for program
-    let currentFolder = binnacle;
+    let currentFolder = crashed;
 
     let analyzer: Analyzer = new Analyzer();
 
@@ -124,7 +125,8 @@ async function main(){
     const dir = await fs.promises.opendir(currentFolder);
 
     for await (const dirent of dir) {
-        try{
+        //TODO split up 
+        try{ 
         console.log(dirent.name);
         let fileReport: string = "Report for: " + dirent.name + "\n";
         let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(currentFolder + dirent.name);
@@ -287,7 +289,8 @@ async function main(){
         fileReport += Array.from(set).join(" ");
         fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
     } catch{
-        log2.write(dirent.name)
+        log2.write(dirent.name + "\n");
+        console.log("ERROR");
     }
 
     }
