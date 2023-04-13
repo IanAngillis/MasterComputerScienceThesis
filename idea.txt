@@ -8,4 +8,10 @@ List of lists - list of commands in earliest layer in earliest slot etc ...
 Go through list of lists - keep track of files in state. (how files
 downloaded with grep etc...?)
 
+//TODO
+- TD Low churn instructions
+- DL3059 - Consecutive RUN instructions --- && means intentional multiple run AND --mount flag (figure out)
+- DL 3010 (case where COPY and Extract happens, should be replaced with ssingle ADD statement)
+    - case where COPY introduces tarball/compressed file to image
+- DL 4001 -- either use wget or curl, but not both
 

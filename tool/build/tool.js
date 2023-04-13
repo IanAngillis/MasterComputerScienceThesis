@@ -147,9 +147,11 @@ function bashManagerCommandBuilder(node, manager) {
     bashManagerCommand.source = node;
     var commands = splitWithoutEmptyString(node.toString(true), delimiter);
     commands = commands.filter(function (w) { return w != "sudo"; });
+    var idx = commands.filter(function (w) { return !w.startsWith("-"); }).findIndex(function (x) { return x == manager.command; });
+    var option = commands.filter(function (w) { return !w.startsWith("-"); })[idx + 1];
     bashManagerCommand.versionSplitter = manager.packageVersionFormatSplitter;
     bashManagerCommand.command = manager.command;
-    bashManagerCommand.option = commands.filter(function (w) { return !w.startsWith("-") && w != bashManagerCommand.command; })[0];
+    bashManagerCommand.option = option;
     bashManagerCommand.hasInstallOption = (bashManagerCommand.option == manager.installOption[0]);
     bashManagerCommand.flags = commands.filter(function (w) { return w.startsWith("-"); });
     bashManagerCommand.arguments = [];

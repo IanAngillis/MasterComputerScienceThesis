@@ -54,10 +54,12 @@ function bashManagerCommandBuilder(node: ding.nodeType.DockerOpsNodeType, manage
     // Remove sudo - is actually a smell and should be detected
     commands = commands.filter(w => w != "sudo");
 
-    
+    let idx = commands.filter(w => !w.startsWith("-")).findIndex(x => x == manager.command);
+    let option = commands.filter(w => !w.startsWith("-"))[idx+1];
+
     bashManagerCommand.versionSplitter = manager.packageVersionFormatSplitter;
     bashManagerCommand.command = manager.command;
-    bashManagerCommand.option = commands.filter(w => !w.startsWith("-") && w != bashManagerCommand.command)[0];
+    bashManagerCommand.option = option;
     bashManagerCommand.hasInstallOption = (bashManagerCommand.option == manager.installOption[0]);
     bashManagerCommand.flags = commands.filter(w => w.startsWith("-"));
     bashManagerCommand.arguments= [];
@@ -326,8 +328,10 @@ async function main(){
     log.close();
     //log2.write(smells);
     log2.close();
+    // Relative smells are fine but we are missing a lot of the DL42
     console.log("relative");
     console.log(smells)
+    // The problem with absolute smells is that Hadolint does not report them so the number is much higher for the tool.
     console.log("absolute");
     console.log(absoluteSmells);
 
