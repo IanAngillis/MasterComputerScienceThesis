@@ -27,10 +27,14 @@ export class Analyzer {
             let key: string = (arg.getChild(ding.nodeType.DockerName) as ding.nodeType.DockerOpsValueNode).value;
             let value: string = (arg.getChild(ding.nodeType.DockerLiteral) as ding.nodeType.DockerOpsValueNode) != undefined ? (arg.getChild(ding.nodeType.DockerLiteral) as ding.nodeType.DockerOpsValueNode).value  : "";
             
+            if(value == ""){
+                value = "https://"
+            }
+
             let idx = args.findIndex(x => x.key == key);
 
             if(idx != -1){
-                args = args.splice(idx, 1);
+                args.splice(idx, 1);
             }
 
             args.push({
@@ -56,6 +60,22 @@ export class Analyzer {
                 // }
 
                 let substr: string = "${" + arg.key + "}";
+                let idx: number = str.indexOf(substr);
+
+                if(idx != -1){
+                    str = str.replace(substr, arg.value);
+                    idx = str.indexOf(substr);
+                    stringUpdated = true;
+                }
+            });
+
+            args.forEach(arg => {
+
+                // if(arg.key == str){
+                //     return resolveArgsAndEnvsInString(arg.value);
+                // }
+
+                let substr: string = "$" + arg.key;
                 let idx: number = str.indexOf(substr);
 
                 if(idx != -1){
@@ -138,34 +158,50 @@ export class Analyzer {
          * @param env 
          */
         function addEvnToEnvs(env: ding.nodeType.DockerEnv){
-            // console.log("ENV**");
-            // console.log(env.children);
-            // console.log("*****");
-            //console.log(env);
-            let key: string = (env.getChild(ding.nodeType.DockerName) as ding.nodeType.DockerOpsValueNode).value;
-            let value: string = (env.getChild(ding.nodeType.DockerLiteral) as ding.nodeType.DockerOpsValueNode) != undefined ? (env.getChild(ding.nodeType.DockerLiteral) as ding.nodeType.DockerOpsValueNode).value  : "";
+            let newEnvs: string[]= env.toString().replace(/\n/g, "").replace("ENV", "").split("\\").map(x => x.trim());
 
-            if(key.indexOf("=") != -1 && value == ""){
-                let keyValuePair: string[] = key.split("=");
-                key = keyValuePair[0];
-                value = keyValuePair[1];
-            } else if (key.indexOf("=") != -1 && value != ""){
-                let keyValuePair: string[] = (key + " " + value).split("=");
-                key = keyValuePair[0];
-                value = keyValuePair[1];
-            }
+            newEnvs.forEach(newEnv => {
+                let keyValuePair: string[] = newEnv.split("=");
+                let key: string = keyValuePair[0];
+                let value: string = keyValuePair[1];
+                let idx: number = envs.findIndex(x => x.key == key);
 
-            let idx: number = envs.findIndex(x => x.key == key);
+                if(idx != -1){
+                    envs.splice(idx, 1);
+                }
 
-            if(idx != -1){
-                envs = envs.splice(idx, 1);
-            }
-
-            envs.push({
-                key: key,
-                value: value.replace(/\"/g, ""),
-                updatedInLayer: env.layer
+                envs.push({
+                    key: key,
+                    value: value,
+                    updatedInLayer: env.layer
+                });
             });
+
+
+            // //let key: string = (env.getChild(ding.nodeType.DockerName) as ding.nodeType.DockerOpsValueNode).value;
+            // //let value: string = (env.getChild(ding.nodeType.DockerLiteral) as ding.nodeType.DockerOpsValueNode) != undefined ? (env.getChild(ding.nodeType.DockerLiteral) as ding.nodeType.DockerOpsValueNode).value  : "";
+
+            // if(key.indexOf("=") != -1 && value == ""){
+            //     let keyValuePair: string[] = key.split("=");
+            //     key = keyValuePair[0];
+            //     value = keyValuePair[1];
+            // } else if (key.indexOf("=") != -1 && value != ""){
+            //     let keyValuePair: string[] = (key + " " + value).split("=");
+            //     key = keyValuePair[0];
+            //     value = keyValuePair[1];
+            // }
+
+            // let idx: number = envs.findIndex(x => x.key == key);
+
+            // if(idx != -1){
+            //     envs = envs.splice(idx, 1);
+            // }
+
+            // envs.push({
+            //     key: key,
+            //     value: value.replace(/\"/g, ""),
+            //     updatedInLayer: env.layer
+            // });
         }
 
         function addExportToExports(exp: string[], node: ding.nodeType.BashCommand){
@@ -182,7 +218,7 @@ export class Analyzer {
             let idx: number = exports.findIndex(x => x.key == key);
 
             if(idx != -1){
-                exports = exports.splice(idx, 1);
+                exports.splice(idx, 1);
             }
 
             exports.push({
@@ -190,7 +226,6 @@ export class Analyzer {
                 value: value,
                 updateInLayer: node.layer
             });
-
         }
 
         function removeExtensions(str: string): string | undefined{
@@ -315,7 +350,7 @@ export class Analyzer {
             wget.forEach(arg => {
                 let cleanArg: string = resolveArgsAndEnvsInString(arg).replace(/\"/g, "").replace(/\'/g, "");
 
-                if(cleanArg.startsWith("https") || cleanArg.startsWith("http")){
+                if(cleanArg.startsWith("https://") || cleanArg.startsWith("http://") || cleanArg.startsWith("ftp://")){
                     let splitArg: string[] = cleanArg.split("/");
                     let file: string = splitArg[splitArg.length - 1];
 
@@ -342,7 +377,7 @@ export class Analyzer {
             curl.forEach(arg => {
                 let cleanArg: string = resolveArgsAndEnvsInString(arg).replace(/\"/g, "").replace(/\'/g, "");
 
-                if(cleanArg.startsWith("https") || cleanArg.startsWith("http")){
+                if(cleanArg.startsWith("https://") || cleanArg.startsWith("http://") || cleanArg.startsWith("ftp://")){
                     let splitArg: string[] = cleanArg.split("/");
                     let file: string = splitArg[splitArg.length - 1];
                     
@@ -388,6 +423,13 @@ export class Analyzer {
                     if(node.parent.parent.children[1].type == 'BASH-CONDITION-BINARY-OP'){
                         if(node.parent.parent.children[1].toString() == "|"){
 
+                            let command = node.parent.parent.children[0].toString().toString().replace(/\r?\n/g, " ").replace(/\\/g, " ").split(" ").filter(w => w != "").filter(w => w != "sudo").filter(w => !w.startsWith("-"));
+
+                            // Piped command is not wget or curl
+                            if(!command.includes("wget") && !command.includes("/usr/bin/wget") && !command.includes("curl")){
+                                return;
+                            }
+
                             let lastFile : {
                                 absolutePath: string;
                                 file: string;
@@ -396,7 +438,12 @@ export class Analyzer {
                                 deletedLayer?: number;
                             } = files[files.length - 1];
 
-                            let command = node.parent.parent.children[0].toString().toString().replace(/\r?\n/g, " ").replace(/\\/g, " ").split(" ").filter(w => w != "").filter(w => w != "sudo").filter(w => !w.startsWith("-"));
+                            // if(lastFile == undefined){
+                            //     console.log("piped file not found");
+                            //     return;
+                            // }
+
+
                             command.forEach(arg => {
                                 let resolvedFileName: string = resolveArgsAndEnvsInString(arg.replace(/\"/g, ""));
 
@@ -492,14 +539,15 @@ export class Analyzer {
             commands.forEach(command => {
                 // we are under the assumption that the only word that could come before the actual command is sudo. Thus after removing sudo, we assume the first wordt to be the command
                 let splitCommand: string[] = command.toString().replace(/\r?\n/g, " ").replace(/\\/g, " ").split(" ").filter(w => w != "").filter(w => w != "sudo");
-                
                 switch(splitCommand[0]){
                     case "wget":
                         //console.log("RUN-WGET");
                         resolveWget(splitCommand, command);
                         break;
+                    case "/usr/bin/wget":
+                        resolveWget(splitCommand, command);
+                        break;
                     case "tar":
-                        //infoDump();
                         //console.log("RUN-TAR");
                         resolveTar(splitCommand, command);
                     case "curl":
@@ -536,12 +584,10 @@ export class Analyzer {
                     addArgToArgs(instruction as ding.nodeType.DockerArg);
                     break;
                 case 'DOCKER-ENV':
-                    //console.log("ENV");
                     //console.log(instruction.toString());
                     addEvnToEnvs(instruction as ding.nodeType.DockerEnv);
                     break;
                 case 'DOCKER-ADD':
-                    //console.log("ADD");
                     resolveAddStatement(instruction as ding.nodeType.DockerAdd);
                     break;
                 case 'DOCKER-COPY':
@@ -634,7 +680,7 @@ export class Analyzer {
 
         // Needs to be enabled to find smells
         analyseResult();
-        //infoDump();
+        infoDump();
     }
     
 }

@@ -11,3 +11,6 @@ Discussion points:
 
 Program:
 	- Does it matter where the extracted file ends up? It's not like when something is extracted that it's going to be a temporary file?
+
+
+	D:\Workspaces\MasterComputerScienceThesis\data\chrashedfiles\0d2f44f1b8b10272d5ac318d05f37ee1cabdfa89.Dockerfile Check this file for errors
