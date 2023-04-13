@@ -1,0 +1,4 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\f79f26f28a93f35a6cd930ba60c46f720cc6f701.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\f79f26f28a93f35a6cd930ba60c46f720cc6f701.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\f79f26f28a93f35a6cd930ba60c46f720cc6f701.Dockerfile:8 SC2046 [1m[93mwarning[0m: Quote this to prevent word splitting.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\f79f26f28a93f35a6cd930ba60c46f720cc6f701.Dockerfile:8 DL3016 [1m[93mwarning[0m: Pin versions in npm. Instead of `npm install <package>` use `npm install <package>@<version>`

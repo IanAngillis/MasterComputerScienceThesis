@@ -1,0 +1,4 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\fca7c360b3659e3a00471ee952fdcd6b00785667.Dockerfile:9 DL3013 [1m[93mwarning[0m: Pin versions in pip. Instead of `pip install <package>` use `pip install <package>==<version>` or `pip install --requirement <requirements file>`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\fca7c360b3659e3a00471ee952fdcd6b00785667.Dockerfile:9 SC1091 [92minfo[0m: Not following: File not included in mock.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\fca7c360b3659e3a00471ee952fdcd6b00785667.Dockerfile:18 SC3003 [1m[93mwarning[0m: In POSIX sh, $'..' is undefined.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\fca7c360b3659e3a00471ee952fdcd6b00785667.Dockerfile:28 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

@@ -1,0 +1,5 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\502b9de122b04329f4a68aab5adcf5b8c25e5d60.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\502b9de122b04329f4a68aab5adcf5b8c25e5d60.Dockerfile:5 DL3005 [1m[91merror[0m: Do not use apt-get dist-upgrade
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\502b9de122b04329f4a68aab5adcf5b8c25e5d60.Dockerfile:5 DL4006 [1m[93mwarning[0m: Set the SHELL option -o pipefail before RUN with a pipe in it. If you are using /bin/sh in an alpine image or if your shell is symlinked to busybox then consider explicitly setting your SHELL to /bin/ash, or disable this check
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\502b9de122b04329f4a68aab5adcf5b8c25e5d60.Dockerfile:5 SC3010 [1m[93mwarning[0m: In POSIX sh, [[ ]] is undefined.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\502b9de122b04329f4a68aab5adcf5b8c25e5d60.Dockerfile:5 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`

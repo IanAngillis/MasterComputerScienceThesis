@@ -1,0 +1,13 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:7 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:8 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:30 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:31 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:31 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:35 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:35 DL3047 [92minfo[0m: Avoid use of wget without progress bar. Use `wget --progress=dot:giga <url>`. Or consider using `-q` or `-nv` (shorthands for `--quiet` or `--no-verbose`).
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:36 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:41 DL3047 [92minfo[0m: Avoid use of wget without progress bar. Use `wget --progress=dot:giga <url>`. Or consider using `-q` or `-nv` (shorthands for `--quiet` or `--no-verbose`).
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:42 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:47 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:50 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7c12942fa115a406156e6e7dca22eca0b6c49854.Dockerfile:51 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

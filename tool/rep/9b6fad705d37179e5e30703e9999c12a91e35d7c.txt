@@ -1,0 +1,2 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\9b6fad705d37179e5e30703e9999c12a91e35d7c.Dockerfile:7 DL3041 [1m[93mwarning[0m: Specify version with `dnf install -y <package>-<version>`.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\9b6fad705d37179e5e30703e9999c12a91e35d7c.Dockerfile:13 DL4006 [1m[93mwarning[0m: Set the SHELL option -o pipefail before RUN with a pipe in it. If you are using /bin/sh in an alpine image or if your shell is symlinked to busybox then consider explicitly setting your SHELL to /bin/ash, or disable this check

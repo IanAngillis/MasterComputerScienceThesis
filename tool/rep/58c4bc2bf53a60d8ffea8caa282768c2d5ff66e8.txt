@@ -1,0 +1,8 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\58c4bc2bf53a60d8ffea8caa282768c2d5ff66e8.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\58c4bc2bf53a60d8ffea8caa282768c2d5ff66e8.Dockerfile:14 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\58c4bc2bf53a60d8ffea8caa282768c2d5ff66e8.Dockerfile:14 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\58c4bc2bf53a60d8ffea8caa282768c2d5ff66e8.Dockerfile:26 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\58c4bc2bf53a60d8ffea8caa282768c2d5ff66e8.Dockerfile:28 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\58c4bc2bf53a60d8ffea8caa282768c2d5ff66e8.Dockerfile:29 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\58c4bc2bf53a60d8ffea8caa282768c2d5ff66e8.Dockerfile:32 DL3001 [92minfo[0m: For some bash commands it makes no sense running them in a Docker container like `ssh`, `vim`, `shutdown`, `service`, `ps`, `free`, `top`, `kill`, `mount`, `ifconfig`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\58c4bc2bf53a60d8ffea8caa282768c2d5ff66e8.Dockerfile:35 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

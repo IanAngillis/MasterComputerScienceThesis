@@ -1,0 +1,2 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\18205783b93ddb6928d0421653a34f3dba3fee6e.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\18205783b93ddb6928d0421653a34f3dba3fee6e.Dockerfile:3 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`

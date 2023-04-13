@@ -1,0 +1,4 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\95ab7d9e34f2b71e01588c1e6e1a46d7172a0a0f.Dockerfile:5 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\95ab7d9e34f2b71e01588c1e6e1a46d7172a0a0f.Dockerfile:6 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\95ab7d9e34f2b71e01588c1e6e1a46d7172a0a0f.Dockerfile:6 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\95ab7d9e34f2b71e01588c1e6e1a46d7172a0a0f.Dockerfile:11 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

@@ -1,0 +1,1 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\29ee6e91b714e99980f9b4f687db3e4074030ebc.Dockerfile:2 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`

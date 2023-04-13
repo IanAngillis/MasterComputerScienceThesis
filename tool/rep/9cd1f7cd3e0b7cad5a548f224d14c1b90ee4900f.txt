@@ -1,0 +1,2 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\9cd1f7cd3e0b7cad5a548f224d14c1b90ee4900f.Dockerfile:6 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\9cd1f7cd3e0b7cad5a548f224d14c1b90ee4900f.Dockerfile:13 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`

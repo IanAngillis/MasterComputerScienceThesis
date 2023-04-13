@@ -1,0 +1,2 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\aae12d886a7735f2bea0626c9abc45a938949b10.Dockerfile:14 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\aae12d886a7735f2bea0626c9abc45a938949b10.Dockerfile:22 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

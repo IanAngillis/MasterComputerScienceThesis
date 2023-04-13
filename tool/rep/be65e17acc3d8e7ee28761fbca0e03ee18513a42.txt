@@ -1,0 +1,2 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\be65e17acc3d8e7ee28761fbca0e03ee18513a42.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\be65e17acc3d8e7ee28761fbca0e03ee18513a42.Dockerfile:4 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

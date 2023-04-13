@@ -161,16 +161,27 @@ function bashManagerCommandBuilder(node, manager) {
     });
     return bashManagerCommand;
 }
+function addAbsoluteSmell(lst, rule) {
+    var idx = lst.findIndex(function (s) { return s.rule == rule.code; });
+    if (idx == -1) {
+        lst.push({ rule: rule.code, times: 1 });
+    }
+    else {
+        lst[idx].times += 1;
+    }
+}
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, log, log2, packageManagers, folder, testFolder, binnacle, crashed, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, log, log2, smells, absoluteSmells, packageManagers, folder, testFolder, binnacle, crashed, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
                     sum = 0;
                     log = fs.createWriteStream("./logs/" + createLogName(), { flags: 'a' });
                     log2 = fs.createWriteStream("./logs/" + "error_files", { flags: 'a' });
+                    smells = [];
+                    absoluteSmells = [];
                     packageManagers = [];
                     fs.readdir("./reports", function (err, files) {
                         if (err)
@@ -187,7 +198,7 @@ function main() {
                     testFolder = "./../data/testfiles/";
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
-                    currentFolder = crashed;
+                    currentFolder = folder;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
@@ -247,6 +258,7 @@ function main() {
                                                                     log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
                                                                     fileReport_1 += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                                     set_1.add(rule.code);
+                                                                    addAbsoluteSmell(absoluteSmells, rule);
                                                                     requiresVersionPinning = true;
                                                                 }
                                                             }
@@ -269,6 +281,7 @@ function main() {
                                                             });
                                                             if (!nonInteractionFlagIsPresent) {
                                                                 set_1.add(rule.code);
+                                                                addAbsoluteSmell(absoluteSmells, rule);
                                                                 fileReport_1 += "\tVOILATION DETECTED: " + noninteractionflag_1.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                             }
                                                         });
@@ -285,6 +298,7 @@ function main() {
                                                                 if (c.flags.find(function (flag) { return flag == installFlag_1.value; }) != undefined) {
                                                                 }
                                                                 else {
+                                                                    addAbsoluteSmell(absoluteSmells, rule);
                                                                     set_1.add(rule.code);
                                                                     fileReport_1 += "\tVOILATION DETECTED: " + installFlag_1.value + " flag missing at position:" + c.position.toString() + " for command " + c.command + "\n";
                                                                 }
@@ -303,6 +317,7 @@ function main() {
                                                             if (!hasCleanCacheCommand) {
                                                                 set_1.add(rule.code);
                                                                 fileReport_1 += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
+                                                                addAbsoluteSmell(absoluteSmells, rule);
                                                             }
                                                         });
                                                     }
@@ -318,6 +333,7 @@ function main() {
                                                                 found_1 = true;
                                                             }
                                                             else {
+                                                                addAbsoluteSmell(absoluteSmells, rule);
                                                                 set_1.add(rule.code);
                                                                 fileReport_1 += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                                             }
@@ -332,6 +348,15 @@ function main() {
                                     fileReport_1 += "RULE DETECTIONS: ";
                                     fileReport_1 += Array.from(set_1).join(" ");
                                     fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport_1);
+                                    set_1.forEach(function (smell) {
+                                        var idx = smells.findIndex(function (s) { return s.rule == smell; });
+                                        if (idx == -1) {
+                                            smells.push({ rule: smell, times: 1 });
+                                        }
+                                        else {
+                                            smells[idx].times += 1;
+                                        }
+                                    });
                                     return [3, 5];
                                 case 4:
                                     _f = _g.sent();
@@ -376,6 +401,10 @@ function main() {
                 case 14:
                     log.close();
                     log2.close();
+                    console.log("relative");
+                    console.log(smells);
+                    console.log("absolute");
+                    console.log(absoluteSmells);
                     return [2];
             }
         });

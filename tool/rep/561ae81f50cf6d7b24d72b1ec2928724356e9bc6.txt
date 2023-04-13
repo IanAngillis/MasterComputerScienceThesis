@@ -1,0 +1,4 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\561ae81f50cf6d7b24d72b1ec2928724356e9bc6.Dockerfile:3 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\561ae81f50cf6d7b24d72b1ec2928724356e9bc6.Dockerfile:10 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\561ae81f50cf6d7b24d72b1ec2928724356e9bc6.Dockerfile:16 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\561ae81f50cf6d7b24d72b1ec2928724356e9bc6.Dockerfile:22 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

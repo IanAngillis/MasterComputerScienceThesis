@@ -1,0 +1,1 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\21c342a242e02a9d74a2549a3c6a2c64038c418a.Dockerfile:3 DL3016 [1m[93mwarning[0m: Pin versions in npm. Instead of `npm install <package>` use `npm install <package>@<version>`

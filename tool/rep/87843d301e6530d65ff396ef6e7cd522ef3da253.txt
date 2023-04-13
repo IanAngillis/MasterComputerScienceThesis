@@ -1,0 +1,1 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\87843d301e6530d65ff396ef6e7cd522ef3da253.Dockerfile:3 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

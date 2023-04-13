@@ -1,0 +1,2 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\140c731ee7db5ee5dfdbdb15dc8d05e3eea758ed.Dockerfile:6 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\140c731ee7db5ee5dfdbdb15dc8d05e3eea758ed.Dockerfile:7 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

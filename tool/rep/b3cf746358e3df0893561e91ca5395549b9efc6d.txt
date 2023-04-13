@@ -1,0 +1,1 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\b3cf746358e3df0893561e91ca5395549b9efc6d.Dockerfile:1:9 unexpected 'h' expecting '#', '\', ADD, ARG, CMD, COPY, ENTRYPOINT, ENV, EXPOSE, FROM, HEALTHCHECK, LABEL, MAINTAINER, ONBUILD, RUN, SHELL, STOPSIGNAL, USER, VOLUME, WORKDIR, a pragma, at least one space, or end of input 

@@ -75,6 +75,17 @@ function bashManagerCommandBuilder(node: ding.nodeType.DockerOpsNodeType, manage
     return bashManagerCommand;
 }
 
+function addAbsoluteSmell(lst, rule){
+    let idx: number = lst.findIndex(s => s.rule == rule.code);
+
+    if(idx == -1){
+        lst.push({rule: rule.code, times:1});
+    } else {
+        lst[idx].times += 1;
+    }
+}
+
+
   // TODO 
   //    - abstract into a module? 
   //    - Manually select and verify some files (ground truth dataset is nice, I guess)
@@ -88,6 +99,8 @@ async function main(){
     let sum: number = 0;
     let log : fs.WriteStream = fs.createWriteStream("./logs/" + createLogName(), {flags: 'a'});
     let log2: fs.WriteStream = fs.createWriteStream("./logs/" + "error_files", {flags: 'a'});
+    let smells: {rule: string, times: number}[] = [];
+    let absoluteSmells: {rule: string, times: number}[] = [];
 
     let packageManagers: PackageManager[] = [];
     // can be in a config object
@@ -112,7 +125,7 @@ async function main(){
     let crashed = "./../data/chrashedfiles/";
 
     // Variable that sets folder for program
-    let currentFolder = crashed;
+    let currentFolder = folder;
 
     let analyzer: Analyzer = new Analyzer();
 
@@ -175,6 +188,7 @@ async function main(){
                                          log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
                                          fileReport += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                          set.add(rule.code);
+                                         addAbsoluteSmell(absoluteSmells, rule);
                                          requiresVersionPinning = true;
                                     }
                                 }else {
@@ -202,6 +216,7 @@ async function main(){
 
                                 if(!nonInteractionFlagIsPresent){
                                     set.add(rule.code);
+                                    addAbsoluteSmell(absoluteSmells, rule);
                                     fileReport += "\tVOILATION DETECTED: " + noninteractionflag.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                     //console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
                                 }
@@ -226,6 +241,7 @@ async function main(){
                                     if(c.flags.find(flag => flag == installFlag.value) != undefined){
                                         //console.log("clean cache flag found");
                                     }else{
+                                        addAbsoluteSmell(absoluteSmells, rule);
                                         set.add(rule.code);
                                         fileReport += "\tVOILATION DETECTED: " + installFlag.value + " flag missing at position:" + c.position.toString() + " for command " + c.command +  "\n";
                                     }
@@ -251,7 +267,7 @@ async function main(){
                                     //console.log("No Clean cache command found for: " + manager.command);
                                     set.add(rule.code);
                                     fileReport += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
-
+                                    addAbsoluteSmell(absoluteSmells, rule);
                                     
                                 }
                             });
@@ -271,6 +287,7 @@ async function main(){
                                     found = true;
                                 } else {
                                     //console.log("found NO-RECOMMENDS issue");
+                                    addAbsoluteSmell(absoluteSmells, rule);
                                     set.add(rule.code);
                                     fileReport += "\tVOILATION DETECTED: No " + norecommendsflag.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                 }
@@ -288,6 +305,17 @@ async function main(){
         fileReport += "RULE DETECTIONS: ";
         fileReport += Array.from(set).join(" ");
         fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
+
+        set.forEach(smell => {
+            let idx: number = smells.findIndex(s => s.rule == smell);
+
+            if(idx == - 1){
+                smells.push({rule: smell, times: 1});
+            } else {
+                smells[idx].times += 1;
+            }
+        });
+
     } catch{
         log2.write(dirent.name + "\n");
         console.log("ERROR");
@@ -296,7 +324,12 @@ async function main(){
     }
 
     log.close();
+    //log2.write(smells);
     log2.close();
+    console.log("relative");
+    console.log(smells)
+    console.log("absolute");
+    console.log(absoluteSmells);
 
     // packageManagers.forEach(x => {
     //     let cmd = x.command;

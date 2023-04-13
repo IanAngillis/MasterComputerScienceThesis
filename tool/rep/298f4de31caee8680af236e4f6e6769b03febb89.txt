@@ -1,0 +1,2 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\298f4de31caee8680af236e4f6e6769b03febb89.Dockerfile:14 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\298f4de31caee8680af236e4f6e6769b03febb89.Dockerfile:14 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.

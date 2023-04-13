@@ -1,0 +1,5 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\fb2b3e3738bf7da09183d099e3b45624b7490813.Dockerfile:14 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\fb2b3e3738bf7da09183d099e3b45624b7490813.Dockerfile:14 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\fb2b3e3738bf7da09183d099e3b45624b7490813.Dockerfile:20 DL3013 [1m[93mwarning[0m: Pin versions in pip. Instead of `pip install <package>` use `pip install <package>==<version>` or `pip install --requirement <requirements file>`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\fb2b3e3738bf7da09183d099e3b45624b7490813.Dockerfile:24 DL3000 [1m[91merror[0m: Use absolute WORKDIR
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\fb2b3e3738bf7da09183d099e3b45624b7490813.Dockerfile:51 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

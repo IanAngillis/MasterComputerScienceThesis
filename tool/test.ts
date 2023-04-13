@@ -1,13 +1,28 @@
-function removeExtensions(str: string): string | undefined{
-    let substrings: string[] = str.split(".");
-    for(let i: number = 0; i < substrings.length; i++){
-        if(substrings[i] == "tar"){
-            substrings.splice(i);
-            return substrings.join(".");
-        }
+import * as fs from 'fs';
+
+async function main(){
+    // Folder which holds the data - should expand to folders eventually
+    let folder = "./../data/dockerfiles/";
+    let testFolder = "./../data/testfiles/";
+    let binnacle = "./../data/binnacle/github/deduplicated-sources/";
+    let crashed = "./../data/chrashedfiles/";
+
+    // Variable that sets folder for program
+    let currentFolder = folder;
+
+    const dir = await fs.promises.opendir(currentFolder);
+
+    for await (const dirent of dir){
+        const data = fs.readFileSync(fs.join(folder, dirent), 'utf-8');
+        const contents = data.split(/\r?\n/).filter(w => w != "");
+
+        contents.forEach(line => {
+            let rule: string = line.split(" ")[1];
+            
+            console.log(rule);
+        });
+    
     }
 }
 
-
-let teststring: string = "/go${GOVERSION}.linux-amd64.tar.gz";
-console.log(removeExtensions(teststring));
+main();

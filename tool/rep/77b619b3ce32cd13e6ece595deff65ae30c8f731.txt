@@ -1,0 +1,5 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\77b619b3ce32cd13e6ece595deff65ae30c8f731.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\77b619b3ce32cd13e6ece595deff65ae30c8f731.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\77b619b3ce32cd13e6ece595deff65ae30c8f731.Dockerfile:5 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\77b619b3ce32cd13e6ece595deff65ae30c8f731.Dockerfile:6 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\77b619b3ce32cd13e6ece595deff65ae30c8f731.Dockerfile:7 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

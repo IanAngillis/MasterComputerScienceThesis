@@ -1,0 +1,7 @@
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\08b398aefc47952324a4cdf2b09e72595c15201f.Dockerfile:19 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\08b398aefc47952324a4cdf2b09e72595c15201f.Dockerfile:20 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\08b398aefc47952324a4cdf2b09e72595c15201f.Dockerfile:23 DL3013 [1m[93mwarning[0m: Pin versions in pip. Instead of `pip install <package>` use `pip install <package>==<version>` or `pip install --requirement <requirements file>`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\08b398aefc47952324a4cdf2b09e72595c15201f.Dockerfile:23 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\08b398aefc47952324a4cdf2b09e72595c15201f.Dockerfile:23 DL3042 [1m[93mwarning[0m: Avoid use of cache directory with pip. Use `pip install --no-cache-dir <package>`
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\08b398aefc47952324a4cdf2b09e72595c15201f.Dockerfile:40 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.
+D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\08b398aefc47952324a4cdf2b09e72595c15201f.Dockerfile:45 DL3002 [1m[93mwarning[0m: Last USER should not be root

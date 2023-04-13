@@ -371,6 +371,24 @@ export class Analyzer {
         
         function resolveCurl(curl: string[],  node: ding.nodeType.BashCommand){
             // Clear all the flags
+
+            for(let i: number = 0; i < curl.length; i++){
+                if(curl[i] == "-o" || curl[i]=="--output"){
+                    let absoluteFile: string = curl[i+1];
+                    let absoluteFileSplit: string[] = absoluteFile.split("/");
+                    let file: string = absoluteFileSplit[absoluteFileSplit.length - 1];
+
+                    files.push({
+                        absolutePath: absoluteFile,
+                        file: file, 
+                        introducedLayer: node.layer,
+                        introducedBy: "BUILT-IN"
+                    });
+
+                    return;
+                }
+            }
+
             curl = curl.filter(w => !w.startsWith("-"));
 
             //Check for directory?
@@ -467,7 +485,7 @@ export class Analyzer {
                 files.forEach(file => {
                     let resolvedFileName = resolveArgsAndEnvsInString(arg);
 
-                    if(resolvedFileName == file.file && file.absolutePath == containerpath  + "/" + resolvedFileName){
+                    if(resolvedFileName == file.absolutePath || (resolvedFileName == file.file && file.absolutePath == containerpath  + "/" + resolvedFileName)){
                         file.deletedLayer = node.layer;
                         matchFound = true;
                     } else if(resolvedFileName == file.file && file.absolutePath != containerpath + "/" + resolvedFileName) {
@@ -640,23 +658,23 @@ export class Analyzer {
                 }else if (file.introducedLayer != undefined && file.extractedLayer != undefined && file.deletedLayer == undefined){
                     switch(file.introducedBy){
                         case "ADD":
-                            fileReport += "\tVOILATION DETECTED: ADD introduced compressed file which was decompressed:" + file.file + "\n";
+                            fileReport += "\tVOILATION DETECTED: ADD introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
                             set.add("TF0001");
                             break;
                         case "COPY":
-                            fileReport += "\tVOILATION DETECTED: COPY introduced compressed file which was decompressed:" + file.file + "\n";
+                            fileReport += "\tVOILATION DETECTED: COPY introduced compressed file which was decompressed  but not deleted:" + file.file + "\n";
                             set.add("TF0002");
                             break;
                         case "BUILT-IN":
-                            fileReport += "\tVOILATION DETECTED: BUILT-IN introduced compressed file which was decompressed:" + file.file + "\n";
+                            fileReport += "\tVOILATION DETECTED: BUILT-IN introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
                             set.add("TF0003");
                             break;
                     }
                 }
 
                 if(file.introducedLayer != undefined && file.introducedBy == "ADD" && file.urlOrigin && file.deletedLayer != undefined){
-                    console.log("ERROR ON TEMP FILE ADDING COMPRESSED FILE FROM URL THROUGH ADD");
-                    
+                    fileReport += "\tVOILATION DETECTED: compressed file introduced from URL through ADD :" + file.file + "\n";
+                    set.add("TF0004");
                 }
             });
         }
@@ -680,7 +698,7 @@ export class Analyzer {
 
         // Needs to be enabled to find smells
         analyseResult();
-        infoDump();
+        //infoDump();
     }
     
 }
