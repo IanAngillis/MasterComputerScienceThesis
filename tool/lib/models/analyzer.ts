@@ -630,14 +630,6 @@ export class Analyzer {
             handleInstruction(dockerInstruction);
         });
 
-        files.forEach(file => {
-            if(file.introducedLayer != undefined && file.deletedLayer != undefined){
-                if(file.introducedLayer != file.deletedLayer){
-                    console.log("TF FILE SMELL DETECTED");
-                }
-            }
-        })
-
         function analyseResult(): void{
             files.forEach(file => {
                 if(file.introducedLayer != undefined && file.deletedLayer != undefined && file.introducedLayer != file.deletedLayer){
@@ -676,6 +668,12 @@ export class Analyzer {
                     fileReport += "\tVOILATION DETECTED: compressed file introduced from URL through ADD :" + file.file + "\n";
                     set.add("TF0004");
                 }
+
+                if(file.introducedLayer != undefined && file.introducedBy == "COPY" && file.extractedLayer != undefined){
+                    fileReport += "\tVOILATION DETECTED: replace COPY and extract statement with ADD :" + file.file + "\n";
+                    set.add("DL3010");
+                    //console.log("DL3010");
+                }
             });
         }
 
@@ -698,7 +696,64 @@ export class Analyzer {
 
         // Needs to be enabled to find smells
         analyseResult();
+        //console.log(fileReport);
         //infoDump();
     }
-    
+
+    consecutiveRunInstructionAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>){
+         /**
+         * Procedure that serves as a hatch for the different kind of Docker instructions, which can all be assumed to be different layers.
+         * @param instruction 
+         */
+         function handleInstruction(instruction: ding.nodeType.DockerOpsNodeType){
+            switch(instruction.type){
+                case'DOCKER-RUN':
+                    let instr: string = instruction.getChild(ding.nodeType.BashScript).toString();
+
+                    if((instr.includes("&&") || instr.includes(";")) && !instr.includes("--mount")){
+                        consecutiveRunInstruction = 0;
+                    } else {
+                        consecutiveRunInstruction += 1;
+
+                        if(consecutiveRunInstruction >= 3){
+                            set.add("MPRUN");
+                        }
+                    }
+                    
+                    break;
+                default:
+                    consecutiveRunInstruction = 0;
+                    break;
+            }
+        }
+
+        let consecutiveRunInstruction: number = 0;
+
+        ast.children.forEach(dockerInstruction => {
+            // Handling each instruction seperately ensures we handle one layer at a time, temporary or final doesn't matter.
+            // Do we need an internal model of the file structure?
+            handleInstruction(dockerInstruction);
+        });
+    }
+
+    lowChurnAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>){
+        /**
+        * Procedure that serves as a hatch for the different kind of Docker instructions, which can all be assumed to be different layers.
+        * @param instruction 
+        */
+        function handleInstruction(instruction: ding.nodeType.DockerOpsNodeType){
+           switch(instruction.type){
+               case'DOCKER-COPY':
+                    console.log(instruction.toString());
+                   break;
+               default:
+                   break;
+           }
+       }
+       ast.children.forEach(dockerInstruction => {
+           // Handling each instruction seperately ensures we handle one layer at a time, temporary or final doesn't matter.
+           // Do we need an internal model of the file structure?
+           handleInstruction(dockerInstruction);
+       });
+   }
 }

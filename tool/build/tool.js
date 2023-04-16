@@ -200,7 +200,7 @@ function main() {
                     testFolder = "./../data/testfiles/";
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
-                    currentFolder = folder;
+                    currentFolder = testFolder;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
@@ -233,6 +233,7 @@ function main() {
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
                                     set_1 = new Set();
                                     analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1);
+                                    analyzer.consecutiveRunInstructionAnalysis(ast, fileReport_1, set_1);
                                     bashManagerCommands_1 = [];
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {

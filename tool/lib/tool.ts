@@ -7,6 +7,7 @@ import {PackageManager} from "./models/package-manager";
 import {BashManagerCommand, BashManagerArgs} from './models/tool-types'
 import {allRules as RULES} from './rules';
 import { Rule } from './models/rule.js';
+import { test } from 'node:test';
 
 //Defining constants
 
@@ -127,7 +128,7 @@ async function main(){
     let crashed = "./../data/chrashedfiles/";
 
     // Variable that sets folder for program
-    let currentFolder = folder;
+    let currentFolder = testFolder;
 
     let analyzer: Analyzer = new Analyzer();
 
@@ -149,6 +150,7 @@ async function main(){
         let set: Set<string> = new Set<string>();
         
         analyzer.temporaryFileAnalysis(ast, fileReport, set);
+        analyzer.consecutiveRunInstructionAnalysis(ast, fileReport, set);
 
         // Create Bashamangercommands - intermediary representation
         let bashManagerCommands: BashManagerCommand[] = [];
