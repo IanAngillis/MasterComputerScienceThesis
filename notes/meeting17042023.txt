@@ -1,0 +1,20 @@
+What did I do: 
+    * Show detection rules
+    * Explain predicament with more precise detection
+    * Show results
+    * Ask about dataset
+    * Discuss doubts first session
+
+What answers did I get:
+    * Make sure you explain that your tool is more precise, but it seems fine to consolidate that information  when there is overlap. Check why one tool is able to detect more (or less) than another.
+    * Read paper of Security Smells to get an idea of how to do the verification
+        * It is fine to take a lot of inspiration from it
+    * For the dataset - it is fine to take an existing one
+        * Also try to run it on samples of StackOverflows
+        * Manuel verification on a predetermined sample size. Compare more tools
+    * You don't need to repair all the smells, do the easy ones first
+    * Detect the low-churn smell
+    * Extra: fix up the catalogue.
+    * You can do it first session, check with Coen for second session
+        * Writing background takes the most work
+        * Writing evaluation takes is pretty intuitive.

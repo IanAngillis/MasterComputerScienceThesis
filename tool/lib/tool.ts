@@ -128,7 +128,7 @@ async function main(){
     let crashed = "./../data/chrashedfiles/";
 
     // Variable that sets folder for program
-    let currentFolder = testFolder;
+    let currentFolder = folder;
 
     let analyzer: Analyzer = new Analyzer();
 
