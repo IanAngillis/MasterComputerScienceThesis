@@ -18,3 +18,12 @@ What answers did I get:
     * You can do it first session, check with Coen for second session
         * Writing background takes the most work
         * Writing evaluation takes is pretty intuitive.
+
+
+27042023
+    * Find the alternatives for the json files
+    * Write script to run entire pipeline and string different pieces of code together
+    * Define the low-churn smell
+    * Do the dataset of camilo and run overnight
+    * Look into repairing
+    * Read the paper from Ahmed to check verification
