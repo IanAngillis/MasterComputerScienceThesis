@@ -6,6 +6,7 @@ export declare class PackageManager {
     installOptionFlags: {
         value: string;
         type?: "NO-INTERACTION" | "VERSION-PINNING" | "CLEAN-CACHE" | "NO-RECOMMENDS";
+        alternative?: string;
     }[];
     cleanCacheIsInstallFlag: boolean;
     cleanCacheOption: string[];

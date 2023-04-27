@@ -3,7 +3,7 @@ export class PackageManager{
     packageVersionFormatSplitter: string;
     preInstall: string[];
     installOption: string[];
-    installOptionFlags: {value: string, type?: "NO-INTERACTION"| "VERSION-PINNING" | "CLEAN-CACHE" | "NO-RECOMMENDS"}[];
+    installOptionFlags: {value: string, type?: "NO-INTERACTION"| "VERSION-PINNING" | "CLEAN-CACHE" | "NO-RECOMMENDS", alternative?: string}[];
     cleanCacheIsInstallFlag: boolean;
     cleanCacheOption: string[];
     cleanCacheOptionFlags: string[];

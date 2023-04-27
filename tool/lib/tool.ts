@@ -186,13 +186,13 @@ async function main(){
                             //     console.log(c.arguments);
                             // }
 
-                            console.log(c.arguments);
                             c.arguments.forEach(arg => {
                                 if(arg.search(manager.packageVersionFormatSplitter) == -1 || arg.search(manager.packageVersionFormatSplitter) == 0){
                                     // Check if it is not a requirements.txt file
-                                    if(arg.indexOf(".txt") == -1){
+                                    if(arg.indexOf(".txt") == -1 && arg.indexOf(".rpm") == -1 && !arg.startsWith(".")){
+                                        console.log(arg);
                                          //We report in case that we apt-install from a link, as we should specify the version. We don't do this when it comes from a file.
-                                         log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
+                                         //log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
                                          fileReport += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                          set.add(rule.code);
                                          addAbsoluteSmell(absoluteSmells, rule);
@@ -200,7 +200,6 @@ async function main(){
                                     }
                                 }else {
                                     //console.log("pinned version found");
-                                    console.log("found");
                                 }
                             });
                         });
@@ -210,14 +209,22 @@ async function main(){
                 case "NO-INTERACTION":
                     if(manager!=null){
                         let noninteractionflag = manager.installOptionFlags.find(flag => flag.type == "NO-INTERACTION");
+                        if(rule.code == "DL3034"){
+                            console.log(rule);
+                            console.log(noninteractionflag.alternative);
+                        }
+                        
                         //console.log(noninteractionflag.value);
                         if(noninteractionflag != undefined){
                             bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach( c => {
-
+                                // console.log(c.flags);
+                                // console.log(c.source.toString());
+                                // console.log(noninteractionflag.value);
                                 let nonInteractionFlagIsPresent = false;
                                 c.flags.forEach(flag => {
-                                    if(flag == noninteractionflag.value){
+                                    if(flag == noninteractionflag.value || flag == noninteractionflag.alternative|| flag.includes(noninteractionflag.value) || flag.includes(noninteractionflag.value.replace("-", ""))){
                                         //console.log("noninteractionflag found");
+                                        console.log(noninteractionflag.alternative);
                                         nonInteractionFlagIsPresent = true;
                                     }
                                 });
@@ -290,8 +297,8 @@ async function main(){
                         if(norecommendsflag != undefined){
                             let found = false;
                             bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach( c => {
-                                console.log(norecommendsflag.value);
-                                console.log(c.arguments);
+                                // console.log(norecommendsflag.value);
+                                // console.log(c.arguments);
                                 if(c.flags.find(arg => arg == norecommendsflag.value) != undefined){
                                     //console.log("Recommends found");
                                     found = true;

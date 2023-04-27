@@ -1,7 +1,6 @@
 Smell DL3008
 Detected by Hadolint and not tool: 
 2372f3ba92618b36fcec40d47995dd16c282d9df.txt
-f5af22ad1ea94bac8a6e9584499e6e28ce74608d.txt
 Detected by Tool and not Hadolint: 
 009a89c9164f0d59f86b298486499daabd2cbc3b.txt
 018b9802f8e95a4291715c8d21f2ec6213068d27.txt

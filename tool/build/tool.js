@@ -256,11 +256,10 @@ function main() {
                                                 else {
                                                     bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                         var requiresVersionPinning = false;
-                                                        console.log(c.arguments);
                                                         c.arguments.forEach(function (arg) {
                                                             if (arg.search(manager.packageVersionFormatSplitter) == -1 || arg.search(manager.packageVersionFormatSplitter) == 0) {
-                                                                if (arg.indexOf(".txt") == -1) {
-                                                                    log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
+                                                                if (arg.indexOf(".txt") == -1 && arg.indexOf(".rpm") == -1 && !arg.startsWith(".")) {
+                                                                    console.log(arg);
                                                                     fileReport_1 += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                                     set_1.add(rule.code);
                                                                     addAbsoluteSmell(absoluteSmells, rule);
@@ -268,7 +267,6 @@ function main() {
                                                                 }
                                                             }
                                                             else {
-                                                                console.log("found");
                                                             }
                                                         });
                                                     });
@@ -277,11 +275,16 @@ function main() {
                                             case "NO-INTERACTION":
                                                 if (manager != null) {
                                                     var noninteractionflag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "NO-INTERACTION"; });
+                                                    if (rule.code == "DL3034") {
+                                                        console.log(rule);
+                                                        console.log(noninteractionflag_1.alternative);
+                                                    }
                                                     if (noninteractionflag_1 != undefined) {
                                                         bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                             var nonInteractionFlagIsPresent = false;
                                                             c.flags.forEach(function (flag) {
-                                                                if (flag == noninteractionflag_1.value) {
+                                                                if (flag == noninteractionflag_1.value || flag == noninteractionflag_1.alternative || flag.includes(noninteractionflag_1.value) || flag.includes(noninteractionflag_1.value.replace("-", ""))) {
+                                                                    console.log(noninteractionflag_1.alternative);
                                                                     nonInteractionFlagIsPresent = true;
                                                                 }
                                                             });
@@ -335,8 +338,6 @@ function main() {
                                                     if (norecommendsflag_1 != undefined) {
                                                         var found_1 = false;
                                                         bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
-                                                            console.log(norecommendsflag_1.value);
-                                                            console.log(c.arguments);
                                                             if (c.flags.find(function (arg) { return arg == norecommendsflag_1.value; }) != undefined) {
                                                                 found_1 = true;
                                                             }
