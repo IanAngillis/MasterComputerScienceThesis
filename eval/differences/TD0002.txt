@@ -1,0 +1,6 @@
+Smell TD0002
+Detected by Hadolint and not tool: 
+
+Detected by Tool and not Hadolint: 
+74ddf5ce54c6eed9e980a3b6cf5d12df589aed1a.txt
+efabe3f94c1cf40df30fc1e11bf2e991b5ea0a8c.txt

@@ -4,7 +4,7 @@ export default {
     code: "DL3036",
     message: "Use zypper clean to clean cache",
     detection: {
-        manager: "yum",
+        manager: "zypper",
         type: "CLEAN-CACHE"
     }
 } as Rule

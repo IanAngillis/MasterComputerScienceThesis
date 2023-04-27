@@ -10,3 +10,12 @@ downloaded with grep etc...?)
 
 //TODO
 - TD Low churn instructions- DL 4001 -- either use wget or curl, but not both
+
+
+//TODO -- 
+
+1. Write system to get files that have weren't detected by both systems.
+2. Write detection for the low-churn system
+3. Cross check the files for which the smells give a different amount
+4. Check any way to have better detection for temp smells
+

@@ -175,13 +175,14 @@ function addAbsoluteSmell(lst, rule) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, log, log2, smells, absoluteSmells, packageManagers, folder, testFolder, binnacle, crashed, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, log, log2, mapped_tool_smells, smells, absoluteSmells, packageManagers, folder, testFolder, binnacle, crashed, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
                     sum = 0;
                     log = fs.createWriteStream("./logs/" + createLogName(), { flags: 'a' });
                     log2 = fs.createWriteStream("./logs/" + "error_files", { flags: 'a' });
+                    mapped_tool_smells = fs.createWriteStream("../eval/mapped_tool_smells.txt", { flags: 'a' });
                     smells = [];
                     absoluteSmells = [];
                     packageManagers = [];
@@ -200,7 +201,7 @@ function main() {
                     testFolder = "./../data/testfiles/";
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
-                    currentFolder = folder;
+                    currentFolder = testFolder;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
@@ -255,8 +256,9 @@ function main() {
                                                 else {
                                                     bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                         var requiresVersionPinning = false;
+                                                        console.log(c.arguments);
                                                         c.arguments.forEach(function (arg) {
-                                                            if (arg.search(manager.packageVersionFormatSplitter) == -1) {
+                                                            if (arg.search(manager.packageVersionFormatSplitter) == -1 || arg.search(manager.packageVersionFormatSplitter) == 0) {
                                                                 if (arg.indexOf(".txt") == -1) {
                                                                     log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
                                                                     fileReport_1 += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
@@ -266,6 +268,7 @@ function main() {
                                                                 }
                                                             }
                                                             else {
+                                                                console.log("found");
                                                             }
                                                         });
                                                     });
@@ -332,10 +335,13 @@ function main() {
                                                     if (norecommendsflag_1 != undefined) {
                                                         var found_1 = false;
                                                         bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
-                                                            if (c.arguments.find(function (arg) { return arg == norecommendsflag_1.value; }) != undefined) {
+                                                            console.log(norecommendsflag_1.value);
+                                                            console.log(c.arguments);
+                                                            if (c.flags.find(function (arg) { return arg == norecommendsflag_1.value; }) != undefined) {
                                                                 found_1 = true;
                                                             }
                                                             else {
+                                                                console.log("not found during rule: " + rule.code);
                                                                 addAbsoluteSmell(absoluteSmells, rule);
                                                                 set_1.add(rule.code);
                                                                 fileReport_1 += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
@@ -350,6 +356,7 @@ function main() {
                                     });
                                     fileReport_1 += "RULE DETECTIONS: ";
                                     fileReport_1 += Array.from(set_1).join(" ");
+                                    mapped_tool_smells.write(dirent.name + "," + Array.from(set_1).join(",") + "\n");
                                     fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport_1);
                                     set_1.forEach(function (smell) {
                                         var idx = smells.findIndex(function (s) { return s.rule == smell; });
@@ -363,6 +370,7 @@ function main() {
                                     return [3, 5];
                                 case 4:
                                     _f = _g.sent();
+                                    mapped_tool_smells.write(dirent.name + "\n");
                                     log2.write(dirent.name + "\n");
                                     console.log("ERROR");
                                     return [3, 5];
@@ -402,6 +410,7 @@ function main() {
                     return [7];
                 case 13: return [7];
                 case 14:
+                    mapped_tool_smells.close();
                     log.close();
                     log2.close();
                     console.log("relative");

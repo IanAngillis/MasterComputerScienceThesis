@@ -47,7 +47,7 @@ var fs = require("fs");
 function main() {
     var _a, e_1, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var folder, testFolder, binnacle, crashed, currentFolder, smells, absoluteSmells, smellList, dir, _loop_1, _d, dir_1, dir_1_1, e_1_1;
+        var folder, testFolder, binnacle, crashed, currentFolder, smells, absoluteSmells, smellList, dir, mapped_hadolint_log, _loop_1, _d, dir_1, dir_1_1, e_1_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -93,6 +93,7 @@ function main() {
                     return [4 /*yield*/, fs.promises.opendir(currentFolder)];
                 case 1:
                     dir = _e.sent();
+                    mapped_hadolint_log = fs.createWriteStream("./mapped-hadolint-smells.txt", { flags: 'a' });
                     _e.label = 2;
                 case 2:
                     _e.trys.push([2, 7, 8, 13]);
@@ -129,6 +130,7 @@ function main() {
                                     smells[idx].times += 1;
                                 }
                             });
+                            mapped_hadolint_log.write(dirent.name + "," + Array.from(set).join(",") + "\n");
                         }
                         finally {
                             _d = true;
@@ -160,6 +162,7 @@ function main() {
                     return [7 /*endfinally*/];
                 case 12: return [7 /*endfinally*/];
                 case 13:
+                    mapped_hadolint_log.close();
                     console.log("relative");
                     console.log(smells.filter(function (r) { return smellList.includes(r.rule); }));
                     console.log("absolute");
@@ -170,6 +173,3 @@ function main() {
     });
 }
 main();
-function join(folder, dirent) {
-    throw new Error('Function not implemented.');
-}

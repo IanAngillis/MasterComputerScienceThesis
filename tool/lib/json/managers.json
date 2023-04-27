@@ -92,7 +92,7 @@
         "packageVersionFormatSplitter":"=",
         "preInstall":[],
         "installOption":["install"],
-        "installOptionFlags":[{"value": "-y", "type":"NO-INTERACTION"},{"value":"--no-recommends", "type":"NO-RECOMMENDS"}],
+        "installOptionFlags":[{"value": "-y", "type":"NO-INTERACTION"}, {"value": "--no-confirm", "type":"NO-INTERACTION"},{"value":"--no-recommends", "type":"NO-RECOMMENDS"}],
         "cleanCacheIsInstallFlag":false,
         "cleanCacheOption":["clean"],
         "cleanCacheOptionFlags": ["-all"],

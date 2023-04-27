@@ -102,6 +102,7 @@ async function main(){
     let sum: number = 0;
     let log : fs.WriteStream = fs.createWriteStream("./logs/" + createLogName(), {flags: 'a'});
     let log2: fs.WriteStream = fs.createWriteStream("./logs/" + "error_files", {flags: 'a'});
+    let mapped_tool_smells: fs.WriteStream = fs.createWriteStream("../eval/mapped_tool_smells.txt", {flags: 'a'});
     let smells: {rule: string, times: number}[] = [];
     let absoluteSmells: {rule: string, times: number}[] = [];
 
@@ -128,7 +129,7 @@ async function main(){
     let crashed = "./../data/chrashedfiles/";
 
     // Variable that sets folder for program
-    let currentFolder = folder;
+    let currentFolder = testFolder;
 
     let analyzer: Analyzer = new Analyzer();
 
@@ -184,8 +185,10 @@ async function main(){
                             // if(dirent.name == "1c1994e05f61bfab226254e9b510e97547e5d148.Dockerfile"){
                             //     console.log(c.arguments);
                             // }
+
+                            console.log(c.arguments);
                             c.arguments.forEach(arg => {
-                                if(arg.search(manager.packageVersionFormatSplitter) == -1){
+                                if(arg.search(manager.packageVersionFormatSplitter) == -1 || arg.search(manager.packageVersionFormatSplitter) == 0){
                                     // Check if it is not a requirements.txt file
                                     if(arg.indexOf(".txt") == -1){
                                          //We report in case that we apt-install from a link, as we should specify the version. We don't do this when it comes from a file.
@@ -197,6 +200,7 @@ async function main(){
                                     }
                                 }else {
                                     //console.log("pinned version found");
+                                    console.log("found");
                                 }
                             });
                         });
@@ -286,10 +290,13 @@ async function main(){
                         if(norecommendsflag != undefined){
                             let found = false;
                             bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach( c => {
-                                if(c.arguments.find(arg => arg == norecommendsflag.value) != undefined){
+                                console.log(norecommendsflag.value);
+                                console.log(c.arguments);
+                                if(c.flags.find(arg => arg == norecommendsflag.value) != undefined){
                                     //console.log("Recommends found");
                                     found = true;
                                 } else {
+                                    console.log("not found during rule: " + rule.code);
                                     //console.log("found NO-RECOMMENDS issue");
                                     addAbsoluteSmell(absoluteSmells, rule);
                                     set.add(rule.code);
@@ -308,6 +315,10 @@ async function main(){
 
         fileReport += "RULE DETECTIONS: ";
         fileReport += Array.from(set).join(" ");
+
+        mapped_tool_smells.write(dirent.name + "," + Array.from(set).join(",") + "\n");
+
+
         fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
 
         set.forEach(smell => {
@@ -321,12 +332,13 @@ async function main(){
         });
 
     } catch{
+        mapped_tool_smells.write(dirent.name + "\n");
         log2.write(dirent.name + "\n");
         console.log("ERROR");
     }
 
     }
-
+    mapped_tool_smells.close();
     log.close();
     //log2.write(smells);
     log2.close();

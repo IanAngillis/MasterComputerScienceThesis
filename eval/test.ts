@@ -47,6 +47,8 @@ async function main(){
 
 
     const dir = await fs.promises.opendir(currentFolder);
+    let mapped_hadolint_log : fs.WriteStream = fs.createWriteStream("./mapped-hadolint-smells.txt", {flags: 'a'});
+
 
     for await (const dirent of dir){
         const data = fs.readFileSync(folder + dirent.name, 'utf-8');
@@ -79,7 +81,11 @@ async function main(){
                 smells[idx].times += 1;
             }
         });
+
+        mapped_hadolint_log.write(dirent.name + "," + Array.from(set).join(",") + "\n");
     }
+
+    mapped_hadolint_log.close();
 
     console.log("relative");
     console.log(smells.filter(r => smellList.includes(r.rule)));
