@@ -13,7 +13,7 @@ let extracted = extractCodeTags(content.toString());
 let num = 0;
 extracted.forEach(code => {
     let shouldBeFile = true;
-    code = code.replace(/&amp;/g, "&");
+    code = code.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "'");
 
     keywords.forEach(keyword => {
         if(keyword == code){
