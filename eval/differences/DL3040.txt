@@ -2,3 +2,4 @@ Smell DL3040
 Detected by Hadolint and not tool: 
 
 Detected by Tool and not Hadolint: 
+99d29f4d96e2e9bdb82120bf5959849f32946ef0.txt

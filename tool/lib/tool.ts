@@ -129,7 +129,7 @@ async function main(){
     let crashed = "./../data/chrashedfiles/";
 
     // Variable that sets folder for program
-    let currentFolder = testFolder;
+    let currentFolder = folder;
 
     let analyzer: Analyzer = new Analyzer();
 
@@ -190,7 +190,6 @@ async function main(){
                                 if(arg.search(manager.packageVersionFormatSplitter) == -1 || arg.search(manager.packageVersionFormatSplitter) == 0){
                                     // Check if it is not a requirements.txt file
                                     if(arg.indexOf(".txt") == -1 && arg.indexOf(".rpm") == -1 && !arg.startsWith(".")){
-                                        console.log(arg);
                                          //We report in case that we apt-install from a link, as we should specify the version. We don't do this when it comes from a file.
                                          //log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
                                          fileReport += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
@@ -209,10 +208,6 @@ async function main(){
                 case "NO-INTERACTION":
                     if(manager!=null){
                         let noninteractionflag = manager.installOptionFlags.find(flag => flag.type == "NO-INTERACTION");
-                        if(rule.code == "DL3034"){
-                            console.log(rule);
-                            console.log(noninteractionflag.alternative);
-                        }
                         
                         //console.log(noninteractionflag.value);
                         if(noninteractionflag != undefined){
@@ -224,7 +219,6 @@ async function main(){
                                 c.flags.forEach(flag => {
                                     if(flag == noninteractionflag.value || flag == noninteractionflag.alternative|| flag.includes(noninteractionflag.value) || flag.includes(noninteractionflag.value.replace("-", ""))){
                                         //console.log("noninteractionflag found");
-                                        console.log(noninteractionflag.alternative);
                                         nonInteractionFlagIsPresent = true;
                                     }
                                 });
@@ -303,7 +297,6 @@ async function main(){
                                     //console.log("Recommends found");
                                     found = true;
                                 } else {
-                                    console.log("not found during rule: " + rule.code);
                                     //console.log("found NO-RECOMMENDS issue");
                                     addAbsoluteSmell(absoluteSmells, rule);
                                     set.add(rule.code);

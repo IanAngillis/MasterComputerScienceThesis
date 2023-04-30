@@ -1,3 +1,3 @@
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\2aa275b8740eaa2a4e6bebbeea6dc2d1ad6b87ce.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\2aa275b8740eaa2a4e6bebbeea6dc2d1ad6b87ce.Dockerfile:10 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\2aa275b8740eaa2a4e6bebbeea6dc2d1ad6b87ce.Dockerfile:12 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\2aa275b8740eaa2a4e6bebbeea6dc2d1ad6b87ce.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\2aa275b8740eaa2a4e6bebbeea6dc2d1ad6b87ce.Dockerfile:10 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\2aa275b8740eaa2a4e6bebbeea6dc2d1ad6b87ce.Dockerfile:12 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

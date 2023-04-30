@@ -2,3 +2,6 @@ Smell DL3060
 Detected by Hadolint and not tool: 
 
 Detected by Tool and not Hadolint: 
+22d20f96dfc4f40e46e9e32c9514708a8e589f6d.txt
+54ba4c69ae4e95eef56361a19e38f6324a3a0428.txt
+93179d6c8cf0e57d216d51bf128e7702f24e7552.txt

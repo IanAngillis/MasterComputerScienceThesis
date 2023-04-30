@@ -1,6 +1,6 @@
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:1 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:4 DL3002 [1m[93mwarning[0m: Last USER should not be root
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:5 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:16 SC2028 [92minfo[0m: echo may not expand escape sequences. Use printf.
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:16 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:1 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:4 DL3002 [1m[93mwarning[0m: Last USER should not be root
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:5 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:16 SC2028 [92minfo[0m: echo may not expand escape sequences. Use printf.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\3e9953d3e1dca3d4485c16c0fe9eb3e9e74c5103.Dockerfile:16 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

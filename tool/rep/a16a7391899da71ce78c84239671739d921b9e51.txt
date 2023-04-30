@@ -1,2 +1,2 @@
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\a16a7391899da71ce78c84239671739d921b9e51.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\a16a7391899da71ce78c84239671739d921b9e51.Dockerfile:3 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\a16a7391899da71ce78c84239671739d921b9e51.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\a16a7391899da71ce78c84239671739d921b9e51.Dockerfile:3 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

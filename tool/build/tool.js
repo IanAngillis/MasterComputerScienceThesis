@@ -201,7 +201,7 @@ function main() {
                     testFolder = "./../data/testfiles/";
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
-                    currentFolder = testFolder;
+                    currentFolder = folder;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
@@ -259,7 +259,6 @@ function main() {
                                                         c.arguments.forEach(function (arg) {
                                                             if (arg.search(manager.packageVersionFormatSplitter) == -1 || arg.search(manager.packageVersionFormatSplitter) == 0) {
                                                                 if (arg.indexOf(".txt") == -1 && arg.indexOf(".rpm") == -1 && !arg.startsWith(".")) {
-                                                                    console.log(arg);
                                                                     fileReport_1 += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                                     set_1.add(rule.code);
                                                                     addAbsoluteSmell(absoluteSmells, rule);
@@ -275,16 +274,11 @@ function main() {
                                             case "NO-INTERACTION":
                                                 if (manager != null) {
                                                     var noninteractionflag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "NO-INTERACTION"; });
-                                                    if (rule.code == "DL3034") {
-                                                        console.log(rule);
-                                                        console.log(noninteractionflag_1.alternative);
-                                                    }
                                                     if (noninteractionflag_1 != undefined) {
                                                         bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
                                                             var nonInteractionFlagIsPresent = false;
                                                             c.flags.forEach(function (flag) {
                                                                 if (flag == noninteractionflag_1.value || flag == noninteractionflag_1.alternative || flag.includes(noninteractionflag_1.value) || flag.includes(noninteractionflag_1.value.replace("-", ""))) {
-                                                                    console.log(noninteractionflag_1.alternative);
                                                                     nonInteractionFlagIsPresent = true;
                                                                 }
                                                             });
@@ -342,7 +336,6 @@ function main() {
                                                                 found_1 = true;
                                                             }
                                                             else {
-                                                                console.log("not found during rule: " + rule.code);
                                                                 addAbsoluteSmell(absoluteSmells, rule);
                                                                 set_1.add(rule.code);
                                                                 fileReport_1 += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";

@@ -2,3 +2,8 @@ Smell DL3032
 Detected by Hadolint and not tool: 
 
 Detected by Tool and not Hadolint: 
+0d2b5b60931c8118f8fc58e2a36733c30e25826a.txt
+15d0749f15e202b72b3b813e5138d3f99df60ab8.txt
+1fe785832344f74fb570f93ae3ede6f900d8143c.txt
+3867f234ce2b4f2bca0357b22051d5ccd5a6baec.txt
+80dbc82a4ae82a4f383f582763aeb360d36d6841.txt

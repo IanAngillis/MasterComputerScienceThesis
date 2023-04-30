@@ -23,7 +23,7 @@ What answers did I get:
 27042023
     * Find the alternatives for the json files
     * Write script to run entire pipeline and string different pieces of code together
-    * Define the low-churn smell
+    * Define the low-churn smell --> DONE
     * Do the dataset of camilo and run overnight
     * Look into repairing
     * Read the paper from Ahmed to check verification

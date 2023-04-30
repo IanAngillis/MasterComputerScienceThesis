@@ -1,3 +1,3 @@
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7538600f430760b5fc2a7141356d3abdcf7c67b0.Dockerfile:20 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7538600f430760b5fc2a7141356d3abdcf7c67b0.Dockerfile:33 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles\7538600f430760b5fc2a7141356d3abdcf7c67b0.Dockerfile:34 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\7538600f430760b5fc2a7141356d3abdcf7c67b0.Dockerfile:20 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\7538600f430760b5fc2a7141356d3abdcf7c67b0.Dockerfile:33 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\7538600f430760b5fc2a7141356d3abdcf7c67b0.Dockerfile:34 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

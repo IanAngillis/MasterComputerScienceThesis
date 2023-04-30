@@ -2,3 +2,8 @@ Smell DL3041
 Detected by Hadolint and not tool: 
 
 Detected by Tool and not Hadolint: 
+51d554b23b68286aef0299a6aa60a43c0481b861.txt
+54aae67509a8ceed783db0e4b5c78ac81222453b.txt
+99d29f4d96e2e9bdb82120bf5959849f32946ef0.txt
+9b6fad705d37179e5e30703e9999c12a91e35d7c.txt
+b34235e2a364358b24dc623d5dacd0021e8b6dfc.txt

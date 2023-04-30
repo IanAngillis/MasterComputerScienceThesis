@@ -1,6 +1,11 @@
 @echo off
-set "source_directory=D:\Workspaces\MasterComputerScienceThesis\data\dockerfiles"
-set "destination_directory=D:\Workspaces\MasterComputerScienceThesis\tool\rep"
+set "prev_dir=%CD%"
+CD .\..\..\data\dockerfiles
+set "source_directory=%CD%"
+CD .\..\..\tool\rep
+set "destination_directory=%CD%"
+
+echo %source_directory%
 
 for %%i in ("%source_directory%\*.*") do (
     echo Running hadolint on "%%i"...
@@ -9,3 +14,6 @@ for %%i in ("%source_directory%\*.*") do (
 )
 
 echo All files processed.
+CD %prev_dir%
+
+:: use CD to maybe build source directory for different system
