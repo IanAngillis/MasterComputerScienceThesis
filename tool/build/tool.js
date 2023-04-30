@@ -201,7 +201,7 @@ function main() {
                     testFolder = "./../data/testfiles/";
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
-                    currentFolder = folder;
+                    currentFolder = testFolder;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
@@ -213,28 +213,29 @@ function main() {
                 case 2:
                     _e.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
-                        var dirent, fileReport_1, ast, nodes, set_1, bashManagerCommands_1, text, _f;
-                        return __generator(this, function (_g) {
-                            switch (_g.label) {
+                        var dirent, fileReport_1, ast, nodes, set_1, bashManagerCommands_1, text, e_3;
+                        return __generator(this, function (_f) {
+                            switch (_f.label) {
                                 case 0:
                                     _c = dir_2_1.value;
                                     _d = false;
-                                    _g.label = 1;
+                                    _f.label = 1;
                                 case 1:
-                                    _g.trys.push([1, , 6, 7]);
+                                    _f.trys.push([1, , 6, 7]);
                                     dirent = _c;
-                                    _g.label = 2;
+                                    _f.label = 2;
                                 case 2:
-                                    _g.trys.push([2, 4, , 5]);
+                                    _f.trys.push([2, 4, , 5]);
                                     console.log(dirent.name);
                                     fileReport_1 = "Report for: " + dirent.name + "\n";
                                     return [4, ding.dockerfileParser.parseDocker(currentFolder + dirent.name)];
                                 case 3:
-                                    ast = _g.sent();
+                                    ast = _f.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
                                     set_1 = new Set();
                                     analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1);
                                     analyzer.consecutiveRunInstructionAnalysis(ast, fileReport_1, set_1);
+                                    analyzer.lowChurnAnalysis(ast, fileReport_1, set_1);
                                     bashManagerCommands_1 = [];
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
@@ -311,16 +312,39 @@ function main() {
                                                     else {
                                                         bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (ic) {
                                                             var hasCleanCacheCommand = false;
+                                                            var hasPostInstall = false;
                                                             bashManagerCommands_1.filter(function (cc) { return ic.layer == cc.layer && ic.command == cc.command && cc.option == manager.cleanCacheOption[0]; })
                                                                 .forEach(function (x) {
                                                                 if (ic.source.isBefore(x.source)) {
                                                                     hasCleanCacheCommand = true;
                                                                 }
                                                             });
+                                                            if (manager.afterInstall.length != 0) {
+                                                                var statement = ic.source;
+                                                                while (statement.type != 'BASH-SCRIPT') {
+                                                                    statement = statement.parent;
+                                                                }
+                                                                var rm = statement.find({ type: ding.nodeType.BashLiteral, value: manager.afterInstall[0] });
+                                                                if (rm.length == 0) {
+                                                                    hasPostInstall = false;
+                                                                }
+                                                                else {
+                                                                    rm.forEach(function (r) {
+                                                                        if (r.parent.parent.parent.toString() == manager.afterInstall.join(" ") && ic.isBefore(r.parent.parent.parent)) {
+                                                                            hasPostInstall = true;
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
                                                             if (!hasCleanCacheCommand) {
                                                                 set_1.add(rule.code);
                                                                 fileReport_1 += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
                                                                 addAbsoluteSmell(absoluteSmells, rule);
+                                                            }
+                                                            if (!hasCleanCacheCommand && manager.afterInstall.length > 0) {
+                                                                set_1.add("no-post-install");
+                                                                fileReport_1 += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
+                                                                console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
                                                             }
                                                         });
                                                     }
@@ -363,7 +387,8 @@ function main() {
                                     });
                                     return [3, 5];
                                 case 4:
-                                    _f = _g.sent();
+                                    e_3 = _f.sent();
+                                    console.log(e_3);
                                     mapped_tool_smells.write(dirent.name + "\n");
                                     log2.write(dirent.name + "\n");
                                     console.log("ERROR");

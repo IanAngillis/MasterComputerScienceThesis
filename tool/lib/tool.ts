@@ -129,7 +129,7 @@ async function main(){
     let crashed = "./../data/chrashedfiles/";
 
     // Variable that sets folder for program
-    let currentFolder = folder;
+    let currentFolder = testFolder;
 
     let analyzer: Analyzer = new Analyzer();
 
@@ -152,6 +152,7 @@ async function main(){
         
         analyzer.temporaryFileAnalysis(ast, fileReport, set);
         analyzer.consecutiveRunInstructionAnalysis(ast, fileReport, set);
+        analyzer.lowChurnAnalysis(ast, fileReport, set);
 
         // Create Bashamangercommands - intermediary representation
         let bashManagerCommands: BashManagerCommand[] = [];
@@ -254,6 +255,8 @@ async function main(){
                                         set.add(rule.code);
                                         fileReport += "\tVOILATION DETECTED: " + installFlag.value + " flag missing at position:" + c.position.toString() + " for command " + c.command +  "\n";
                                     }
+
+
                                 })
                             }
                         }else{
@@ -264,6 +267,7 @@ async function main(){
                                 // Find an install command that came before it.
                                 // If there is no clean cache command that adheres to the condition this means that there is just none at all.
                                 let hasCleanCacheCommand = false;
+                                let hasPostInstall = false;
                                 bashManagerCommands.filter(cc => ic.layer == cc.layer && ic.command == cc.command && cc.option == manager.cleanCacheOption[0])
                                 .forEach(x => {
                                     if(ic.source.isBefore(x.source)){
@@ -271,13 +275,41 @@ async function main(){
                                     }
                                 });
 
+                                if(manager.afterInstall.length != 0){
+                                    let statement = ic.source
+
+                                    while(statement.type != 'BASH-SCRIPT'){
+                                        statement = statement.parent;
+                                    }
+
+                                    let rm = statement.find({type:ding.nodeType.BashLiteral, value: manager.afterInstall[0]});
+
+                                    if(rm.length == 0){
+                                        hasPostInstall = false;
+                                    }else {
+                                        rm.forEach(r => {
+                                            // Becomes for
+                                            if(r.parent.parent.parent.toString() == manager.afterInstall.join(" ") && ic.isBefore(r.parent.parent.parent)){
+                                                hasPostInstall = true;
+                                            } 
+                                        });
+                                    }
+                                }
+
+                                // Check for post-install
                                 if(!hasCleanCacheCommand){
-                                    //console.log(dirent.name);
-                                    //console.log("No Clean cache command found for: " + manager.command);
                                     set.add(rule.code);
                                     fileReport += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
                                     addAbsoluteSmell(absoluteSmells, rule);
                                     
+                                }
+
+                                // Doens't work - fix
+                                if(!hasCleanCacheCommand && manager.afterInstall.length > 0){
+                                    set.add("no-post-install");
+                                    fileReport += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
+                                    console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
+                                    //addAbsoluteSmell(absoluteSmells, rule);
                                 }
                             });
                         }
@@ -331,7 +363,8 @@ async function main(){
             }
         });
 
-    } catch{
+    } catch(e){
+        console.log(e);
         mapped_tool_smells.write(dirent.name + "\n");
         log2.write(dirent.name + "\n");
         console.log("ERROR");

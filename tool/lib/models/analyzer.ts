@@ -1,3 +1,4 @@
+import { DockerCopy } from '../../../Dinghy-main/Dinghy-main/build/docker-type.js';
 import * as ding from './../../../Dinghy-main/Dinghy-main/build/index.js';
 
 /**
@@ -743,13 +744,58 @@ export class Analyzer {
         */
         function handleInstruction(instruction: ding.nodeType.DockerOpsNodeType){
            switch(instruction.type){
-               case'DOCKER-COPY':
-                    console.log(instruction.toString());
-                   break;
-               default:
-                   break;
+                case'DOCKER-COPY':
+                    handleCopy(instruction as ding.nodeType.DockerCopy);
+                    break;
+                case 'DOCKER-RUN':
+                    handleRun(instruction as ding.nodeType.DockerRun);
+                    break;
+                default:
+                    break;
            }
        }
+
+       function handleCopy(instruction: ding.nodeType.DockerCopy): void{
+            if(instruction.children.length != 3){
+                return; //Not amazing solution, what about . . . or other combinations when there are MORE? More bad practices!
+            }
+    
+            let source: ding.nodeType.DockerPath = instruction.getChild(ding.nodeType.DockerCopySource).getChild(ding.nodeType.DockerPath);
+            let target: ding.nodeType.DockerPath = instruction.getChild(ding.nodeType.DockerCopyTarget).getChild(ding.nodeType.DockerPath);
+
+            // COPY . . || COPY . /foo
+            if(source.value == "."){
+                state.hasCopiedEntireContext = true;
+                state.hasCopiedEntireContextLayer = instruction.layer;
+                state.lastCopyLayer = instruction.layer;
+            } else {
+                state.lastCopyLayer = instruction.layer;
+            }
+       }
+
+       // Seems like the problem can be attacked from multiple angles
+       // - COPY . . is always a mistake, but maybe we have to start from NPM installs and then go back reversed? See if we can find the package.lock?
+
+       function handleRun(instruction: ding.nodeType.DockerRun): void{
+            let runInstruction: string[] = instruction.toString()
+                .replace(/\r?\n/g, " ")
+                .replace(/\\/g, " ")
+                .split(" ")
+                .filter(w => w != "")
+                .filter(w => w != "sudo")
+                .filter(w => !w.startsWith("-"))
+                .filter(w => w != "RUN");
+            
+            if(runInstruction.includes("npm") && runInstruction.includes("install") && state.hasCopiedEntireContext){
+                state.installLayer = instruction.layer;
+                fileReport += "\tVOILATION DETECTED: No layer optimization by copying entire context\n";
+                set.add("NO-LAYER-OPTIMIZATION");
+            }
+       }
+
+
+       let state = {hasCopiedEntireContext: false, hasCopiedEntireContextLayer: -1, lastCopyLayer: -1, installLayer: -1};
+
        ast.children.forEach(dockerInstruction => {
            // Handling each instruction seperately ensures we handle one layer at a time, temporary or final doesn't matter.
            // Do we need an internal model of the file structure?

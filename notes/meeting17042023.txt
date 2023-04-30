@@ -27,3 +27,28 @@ What answers did I get:
     * Do the dataset of camilo and run overnight
     * Look into repairing
     * Read the paper from Ahmed to check verification
+    * Repair the low churn smell  
+        * Pip install dependencies before copying the rest of the context?
+        * Whenever something needs installing dependencies from something that is copied over?
+        * If you are going to install from specifics and you copy entire context before - put the copying of context later
+        * Careful for multi-stagebuilds when swapping around instructions. Something not to worry about when changing text in a run instruction
+        * 6a797aa18de54498c54a5eb094bdd404c05e1818 bourbon install after copying entire context
+        * yarn install?
+
+
+    FIX: 
+
+FROM node:latest
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package.json package-lock.json ./
+
+RUN npm install
+
+# Bundle app source
+COPY . .
+
+CMD ["node","index.js"]
