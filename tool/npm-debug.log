@@ -2,22 +2,81 @@
 1 verbose cli [
 1 verbose cli   'C:\\Users\\Ian Angillis\\scoop\\apps\\nodejs\\current\\node.exe',
 1 verbose cli   'C:\\Users\\Ian Angillis\\scoop\\apps\\nodejs\\current\\bin\\node_modules\\npm\\bin\\npm-cli.js',
-1 verbose cli   'install'
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'npm@4.6.1'
 1 verbose cli ]
 2 info using npm@3.10.10
 3 info using node@v18.7.0
 4 silly loadCurrentTree Starting
 5 silly install loadCurrentTree
-6 silly install readLocalPackageData
-7 verbose stack TypeError: cb.apply is not a function
-7 verbose stack     at C:\Users\Ian Angillis\scoop\persist\nodejs\bin\node_modules\npm\node_modules\graceful-fs\polyfills.js:267:18
-7 verbose stack     at FSReqCallback.oncomplete (node:fs:212:5)
-8 verbose cwd C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\tool
-9 error Windows_NT 10.0.22621
-10 error argv "C:\\Users\\Ian Angillis\\scoop\\apps\\nodejs\\current\\node.exe" "C:\\Users\\Ian Angillis\\scoop\\apps\\nodejs\\current\\bin\\node_modules\\npm\\bin\\npm-cli.js" "install"
-11 error node v18.7.0
-12 error npm  v3.10.10
-13 error cb.apply is not a function
-14 error If you need help, you may report this error at:
-14 error     <https://github.com/npm/npm/issues>
-15 verbose exit [ 1, true ]
+6 silly install readGlobalPackageData
+7 silly fetchPackageMetaData npm@4.6.1
+8 silly fetchNamedPackageData npm
+9 silly mapToRegistry name npm
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'npm',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   escapedName: 'npm',
+12 silly mapToRegistry   name: 'npm',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag'
+12 silly mapToRegistry }
+13 silly mapToRegistry uri https://registry.npmjs.org/npm
+14 verbose request uri https://registry.npmjs.org/npm
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 15:01:04
+17 verbose request id 7cb34de71f334ca1
+18 verbose etag W/"dfbc7dd74b2f8e63fb7285b47044be4a"
+19 verbose lastModified Wed, 19 Apr 2023 21:54:22 GMT
+20 http request GET https://registry.npmjs.org/npm
+21 http 304 https://registry.npmjs.org/npm
+22 verbose headers {
+22 verbose headers   date: 'Sun, 30 Apr 2023 13:01:04 GMT',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'cf-ray': '7bfff8a89f8683d7-BRU',
+22 verbose headers   age: '54',
+22 verbose headers   'cache-control': 'public, max-age=300',
+22 verbose headers   etag: '"dfbc7dd74b2f8e63fb7285b47044be4a"',
+22 verbose headers   'last-modified': 'Wed, 19 Apr 2023 21:54:22 GMT',
+22 verbose headers   vary: 'Accept-Encoding',
+22 verbose headers   'cf-cache-status': 'HIT',
+22 verbose headers   'x-amz-replication-status': 'COMPLETED',
+22 verbose headers   'x-amz-server-side-encryption': 'AES256',
+22 verbose headers   server: 'cloudflare'
+22 verbose headers }
+23 silly get cb [
+23 silly get   304,
+23 silly get   {
+23 silly get     date: 'Sun, 30 Apr 2023 13:01:04 GMT',
+23 silly get     connection: 'keep-alive',
+23 silly get     'cf-ray': '7bfff8a89f8683d7-BRU',
+23 silly get     age: '54',
+23 silly get     'cache-control': 'public, max-age=300',
+23 silly get     etag: '"dfbc7dd74b2f8e63fb7285b47044be4a"',
+23 silly get     'last-modified': 'Wed, 19 Apr 2023 21:54:22 GMT',
+23 silly get     vary: 'Accept-Encoding',
+23 silly get     'cf-cache-status': 'HIT',
+23 silly get     'x-amz-replication-status': 'COMPLETED',
+23 silly get     'x-amz-server-side-encryption': 'AES256',
+23 silly get     server: 'cloudflare'
+23 silly get   }
+23 silly get ]
+24 verbose etag https://registry.npmjs.org/npm from cache
+25 verbose get saving npm to C:\Users\Ian Angillis\scoop\persist\nodejs\cache\registry.npmjs.org\npm\.cache.json
+26 verbose correctMkdir C:\Users\Ian Angillis\scoop\persist\nodejs\cache correctMkdir not in flight; initializing
+27 verbose stack TypeError: cb.apply is not a function
+27 verbose stack     at C:\Users\Ian Angillis\scoop\persist\nodejs\bin\node_modules\npm\node_modules\graceful-fs\polyfills.js:267:18
+27 verbose stack     at FSReqCallback.oncomplete (node:fs:212:5)
+28 verbose cwd C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\tool
+29 error Windows_NT 10.0.22621
+30 error argv "C:\\Users\\Ian Angillis\\scoop\\apps\\nodejs\\current\\node.exe" "C:\\Users\\Ian Angillis\\scoop\\apps\\nodejs\\current\\bin\\node_modules\\npm\\bin\\npm-cli.js" "install" "-g" "npm@4.6.1"
+31 error node v18.7.0
+32 error npm  v3.10.10
+33 error cb.apply is not a function
+34 error If you need help, you may report this error at:
+34 error     <https://github.com/npm/npm/issues>
+35 verbose exit [ 1, true ]

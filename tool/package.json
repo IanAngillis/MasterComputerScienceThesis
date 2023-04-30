@@ -8,5 +8,8 @@
     "build": "tsc"
   },
   "author": "Ian Angillis",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
 }
