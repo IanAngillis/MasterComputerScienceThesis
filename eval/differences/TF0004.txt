@@ -2,4 +2,5 @@ Smell TF0004
 Detected by Hadolint and not tool: 
 
 Detected by Tool and not Hadolint: 
-ace64942970e44f7989870d6ab0c959c003555a6.txt
+sf_docker_snippet_525.txt
+sf_docker_snippet_5257.txt

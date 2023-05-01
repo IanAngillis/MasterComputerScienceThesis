@@ -35,7 +35,7 @@ What answers did I get:
         * 6a797aa18de54498c54a5eb094bdd404c05e1818 bourbon install after copying entire context
         * yarn install?
 
-
+https://www.youtube.com/watch?v=BYQQlCVt4aE&ab_channel=CassieKozyrkov
     FIX: 
 
 FROM node:latest

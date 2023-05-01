@@ -1,0 +1,3 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21682.Dockerfile:2 DL3032 [1m[93mwarning[0m: `yum clean all` missing after yum command.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21682.Dockerfile:7 DL4006 [1m[93mwarning[0m: Set the SHELL option -o pipefail before RUN with a pipe in it. If you are using /bin/sh in an alpine image or if your shell is symlinked to busybox then consider explicitly setting your SHELL to /bin/ash, or disable this check
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21682.Dockerfile:7 SC2139 [1m[93mwarning[0m: This expands when defined, not when used. Consider escaping.

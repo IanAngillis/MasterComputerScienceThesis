@@ -1,0 +1,6 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_3334.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_3334.Dockerfile:5 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_3334.Dockerfile:6 SC2164 [1m[93mwarning[0m: Use 'cd ... || exit' or 'cd ... || return' in case cd fails.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_3334.Dockerfile:6 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_3334.Dockerfile:7 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_3334.Dockerfile:8 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

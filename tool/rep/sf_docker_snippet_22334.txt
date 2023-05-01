@@ -1,0 +1,5 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22334.Dockerfile:5 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22334.Dockerfile:7 DL3060 [92minfo[0m: `yarn cache clean` missing after `yarn install` was run.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22334.Dockerfile:8 DL3060 [92minfo[0m: `yarn cache clean` missing after `yarn install` was run.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22334.Dockerfile:8 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22334.Dockerfile:10 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

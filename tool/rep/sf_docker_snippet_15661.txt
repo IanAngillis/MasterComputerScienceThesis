@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_15661.Dockerfile:3 SC2026 [92minfo[0m: This word is outside of quotes. Did you intend to 'nest '"'single quotes'"' instead'? 

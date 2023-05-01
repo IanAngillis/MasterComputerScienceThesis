@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14545.Dockerfile:19:4 missing whitespace 

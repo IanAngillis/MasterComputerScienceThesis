@@ -1,0 +1,2 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22236.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22236.Dockerfile:2 SC1072 [1m[91merror[0m: Expected end of single quoted string. Fix any mentioned problems and try again.

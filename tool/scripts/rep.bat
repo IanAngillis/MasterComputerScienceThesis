@@ -1,6 +1,6 @@
 @echo off
 set "prev_dir=%CD%"
-CD .\..\..\data\dockerfiles
+CD .\..\..\data\stackoverflow
 set "source_directory=%CD%"
 CD .\..\..\tool\rep
 set "destination_directory=%CD%"

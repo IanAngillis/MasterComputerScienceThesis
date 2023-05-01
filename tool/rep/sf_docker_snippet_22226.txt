@@ -1,0 +1,9 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22226.Dockerfile:2 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22226.Dockerfile:12 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22226.Dockerfile:20 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22226.Dockerfile:21 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22226.Dockerfile:21 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22226.Dockerfile:22 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22226.Dockerfile:43 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22226.Dockerfile:49 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22226.Dockerfile:49 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.

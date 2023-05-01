@@ -1,0 +1,2 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_18733.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_18733.Dockerfile:9 SC2026 [92minfo[0m: This word is outside of quotes. Did you intend to 'nest '"'single quotes'"' instead'? 

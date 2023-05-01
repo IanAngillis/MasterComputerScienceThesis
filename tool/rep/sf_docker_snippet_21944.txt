@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21944.Dockerfile:4:15 unexpected end of line. At least two arguments are required for COPY 

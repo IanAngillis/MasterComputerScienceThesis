@@ -1,0 +1,4 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17358.Dockerfile:8 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17358.Dockerfile:12 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17358.Dockerfile:16 DL3002 [1m[93mwarning[0m: Last USER should not be root
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17358.Dockerfile:17 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

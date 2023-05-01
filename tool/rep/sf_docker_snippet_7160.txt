@@ -1,0 +1,3 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_7160.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_7160.Dockerfile:8 DL3028 [1m[93mwarning[0m: Pin versions in gem install. Instead of `gem install <gem>` use `gem install <gem>:<version>`
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_7160.Dockerfile:13 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory

@@ -1,0 +1,2 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_8261.Dockerfile:1 DL3004 [1m[91merror[0m: Do not use sudo as it leads to unpredictable behavior. Use a tool like gosu to enforce root
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_8261.Dockerfile:1 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.

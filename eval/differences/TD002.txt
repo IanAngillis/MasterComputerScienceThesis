@@ -2,6 +2,38 @@ Smell TD002
 Detected by Hadolint and not tool: 
 
 Detected by Tool and not Hadolint: 
-52b219ef8e45f85e0b2df7325a8b165f23554790.txt
-8781004c92befe2ede7e836fff7c0ebec5325e66.txt
-ace64942970e44f7989870d6ab0c959c003555a6.txt
+8698f6044b8e75dfc63263ea55dab6692170ce42.txt
+sf_docker_snippet_10892.txt
+sf_docker_snippet_10897.txt
+sf_docker_snippet_11238.txt
+sf_docker_snippet_1127.txt
+sf_docker_snippet_12403.txt
+sf_docker_snippet_1285.txt
+sf_docker_snippet_12850.txt
+sf_docker_snippet_13788.txt
+sf_docker_snippet_14272.txt
+sf_docker_snippet_14688.txt
+sf_docker_snippet_15768.txt
+sf_docker_snippet_15769.txt
+sf_docker_snippet_1577.txt
+sf_docker_snippet_15771.txt
+sf_docker_snippet_15772.txt
+sf_docker_snippet_16245.txt
+sf_docker_snippet_16372.txt
+sf_docker_snippet_17909.txt
+sf_docker_snippet_1791.txt
+sf_docker_snippet_19056.txt
+sf_docker_snippet_19162.txt
+sf_docker_snippet_19164.txt
+sf_docker_snippet_19278.txt
+sf_docker_snippet_19507.txt
+sf_docker_snippet_20480.txt
+sf_docker_snippet_20839.txt
+sf_docker_snippet_21576.txt
+sf_docker_snippet_21888.txt
+sf_docker_snippet_21937.txt
+sf_docker_snippet_22968.txt
+sf_docker_snippet_24492.txt
+sf_docker_snippet_9280.txt
+sf_docker_snippet_9281.txt
+sf_docker_snippet_9283.txt

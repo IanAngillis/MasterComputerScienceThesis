@@ -1,0 +1,8 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22891.Dockerfile:3 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22891.Dockerfile:6 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22891.Dockerfile:7 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22891.Dockerfile:8 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22891.Dockerfile:26 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22891.Dockerfile:32 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22891.Dockerfile:33 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22891.Dockerfile:34 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias

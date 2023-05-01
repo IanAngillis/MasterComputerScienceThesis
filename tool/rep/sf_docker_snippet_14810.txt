@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14810.Dockerfile:5 SC1001 [92minfo[0m: This \v will be a regular 'v' in this context.

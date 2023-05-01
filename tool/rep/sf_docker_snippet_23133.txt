@@ -1,0 +1,2 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_23133.Dockerfile:3 DL3002 [1m[93mwarning[0m: Last USER should not be root
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_23133.Dockerfile:4 SC1072 [1m[91merror[0m:  Fix any mentioned problems and try again.

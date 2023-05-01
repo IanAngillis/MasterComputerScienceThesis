@@ -1,0 +1,4 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21279.Dockerfile:5 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21279.Dockerfile:8 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21279.Dockerfile:25 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21279.Dockerfile:37 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

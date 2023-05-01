@@ -1,0 +1,2 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20645.Dockerfile:7 DL3021 [1m[91merror[0m: COPY with more than 2 arguments requires the last argument to end with /
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20645.Dockerfile:7 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias

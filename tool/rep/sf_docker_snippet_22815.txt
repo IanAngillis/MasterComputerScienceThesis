@@ -1,0 +1,10 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:2 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:5 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:7 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:9 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:10 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:11 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:12 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:13 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22815.Dockerfile:16 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

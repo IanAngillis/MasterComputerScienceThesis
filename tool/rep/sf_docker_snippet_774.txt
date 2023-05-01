@@ -1,0 +1,12 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:5 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:6 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:7 DL3048 [96mstyle[0m: Invalid label key.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:11 DL4005 [1m[93mwarning[0m: Use SHELL to change the default shell
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:13 SC3037 [1m[93mwarning[0m: In POSIX sh, echo flags are undefined.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:20 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:20 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:20 DL3005 [1m[91merror[0m: Do not use apt-get dist-upgrade
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:20 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:36 SC3037 [1m[93mwarning[0m: In POSIX sh, echo flags are undefined.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:36 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_774.Dockerfile:40 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`

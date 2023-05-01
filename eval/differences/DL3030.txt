@@ -2,3 +2,27 @@ Smell DL3030
 Detected by Hadolint and not tool: 
 
 Detected by Tool and not Hadolint: 
+sf_docker_snippet_1027.txt
+sf_docker_snippet_10728.txt
+sf_docker_snippet_1073.txt
+sf_docker_snippet_10743.txt
+sf_docker_snippet_10958.txt
+sf_docker_snippet_12099.txt
+sf_docker_snippet_1210.txt
+sf_docker_snippet_14893.txt
+sf_docker_snippet_16168.txt
+sf_docker_snippet_16406.txt
+sf_docker_snippet_16644.txt
+sf_docker_snippet_18925.txt
+sf_docker_snippet_18935.txt
+sf_docker_snippet_18944.txt
+sf_docker_snippet_18945.txt
+sf_docker_snippet_18956.txt
+sf_docker_snippet_20800.txt
+sf_docker_snippet_21473.txt
+sf_docker_snippet_24647.txt
+sf_docker_snippet_363.txt
+sf_docker_snippet_364.txt
+sf_docker_snippet_3649.txt
+sf_docker_snippet_5055.txt
+sf_docker_snippet_5224.txt

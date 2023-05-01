@@ -1,0 +1,6 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_5358.Dockerfile:1 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_5358.Dockerfile:1 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_5358.Dockerfile:1 SC2117 [92minfo[0m: To run commands as another user, use su -c or sudo.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_5358.Dockerfile:11 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_5358.Dockerfile:11 SC2117 [92minfo[0m: To run commands as another user, use su -c or sudo.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_5358.Dockerfile:11 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.

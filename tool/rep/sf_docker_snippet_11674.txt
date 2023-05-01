@@ -1,0 +1,2 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11674.Dockerfile:2 DL3048 [96mstyle[0m: Invalid label key.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11674.Dockerfile:8 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.

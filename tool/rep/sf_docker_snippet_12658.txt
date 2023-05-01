@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12658.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly

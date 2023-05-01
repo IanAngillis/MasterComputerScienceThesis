@@ -1,0 +1,4 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11912.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11912.Dockerfile:19 DL3032 [1m[93mwarning[0m: `yum clean all` missing after yum command.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11912.Dockerfile:21 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11912.Dockerfile:47 SC3009 [1m[93mwarning[0m: In POSIX sh, brace expansion is undefined.

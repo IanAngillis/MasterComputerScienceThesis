@@ -175,7 +175,7 @@ function addAbsoluteSmell(lst, rule) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, log, log2, mapped_tool_smells, smells, absoluteSmells, packageManagers, folder, testFolder, binnacle, crashed, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, log, log2, mapped_tool_smells, smells, absoluteSmells, packageManagers, folder, testFolder, binnacle, crashed, stackoverflow, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -201,7 +201,8 @@ function main() {
                     testFolder = "./../data/testfiles/";
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
-                    currentFolder = testFolder;
+                    stackoverflow = "./../data/stackoverflow/";
+                    currentFolder = folder;
                     analyzer = new analyzer_1.Analyzer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
@@ -342,9 +343,8 @@ function main() {
                                                                 addAbsoluteSmell(absoluteSmells, rule);
                                                             }
                                                             if (!hasCleanCacheCommand && manager.afterInstall.length > 0) {
-                                                                set_1.add("no-post-install");
+                                                                set_1.add("DL3009");
                                                                 fileReport_1 += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
-                                                                console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
                                                             }
                                                         });
                                                     }
@@ -388,7 +388,6 @@ function main() {
                                     return [3, 5];
                                 case 4:
                                     e_3 = _f.sent();
-                                    console.log(e_3);
                                     mapped_tool_smells.write(dirent.name + "\n");
                                     log2.write(dirent.name + "\n");
                                     console.log("ERROR");

@@ -1,0 +1,3 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17618.Dockerfile:6 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17618.Dockerfile:8 SC1003 [92minfo[0m: Want to escape a single quote? echo 'This is how it'\''s done'.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17618.Dockerfile:10 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

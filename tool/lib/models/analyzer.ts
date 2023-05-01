@@ -637,43 +637,43 @@ export class Analyzer {
                     switch(file.introducedBy){
                         case "ADD":
                             fileReport += "\tVOILATION DETECTED: ADD/rm temporary file smell for file" + file.file + "\n";
+                            //DL9013
                             set.add("ADD/rm");
                             break;
                         case "COPY":
                             fileReport += "\tVOILATION DETECTED: COPY/rm temporary file smell for file" + file.file + "\n";
-                            set.add("COPY/rm");
+                            set.add("COPY/rm"); //DL9014
                             break;
                         case "BUILT-IN":
                             fileReport += "\tVOILATION DETECTED: BUILT-IN/rm temporary file smell for file" + file.file + "\n";
-                            set.add("BUILT-IN/rm");
+                            set.add("BUILT-IN/rm"); //DL9015
                             break;
                     }
                 }else if (file.introducedLayer != undefined && file.extractedLayer != undefined && file.deletedLayer == undefined){
                     switch(file.introducedBy){
                         case "ADD":
                             fileReport += "\tVOILATION DETECTED: ADD introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
-                            set.add("TF0001");
+                            set.add("TF0001"); //DL9016
                             break;
                         case "COPY":
                             fileReport += "\tVOILATION DETECTED: COPY introduced compressed file which was decompressed  but not deleted:" + file.file + "\n";
-                            set.add("TF0002");
+                            set.add("TF0002"); //DL9017
                             break;
                         case "BUILT-IN":
                             fileReport += "\tVOILATION DETECTED: BUILT-IN introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
-                            set.add("TF0003");
+                            set.add("TF0003"); //DL9018
                             break;
                     }
                 }
 
                 if(file.introducedLayer != undefined && file.introducedBy == "ADD" && file.urlOrigin && file.deletedLayer != undefined){
                     fileReport += "\tVOILATION DETECTED: compressed file introduced from URL through ADD :" + file.file + "\n";
-                    set.add("TF0004");
+                    set.add("TF0004"); //DL9019
                 }
 
                 if(file.introducedLayer != undefined && file.introducedBy == "COPY" && file.extractedLayer != undefined){
                     fileReport += "\tVOILATION DETECTED: replace COPY and extract statement with ADD :" + file.file + "\n";
                     set.add("DL3010");
-                    //console.log("DL3010");
                 }
             });
         }
@@ -717,7 +717,8 @@ export class Analyzer {
                         consecutiveRunInstruction += 1;
 
                         if(consecutiveRunInstruction >= 3){
-                            set.add("MPRUN");
+                            fileReport += "\tVOILATION DETECTED: Multiple consecutive RUN instructions \n";
+                            set.add("DL3059");
                         }
                     }
                     
@@ -788,8 +789,8 @@ export class Analyzer {
             
             if(runInstruction.includes("npm") && runInstruction.includes("install") && state.hasCopiedEntireContext){
                 state.installLayer = instruction.layer;
-                fileReport += "\tVOILATION DETECTED: No layer optimization by copying entire context\n";
-                set.add("NO-LAYER-OPTIMIZATION");
+                fileReport += "\tVOILATION DETECTED: No layer optimization by copying entire context for npm (DL9020)\n";
+                set.add("DL9020"); //
             }
        }
 

@@ -1,0 +1,2 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_24503.Dockerfile:2 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_24503.Dockerfile:2 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`

@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21462.Dockerfile:1 DL3029 [1m[93mwarning[0m: Do not use --platform flag with FROM

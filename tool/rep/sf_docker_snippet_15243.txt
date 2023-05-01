@@ -1,0 +1,2 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_15243.Dockerfile:5 DL3000 [1m[91merror[0m: Use absolute WORKDIR
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_15243.Dockerfile:15 DL3000 [1m[91merror[0m: Use absolute WORKDIR

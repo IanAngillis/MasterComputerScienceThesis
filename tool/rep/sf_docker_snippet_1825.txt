@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1825.Dockerfile:3 DL4000 [1m[91merror[0m: MAINTAINER is deprecated

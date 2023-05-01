@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9872.Dockerfile:7 SC2226 [1m[93mwarning[0m: This ln has no destination. Check the arguments, or specify '.' explicitly.

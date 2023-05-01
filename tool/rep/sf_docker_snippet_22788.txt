@@ -1,0 +1,3 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22788.Dockerfile:7 SC2005 [96mstyle[0m: Useless echo? Instead of 'echo $(cmd)', just use 'cmd'.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22788.Dockerfile:12 SC2005 [96mstyle[0m: Useless echo? Instead of 'echo $(cmd)', just use 'cmd'.
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22788.Dockerfile:13 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

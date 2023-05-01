@@ -2,4 +2,10 @@ Smell DL3040
 Detected by Hadolint and not tool: 
 
 Detected by Tool and not Hadolint: 
-99d29f4d96e2e9bdb82120bf5959849f32946ef0.txt
+sf_docker_snippet_10718.txt
+sf_docker_snippet_18622.txt
+sf_docker_snippet_731.txt
+sf_docker_snippet_7311.txt
+sf_docker_snippet_8312.txt
+sf_docker_snippet_8313.txt
+sf_docker_snippet_8316.txt

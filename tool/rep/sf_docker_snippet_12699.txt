@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12699.Dockerfile:1:13 unexpected ':' expecting '@', '\', a new line followed by the next instruction, no ':' or a valid image tag string (example: openjdk:valid-tag), or the image name with a tag 

@@ -127,9 +127,10 @@ async function main(){
     let testFolder = "./../data/testfiles/";
     let binnacle = "./../data/binnacle/github/deduplicated-sources/";
     let crashed = "./../data/chrashedfiles/";
+    let stackoverflow = "./../data/stackoverflow/"
 
     // Variable that sets folder for program
-    let currentFolder = testFolder;
+    let currentFolder = folder;
 
     let analyzer: Analyzer = new Analyzer();
 
@@ -306,9 +307,9 @@ async function main(){
 
                                 // Doens't work - fix
                                 if(!hasCleanCacheCommand && manager.afterInstall.length > 0){
-                                    set.add("no-post-install");
+                                    set.add("DL3009");
                                     fileReport += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
-                                    console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
+                                    //console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
                                     //addAbsoluteSmell(absoluteSmells, rule);
                                 }
                             });
@@ -364,7 +365,7 @@ async function main(){
         });
 
     } catch(e){
-        console.log(e);
+        //console.log(e);
         mapped_tool_smells.write(dirent.name + "\n");
         log2.write(dirent.name + "\n");
         console.log("ERROR");

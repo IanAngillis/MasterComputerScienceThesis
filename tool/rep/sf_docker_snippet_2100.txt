@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_2100.Dockerfile:9 SC2091 [1m[93mwarning[0m: Remove surrounding $() to avoid executing output (or use eval if intentional).

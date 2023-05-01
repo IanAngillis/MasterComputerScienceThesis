@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_10776.Dockerfile:2 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.

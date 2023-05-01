@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14791.Dockerfile:2:28 unexpected ':' expecting '@', '\', a new line followed by the next instruction, or the image tag 

@@ -1,0 +1,3 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_3271.Dockerfile:3 DL4005 [1m[93mwarning[0m: Use SHELL to change the default shell
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_3271.Dockerfile:8 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_3271.Dockerfile:16 SC1083 [1m[93mwarning[0m: This } is literal. Check expression (missing ;/\n?) or quote it.

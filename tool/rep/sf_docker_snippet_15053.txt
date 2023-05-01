@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_15053.Dockerfile:3 SC2281 [1m[91merror[0m: Don't use $ on the left side of assignments.

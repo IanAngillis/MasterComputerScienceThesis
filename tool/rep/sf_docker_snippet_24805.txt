@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_24805.Dockerfile:3 SC1072 [1m[91merror[0m:  Fix any mentioned problems and try again.

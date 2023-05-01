@@ -1,0 +1,1 @@
+C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12269.Dockerfile:5 SC1018 [1m[91merror[0m: This is a unicode non-breaking space. Delete and retype it.

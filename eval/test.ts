@@ -6,9 +6,10 @@ async function main(){
     let testFolder = "./../data/testfiles/";
     let binnacle = "./../data/binnacle/github/deduplicated-sources/";
     let crashed = "./../data/chrashedfiles/";
+    let stackoverflow = "./../data/stackoverflow";
 
     // Variable that sets folder for program
-    let currentFolder = folder;
+    let currentFolder = stackoverflow;
     let smells: {rule: string, times: number}[] = [];
     let absoluteSmells: {rule: string, times: number}[] = [];
 

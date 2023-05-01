@@ -2,4 +2,44 @@ Smell DL0005
 Detected by Hadolint and not tool: 
 
 Detected by Tool and not Hadolint: 
-d3f975901053f2e4a965abf1c26f69b318aa7d31.txt
+1a80e67f619a1559238dff0789afd7a86753b267.txt
+1ab1e15ca6158330b2802a82a01d5f611377eb91.txt
+1ae87fe891812e90090c5f25fd2087185a94bb11.txt
+sf_docker_snippet_10848.txt
+sf_docker_snippet_11191.txt
+sf_docker_snippet_1129.txt
+sf_docker_snippet_11297.txt
+sf_docker_snippet_11429.txt
+sf_docker_snippet_13111.txt
+sf_docker_snippet_13509.txt
+sf_docker_snippet_13516.txt
+sf_docker_snippet_13992.txt
+sf_docker_snippet_15090.txt
+sf_docker_snippet_15276.txt
+sf_docker_snippet_15526.txt
+sf_docker_snippet_17139.txt
+sf_docker_snippet_17248.txt
+sf_docker_snippet_1790.txt
+sf_docker_snippet_18415.txt
+sf_docker_snippet_18500.txt
+sf_docker_snippet_18898.txt
+sf_docker_snippet_19758.txt
+sf_docker_snippet_20661.txt
+sf_docker_snippet_21272.txt
+sf_docker_snippet_21432.txt
+sf_docker_snippet_21578.txt
+sf_docker_snippet_22127.txt
+sf_docker_snippet_22390.txt
+sf_docker_snippet_22629.txt
+sf_docker_snippet_23853.txt
+sf_docker_snippet_24242.txt
+sf_docker_snippet_24307.txt
+sf_docker_snippet_3150.txt
+sf_docker_snippet_3151.txt
+sf_docker_snippet_3153.txt
+sf_docker_snippet_3156.txt
+sf_docker_snippet_5029.txt
+sf_docker_snippet_5867.txt
+sf_docker_snippet_9.txt
+sf_docker_snippet_9209.txt
+sf_docker_snippet_9225.txt

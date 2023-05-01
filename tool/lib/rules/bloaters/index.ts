@@ -1,12 +1,12 @@
 import { Rule } from "../../models/rule";
 import { cacheRules as CACHERULES } from "./cache";
-import TD0001 from "./TD0001";
-import TD0002 from "./TD0002";
+import DL9006 from "./DL9006";
+import DL9007 from "./DL9007";
 import DL3015 from "./DL3015";
 
 const otherBloaterRules: Rule[] = [
-    TD0001,
-    TD0002,
+    DL9006,
+    DL9007,
     DL3015
 ]
 
