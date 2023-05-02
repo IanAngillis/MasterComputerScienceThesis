@@ -229,10 +229,11 @@ async function main(){
 
                                 if(!nonInteractionFlagIsPresent){
                                     // Adding information to the fixlist
+                                    console.log(c);
                                     fixInfo.list.push({
                                         rule: rule,
                                         manager: manager,
-                                        node: c,
+                                        node: c.source,
                                     });
 
                                     set.add(rule.code);
@@ -261,6 +262,13 @@ async function main(){
                                     if(c.flags.find(flag => flag == installFlag.value) != undefined){
                                         //console.log("clean cache flag found");
                                     }else{
+                                        // Adding information to the fixlist
+                                        fixInfo.list.push({
+                                            rule: rule,
+                                            manager: manager,
+                                            node: c.source,
+                                        });
+
                                         addAbsoluteSmell(absoluteSmells, rule);
                                         set.add(rule.code);
                                         fileReport += "\tVOILATION DETECTED: " + installFlag.value + " flag missing at position:" + c.position.toString() + " for command " + c.command +  "\n";
@@ -308,6 +316,12 @@ async function main(){
 
                                 // Check for post-install
                                 if(!hasCleanCacheCommand){
+                                    // Adding information to the fixlist
+                                    fixInfo.list.push({
+                                        rule: rule,
+                                        manager: manager,
+                                        node: ic.source,
+                                    });
                                     set.add(rule.code);
                                     fileReport += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
                                     addAbsoluteSmell(absoluteSmells, rule);
@@ -316,6 +330,12 @@ async function main(){
 
                                 // Doens't work - fix
                                 if(!hasCleanCacheCommand && manager.afterInstall.length > 0){
+                                    // Adding information to the fixlist
+                                    fixInfo.list.push({
+                                        rule: "DL3009",
+                                        manager: manager,
+                                        node: ic.source,
+                                    });
                                     set.add("DL3009");
                                     fileReport += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
                                     //console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
@@ -340,6 +360,14 @@ async function main(){
                                     found = true;
                                 } else {
                                     //console.log("found NO-RECOMMENDS issue");
+                                    
+                                    // Adding information to the fixlist
+                                    fixInfo.list.push({
+                                        rule: rule,
+                                        manager: manager,
+                                        node: c.source,
+                                    });
+
                                     addAbsoluteSmell(absoluteSmells, rule);
                                     set.add(rule.code);
                                     fileReport += "\tVOILATION DETECTED: No " + norecommendsflag.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
@@ -374,7 +402,7 @@ async function main(){
         });
 
         console.log("START FIXER");
-        fixer.convertAstToFile(ast);
+        fixer.convertAstToFile(fixInfo);
         console.log("DONE FIXER");
 
     } catch(e){

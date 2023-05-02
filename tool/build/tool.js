@@ -216,7 +216,7 @@ function main() {
                 case 2:
                     _e.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
-                        var dirent, fileReport_1, ast, nodes, set_1, bashManagerCommands_1, text, e_3;
+                        var dirent, fileReport_1, ast, nodes, set_1, fixInfo_1, bashManagerCommands_1, text, e_3;
                         return __generator(this, function (_f) {
                             switch (_f.label) {
                                 case 0:
@@ -236,6 +236,7 @@ function main() {
                                     ast = _f.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
                                     set_1 = new Set();
+                                    fixInfo_1 = { root: ast, list: [] };
                                     analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1);
                                     analyzer.consecutiveRunInstructionAnalysis(ast, fileReport_1, set_1);
                                     analyzer.lowChurnAnalysis(ast, fileReport_1, set_1);
@@ -287,6 +288,12 @@ function main() {
                                                                 }
                                                             });
                                                             if (!nonInteractionFlagIsPresent) {
+                                                                console.log(c);
+                                                                fixInfo_1.list.push({
+                                                                    rule: rule,
+                                                                    manager: manager,
+                                                                    node: c.source,
+                                                                });
                                                                 set_1.add(rule.code);
                                                                 addAbsoluteSmell(absoluteSmells, rule);
                                                                 fileReport_1 += "\tVOILATION DETECTED: " + noninteractionflag_1.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
@@ -305,6 +312,11 @@ function main() {
                                                                 if (c.flags.find(function (flag) { return flag == installFlag_1.value; }) != undefined) {
                                                                 }
                                                                 else {
+                                                                    fixInfo_1.list.push({
+                                                                        rule: rule,
+                                                                        manager: manager,
+                                                                        node: c.source,
+                                                                    });
                                                                     addAbsoluteSmell(absoluteSmells, rule);
                                                                     set_1.add(rule.code);
                                                                     fileReport_1 += "\tVOILATION DETECTED: " + installFlag_1.value + " flag missing at position:" + c.position.toString() + " for command " + c.command + "\n";
@@ -340,11 +352,21 @@ function main() {
                                                                 }
                                                             }
                                                             if (!hasCleanCacheCommand) {
+                                                                fixInfo_1.list.push({
+                                                                    rule: rule,
+                                                                    manager: manager,
+                                                                    node: ic.source,
+                                                                });
                                                                 set_1.add(rule.code);
                                                                 fileReport_1 += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
                                                                 addAbsoluteSmell(absoluteSmells, rule);
                                                             }
                                                             if (!hasCleanCacheCommand && manager.afterInstall.length > 0) {
+                                                                fixInfo_1.list.push({
+                                                                    rule: "DL3009",
+                                                                    manager: manager,
+                                                                    node: ic.source,
+                                                                });
                                                                 set_1.add("DL3009");
                                                                 fileReport_1 += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
                                                             }
@@ -362,6 +384,11 @@ function main() {
                                                                 found_1 = true;
                                                             }
                                                             else {
+                                                                fixInfo_1.list.push({
+                                                                    rule: rule,
+                                                                    manager: manager,
+                                                                    node: c.source,
+                                                                });
                                                                 addAbsoluteSmell(absoluteSmells, rule);
                                                                 set_1.add(rule.code);
                                                                 fileReport_1 += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
@@ -388,7 +415,7 @@ function main() {
                                         }
                                     });
                                     console.log("START FIXER");
-                                    fixer.convertAstToFile(ast);
+                                    fixer.convertAstToFile(fixInfo_1);
                                     console.log("DONE FIXER");
                                     return [3, 5];
                                 case 4:

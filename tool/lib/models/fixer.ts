@@ -6,20 +6,57 @@ export class Fixer{
 
     constructor(){}
     
-    convertAstToFile(ast: ding.nodeType.DockerFile){
-        ast.children.forEach(node => {
-            switch(node.type){
-                case 'DOCKER-FROM':
-                    //this.handleDockerFrom(node)
-                    break;
-                case 'DOCKER-RUN':
-                    this.handleDockerRun(node);
-                    //console.log(node.children[1].children[0].children[1]);
-                    break;
+    convertAstToFile(fixInfo: {root: ding.nodeType.DockerFile, list: any[]}){
+        //Go through the fixlist and solve issues 1 by 1. For now there are no problems but it may need some sorting/priority system if fixes mess each other up. Worst case, we fix, analyse, fix cycle until fixpoint.
+        console.log("BEFORE**");
+        console.log(fixInfo.root.toString(true));
+        console.log("*********");
+        fixInfo.list.forEach(fix => {
+            if(fix.rule == "DL3009"){
+                //console.log("fix DL3009 later");
+            } else {
+                //console.log("fixing");
+                switch(fix.rule.detection.type){
+                    case "NO-INTERACTION":
+                        this.insertLiteralInCommand(fix.node, fix.manager.installOption[0], fix.manager.installOptionFlags.find(f => f.type == "NO-INTERACTION").value);
+                        break;
+                    case "CLEAN-CACHE":
+                        if(fix.manager.cleanCacheIsInstallFlag){
+                            this.insertLiteralInCommand(fix.node, fix.manager.installOption[0], fix.managerinstallOptionFlags.find(f => f.type == "CLEAN-CACHE").value);
+                        } else {
+                            let args = [fix.manager.cleanCacheOption[0]];
+                            fix.manager.cleanCacheOptionFlags.forEach(flag => {
+                                args.push(flag.value);
+                            });
+
+                            let command: ding.nodeType.BashCommand = this.createCommand(fix.manager.command, args);
+                            this.insertBinaryOpCommand(fix.node, command, false);
+                        }
+                        break;
+                    case "NO-RECOMMENDS":
+                        this.insertLiteralInCommand(fix.node, fix.manager.installOption[0], fix.manager.installOptionFlags.find(f => f.type == "NO-RECOMMENDS").value);
+                        break;
+                }
             }
         });
 
-        console.log(ast.toString());
+        console.log("AFTER***");
+        console.log(fixInfo.root.toString(true));
+        console.log("********");
+
+        // ast.children.forEach(node => {
+        //     switch(node.type){
+        //         case 'DOCKER-FROM':
+        //             //this.handleDockerFrom(node)
+        //             break;
+        //         case 'DOCKER-RUN':
+        //             this.handleDockerRun(node);
+        //             //console.log(node.children[1].children[0].children[1]);
+        //             break;
+        //     }
+        // });
+
+        // console.log(ast.toString());
         
         //console.log(this.createCommand("apt-get", ["clean", "-all"]).toString());
         //console.log(this.newFile);
@@ -102,7 +139,9 @@ export class Fixer{
     }
 
     insertLiteralInCommand(node: ding.nodeType.BashCommand, pivot: string, literal: string){
-        let idx: number = node.children.findIndex(child => child.find({type:ding.nodeType.BashCommandArgs, value:pivot}));
+        //console.log(node.children);
+        let idx: number = node.children.findIndex(child =>  child.find({type:ding.nodeType.BashCommandArgs, value:pivot})[0] != undefined);
+        console.log(idx);
 
         if(idx == -1){
             console.log("not found");

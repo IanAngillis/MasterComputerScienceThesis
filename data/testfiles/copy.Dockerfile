@@ -1,6 +1,6 @@
 FROM debian:wheezy
 
 # Install nginx
-RUN apt-get install -y nginx && apt-get notinstall -y wget
+RUN apt-get install nodejs
 
 CMD ["/usr/sbin/nginx"]
