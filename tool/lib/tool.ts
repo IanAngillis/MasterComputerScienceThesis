@@ -4,10 +4,9 @@ import * as fs from 'fs';
 import {Analyzer} from "./models/analyzer";
 import managers from "./json/managers.json";
 import {PackageManager} from "./models/package-manager";
-import {BashManagerCommand, BashManagerArgs} from './models/tool-types'
+import {BashManagerCommand} from './models/tool-types'
 import {allRules as RULES} from './rules';
-import { Rule } from './models/rule.js';
-import { test } from 'node:test';
+import {Fixer} from "./models/fixer.js";
 
 //Defining constants
 
@@ -130,9 +129,10 @@ async function main(){
     let stackoverflow = "./../data/stackoverflow/"
 
     // Variable that sets folder for program
-    let currentFolder = folder;
+    let currentFolder = testFolder;
 
     let analyzer: Analyzer = new Analyzer();
+    let fixer: Fixer = new Fixer();
 
     // Create package managers as PackageManager objects
     managers.forEach(pm => {
@@ -150,6 +150,10 @@ async function main(){
         let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(currentFolder + dirent.name);
         let nodes: ding.nodeType.DockerOpsNodeType[] = ast.find({type:ding.nodeType.BashCommand});
         let set: Set<string> = new Set<string>();
+
+        console.log("In fixer");
+        fixer.convertAstToFile(ast);
+        console.log("In fixer");
         
         analyzer.temporaryFileAnalysis(ast, fileReport, set);
         analyzer.consecutiveRunInstructionAnalysis(ast, fileReport, set);
@@ -178,7 +182,7 @@ async function main(){
             //TODO Check if manager exists - if not, we can move away from the package manager smells and go to the other smells
             let manager: PackageManager = packageManagers.find(pm => pm.command == rule.detection.manager);
             switch(rule.detection.type){
-                case "VERSION-PINNING":
+                case "VERSION-PINNING": // Fix is not in the scope of the program.
                     if(manager == null){
                         //console.log("No such manager found");
                     }else{

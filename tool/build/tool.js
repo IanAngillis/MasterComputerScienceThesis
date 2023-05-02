@@ -75,6 +75,7 @@ var analyzer_1 = require("./models/analyzer");
 var managers_json_1 = __importDefault(require("./json/managers.json"));
 var tool_types_1 = require("./models/tool-types");
 var rules_1 = require("./rules");
+var fixer_js_1 = require("./models/fixer.js");
 var delimiter = " ";
 function splitWithoutEmptyString(text, delimiter) {
     return text.replace(/\r?\n/g, delimiter).replace(/\\/g, delimiter).split(delimiter).filter(function (w) { return w != ""; });
@@ -175,7 +176,7 @@ function addAbsoluteSmell(lst, rule) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, log, log2, mapped_tool_smells, smells, absoluteSmells, packageManagers, folder, testFolder, binnacle, crashed, stackoverflow, currentFolder, analyzer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, log, log2, mapped_tool_smells, smells, absoluteSmells, packageManagers, folder, testFolder, binnacle, crashed, stackoverflow, currentFolder, analyzer, fixer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -202,8 +203,9 @@ function main() {
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
                     stackoverflow = "./../data/stackoverflow/";
-                    currentFolder = folder;
+                    currentFolder = testFolder;
                     analyzer = new analyzer_1.Analyzer();
+                    fixer = new fixer_js_1.Fixer();
                     managers_json_1.default.forEach(function (pm) {
                         packageManagers.push(pm);
                     });
@@ -234,6 +236,9 @@ function main() {
                                     ast = _f.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
                                     set_1 = new Set();
+                                    console.log("In fixer");
+                                    fixer.convertAstToFile(ast);
+                                    console.log("In fixer");
                                     analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1);
                                     analyzer.consecutiveRunInstructionAnalysis(ast, fileReport_1, set_1);
                                     analyzer.lowChurnAnalysis(ast, fileReport_1, set_1);
