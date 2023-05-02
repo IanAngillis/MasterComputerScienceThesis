@@ -149,11 +149,24 @@ export class Fixer{
             let bashLiteral: ding.nodeType.BashLiteral = new ding.nodeType.BashLiteral(literal);
             let bashWord: ding.nodeType.BashWord = new ding.nodeType.BashWord();
             let bashCommandArg: ding.nodeType.BashCommandArgs = new ding.nodeType.BashCommandArgs();
+
+            bashLiteral.isChanged = true;
+            bashWord.isChanged = true;
+            bashCommandArg.isChanged = true;
             
             bashWord.addChild(bashLiteral);
             bashCommandArg.addChild(bashWord);
             node.children.splice(idx + 1, 0, bashCommandArg);
+
+            if(bashLiteral.value == undefined){
+                console.log("undefined");
+            }
         }
+
+        node.isChanged = true;
+        console.log("RESULT");
+        console.log(node.toString());
+        console.log("ENDRESULT");
     }
 
     createCommand(command: string, args: string[]): ding.nodeType.BashCommand{

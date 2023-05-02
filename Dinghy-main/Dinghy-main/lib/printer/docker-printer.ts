@@ -206,7 +206,11 @@ export class Printer {
       case "DOCKER-SHELL-ARG":
       case "DOCKER-SHELL-EXECUTABLE":
       case "DOCKER-ENTRYPOINT-ARG":
-        this.append(node.value.replace(/\n/g, "\\\n"));
+        // Getting errors after rewrite - no idea what yet the consequences will be
+        if(node.value != undefined){
+          this.append(node.value.replace(/\n/g, "\\\n"));
+        }
+
         break;
       case "DOCKER-NAME":
       case "DOCKER-KEYWORD":
