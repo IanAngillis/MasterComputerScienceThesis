@@ -104,6 +104,7 @@ async function main(){
     let mapped_tool_smells: fs.WriteStream = fs.createWriteStream("../eval/mapped_tool_smells.txt", {flags: 'a'});
     let smells: {rule: string, times: number}[] = [];
     let absoluteSmells: {rule: string, times: number}[] = [];
+   
 
     let packageManagers: PackageManager[] = [];
     // can be in a config object
@@ -150,10 +151,7 @@ async function main(){
         let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(currentFolder + dirent.name);
         let nodes: ding.nodeType.DockerOpsNodeType[] = ast.find({type:ding.nodeType.BashCommand});
         let set: Set<string> = new Set<string>();
-
-        console.log("In fixer");
-        fixer.convertAstToFile(ast);
-        console.log("In fixer");
+        let fixInfo: {root: ding.nodeType.DockerFile, list: any[]} = {root: ast, list: []};
         
         analyzer.temporaryFileAnalysis(ast, fileReport, set);
         analyzer.consecutiveRunInstructionAnalysis(ast, fileReport, set);
@@ -230,6 +228,13 @@ async function main(){
                                 });
 
                                 if(!nonInteractionFlagIsPresent){
+                                    // Adding information to the fixlist
+                                    fixInfo.list.push({
+                                        rule: rule,
+                                        manager: manager,
+                                        node: c,
+                                    });
+
                                     set.add(rule.code);
                                     addAbsoluteSmell(absoluteSmells, rule);
                                     fileReport += "\tVOILATION DETECTED: " + noninteractionflag.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
@@ -368,8 +373,12 @@ async function main(){
             }
         });
 
+        console.log("START FIXER");
+        fixer.convertAstToFile(ast);
+        console.log("DONE FIXER");
+
     } catch(e){
-        //console.log(e);
+        console.log(e);
         mapped_tool_smells.write(dirent.name + "\n");
         log2.write(dirent.name + "\n");
         console.log("ERROR");
@@ -380,6 +389,7 @@ async function main(){
     log.close();
     //log2.write(smells);
     log2.close();
+    console.log("**RESULTS**");
     // Relative smells are fine but we are missing a lot of the DL42
     console.log("relative");
     console.log(smells)

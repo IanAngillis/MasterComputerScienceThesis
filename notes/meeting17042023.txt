@@ -52,3 +52,7 @@ RUN npm install
 COPY . .
 
 CMD ["node","index.js"]
+
+
+Detection:
+* Fix-list -- if that doesn't work we go fixpoint.

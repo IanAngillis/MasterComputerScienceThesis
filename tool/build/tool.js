@@ -236,9 +236,6 @@ function main() {
                                     ast = _f.sent();
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
                                     set_1 = new Set();
-                                    console.log("In fixer");
-                                    fixer.convertAstToFile(ast);
-                                    console.log("In fixer");
                                     analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1);
                                     analyzer.consecutiveRunInstructionAnalysis(ast, fileReport_1, set_1);
                                     analyzer.lowChurnAnalysis(ast, fileReport_1, set_1);
@@ -390,9 +387,13 @@ function main() {
                                             smells[idx].times += 1;
                                         }
                                     });
+                                    console.log("START FIXER");
+                                    fixer.convertAstToFile(ast);
+                                    console.log("DONE FIXER");
                                     return [3, 5];
                                 case 4:
                                     e_3 = _f.sent();
+                                    console.log(e_3);
                                     mapped_tool_smells.write(dirent.name + "\n");
                                     log2.write(dirent.name + "\n");
                                     console.log("ERROR");
@@ -436,6 +437,7 @@ function main() {
                     mapped_tool_smells.close();
                     log.close();
                     log2.close();
+                    console.log("**RESULTS**");
                     console.log("relative");
                     console.log(smells);
                     console.log("absolute");
