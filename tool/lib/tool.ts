@@ -153,9 +153,9 @@ async function main(){
         let set: Set<string> = new Set<string>();
         let fixInfo: {root: ding.nodeType.DockerFile, list: any[]} = {root: ast, list: []};
         
-        analyzer.temporaryFileAnalysis(ast, fileReport, set);
-        analyzer.consecutiveRunInstructionAnalysis(ast, fileReport, set);
-        analyzer.lowChurnAnalysis(ast, fileReport, set);
+        analyzer.temporaryFileAnalysis(ast, fileReport, set, fixInfo);
+        analyzer.consecutiveRunInstructionAnalysis(ast, fileReport, set, fixInfo);
+        analyzer.lowChurnAnalysis(ast, fileReport, set, fixInfo);
 
         // Create Bashamangercommands - intermediary representation
         let bashManagerCommands: BashManagerCommand[] = [];
@@ -231,6 +231,8 @@ async function main(){
                                     // Adding information to the fixlist
                                     console.log(c);
                                     fixInfo.list.push({
+                                        isManagerRelated: true,
+                                        code: rule.code,
                                         rule: rule,
                                         manager: manager,
                                         node: c.source,
@@ -264,6 +266,8 @@ async function main(){
                                     }else{
                                         // Adding information to the fixlist
                                         fixInfo.list.push({
+                                            isManagerRelated: true,
+                                            code: rule.code,
                                             rule: rule,
                                             manager: manager,
                                             node: c.source,
@@ -318,6 +322,8 @@ async function main(){
                                 if(!hasCleanCacheCommand){
                                     // Adding information to the fixlist
                                     fixInfo.list.push({
+                                        isManagerRelated: true,
+                                        code: rule.code,
                                         rule: rule,
                                         manager: manager,
                                         node: ic.source,
@@ -328,14 +334,27 @@ async function main(){
                                     
                                 }
 
-                                // Doens't work - fix
+                                // Specific for apt-get and apt
                                 if(!hasCleanCacheCommand && manager.afterInstall.length > 0){
                                     // Adding information to the fixlist
-                                    fixInfo.list.push({
-                                        rule: "DL3009",
-                                        manager: manager,
-                                        node: ic.source,
-                                    });
+                                    if(manager.command == "apt-get"){
+                                        fixInfo.list.push({
+                                            isManagerRelated: false,
+                                            code: "DL3009",
+                                            rule: "DL3009",
+                                            manager: manager,
+                                            node: ic.source,
+                                        });
+                                    } else {
+                                        fixInfo.list.push({
+                                            isManagerRelated: false,
+                                            code: "DL9021",
+                                            rule: "DL9021",
+                                            manager: manager,
+                                            node: ic.source,
+                                        });
+                                    }
+                                   
                                     set.add("DL3009");
                                     fileReport += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
                                     //console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
@@ -363,6 +382,8 @@ async function main(){
                                     
                                     // Adding information to the fixlist
                                     fixInfo.list.push({
+                                        isManagerRelated: true,
+                                        code: rule.code,
                                         rule: rule,
                                         manager: manager,
                                         node: c.source,

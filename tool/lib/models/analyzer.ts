@@ -14,10 +14,12 @@ export class Analyzer {
      * Procedure that performs a temporary-file smell analysis on the file.
      * @param ast 
      */
-    temporaryFileAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>){
+    temporaryFileAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>, fixInfo: {root: ding.nodeType.DockerFile, list: any[]}){
         let args: {key:string, value:string, updatedInLayer?:number}[] = [];
         let envs: {key:string, value:string, updatedInLayer?:number}[] = [];
         let exports: {key: string, value:string, updateInLayer?:number}[] = [];
+
+        // Add introducedCommand, deletedCommand, compressedCommand such that it can be used as relevant statements that hook into the AST.
         let files: {absolutePath: string, file: string, extractedLayer?:number, introducedLayer?:number, deletedLayer?:number, urlOrigin?:boolean, isDirectory?:boolean, introducedBy: "COPY"|"ADD"|"BUILT-IN"}[] = [];
         let containerpath = "/";
         /**
@@ -639,41 +641,83 @@ export class Analyzer {
                             fileReport += "\tVOILATION DETECTED: ADD/rm temporary file smell for file" + file.file + "\n";
                             //DL9013
                             set.add("ADD/rm");
+                            // NO fix unless we take it from a source like wget/curl- maybe delete the deleting command?
                             break;
                         case "COPY":
                             fileReport += "\tVOILATION DETECTED: COPY/rm temporary file smell for file" + file.file + "\n";
                             set.add("COPY/rm"); //DL9014
+                            // No fix unless we take from a source like wget/curl - maybe delete the deleting command?
                             break;
                         case "BUILT-IN":
                             fileReport += "\tVOILATION DETECTED: BUILT-IN/rm temporary file smell for file" + file.file + "\n";
                             set.add("BUILT-IN/rm"); //DL9015
+
+                            // Find the relevant nodes with context, can be built up given that we have a status for each file
+                            // We need to hook the relevant statements to the files. 
+                            fixInfo.list.push({
+                                isManagerRelated: false,
+                                code: "DL9015",
+                                manager: null,
+                                node: null,
+                                context: null //TODO
+                            });
                             break;
                     }
                 }else if (file.introducedLayer != undefined && file.extractedLayer != undefined && file.deletedLayer == undefined){
+                    // Are we sure that when a file is introduced it isn't necessary a format that's been extracted?
+                    // Double check this - would be a silly fucking mistake
+
                     switch(file.introducedBy){
                         case "ADD":
                             fileReport += "\tVOILATION DETECTED: ADD introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
-                            set.add("TF0001"); //DL9016
+                            set.add("DL9016"); //DL9016
+                            // Cannot be fixed
                             break;
                         case "COPY":
                             fileReport += "\tVOILATION DETECTED: COPY introduced compressed file which was decompressed  but not deleted:" + file.file + "\n";
-                            set.add("TF0002"); //DL9017
+                            set.add("DL9017"); //DL9017
                             break;
+                            // Cannot be fixed
                         case "BUILT-IN":
                             fileReport += "\tVOILATION DETECTED: BUILT-IN introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
-                            set.add("TF0003"); //DL9018
+                            set.add("DL9018"); //DL9018
+                            // can be fixed
+                            fixInfo.list.push({
+                                isManagerRelated: false,
+                                code: "DL9018",
+                                manager: null,
+                                node: null,
+                                context: null //TODO
+                            });
                             break;
                     }
                 }
 
                 if(file.introducedLayer != undefined && file.introducedBy == "ADD" && file.urlOrigin && file.deletedLayer != undefined){
                     fileReport += "\tVOILATION DETECTED: compressed file introduced from URL through ADD :" + file.file + "\n";
-                    set.add("TF0004"); //DL9019
+                    set.add("DL9019"); //DL9019
+                    // can be fixed by getting it from wget or url, as ADD doesn't decompress
+                    fixInfo.list.push({
+                        isManagerRelated: false,
+                        code: "DL9019",
+                        manager: null,
+                        node: null,
+                        context: null //TODO
+                    });
                 }
 
                 if(file.introducedLayer != undefined && file.introducedBy == "COPY" && file.extractedLayer != undefined){
                     fileReport += "\tVOILATION DETECTED: replace COPY and extract statement with ADD :" + file.file + "\n";
                     set.add("DL3010");
+
+                    // Solved by replacing COPY by add and deleting extract statement. (this means - keep track of destination too!)
+                    fixInfo.list.push({
+                        isManagerRelated: false,
+                        code: "DL9019",
+                        manager: null,
+                        node: null,
+                        context: null //TODO
+                    });
                 }
             });
         }
@@ -701,8 +745,9 @@ export class Analyzer {
         //infoDump();
     }
 
-    consecutiveRunInstructionAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>){
-         /**
+    consecutiveRunInstructionAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>, fixInfo: {root: ding.nodeType.DockerFile, list: any[]}){
+        //TODO Maybe be more specific such that a Bashscript only has one child that is a BashCommand
+        /**
          * Procedure that serves as a hatch for the different kind of Docker instructions, which can all be assumed to be different layers.
          * @param instruction 
          */
@@ -713,10 +758,19 @@ export class Analyzer {
 
                     if((instr.includes("&&") || instr.includes(";")) && !instr.includes("--mount")){
                         consecutiveRunInstruction = 0;
+                        relevantInstructions = [];
                     } else {
                         consecutiveRunInstruction += 1;
+                        relevantInstructions.push(instruction as ding.nodeType.DockerRun);
 
                         if(consecutiveRunInstruction >= 3){
+                            fixInfo.list.push({
+                                isManagerRelated: false,
+                                code: "DL3059",
+                                manager: null,
+                                node: instruction.parent,
+                                context: relevantInstructions
+                            });
                             fileReport += "\tVOILATION DETECTED: Multiple consecutive RUN instructions \n";
                             set.add("DL3059");
                         }
@@ -730,6 +784,7 @@ export class Analyzer {
         }
 
         let consecutiveRunInstruction: number = 0;
+        let relevantInstructions: ding.nodeType.DockerRun[] = [];
 
         ast.children.forEach(dockerInstruction => {
             // Handling each instruction seperately ensures we handle one layer at a time, temporary or final doesn't matter.
@@ -738,7 +793,7 @@ export class Analyzer {
         });
     }
 
-    lowChurnAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>){
+    lowChurnAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>, fixInfo: {root: ding.nodeType.DockerFile, list: any[]}){
         /**
         * Procedure that serves as a hatch for the different kind of Docker instructions, which can all be assumed to be different layers.
         * @param instruction 
@@ -769,6 +824,7 @@ export class Analyzer {
                 state.hasCopiedEntireContext = true;
                 state.hasCopiedEntireContextLayer = instruction.layer;
                 state.lastCopyLayer = instruction.layer;
+                relevantInstructions.push(instruction);
             } else {
                 state.lastCopyLayer = instruction.layer;
             }
@@ -788,6 +844,15 @@ export class Analyzer {
                 .filter(w => w != "RUN");
             
             if(runInstruction.includes("npm") && runInstruction.includes("install") && state.hasCopiedEntireContext){
+                relevantInstructions.push(instruction);
+
+                fixInfo.list.push({
+                    isManagerRelated: false,
+                    code: "DL9020",
+                    manager: null,
+                    node: instruction.parent,
+                    context: relevantInstructions
+                });
                 state.installLayer = instruction.layer;
                 fileReport += "\tVOILATION DETECTED: No layer optimization by copying entire context for npm (DL9020)\n";
                 set.add("DL9020"); //
@@ -796,6 +861,7 @@ export class Analyzer {
 
 
        let state = {hasCopiedEntireContext: false, hasCopiedEntireContextLayer: -1, lastCopyLayer: -1, installLayer: -1};
+       let relevantInstructions: ding.nodeType.DockerOpsNodeType[] = [];
 
        ast.children.forEach(dockerInstruction => {
            // Handling each instruction seperately ensures we handle one layer at a time, temporary or final doesn't matter.

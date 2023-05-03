@@ -237,9 +237,9 @@ function main() {
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
                                     set_1 = new Set();
                                     fixInfo_1 = { root: ast, list: [] };
-                                    analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1);
-                                    analyzer.consecutiveRunInstructionAnalysis(ast, fileReport_1, set_1);
-                                    analyzer.lowChurnAnalysis(ast, fileReport_1, set_1);
+                                    analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1, fixInfo_1);
+                                    analyzer.consecutiveRunInstructionAnalysis(ast, fileReport_1, set_1, fixInfo_1);
+                                    analyzer.lowChurnAnalysis(ast, fileReport_1, set_1, fixInfo_1);
                                     bashManagerCommands_1 = [];
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
@@ -290,6 +290,8 @@ function main() {
                                                             if (!nonInteractionFlagIsPresent) {
                                                                 console.log(c);
                                                                 fixInfo_1.list.push({
+                                                                    isManagerRelated: true,
+                                                                    code: rule.code,
                                                                     rule: rule,
                                                                     manager: manager,
                                                                     node: c.source,
@@ -313,6 +315,8 @@ function main() {
                                                                 }
                                                                 else {
                                                                     fixInfo_1.list.push({
+                                                                        isManagerRelated: true,
+                                                                        code: rule.code,
                                                                         rule: rule,
                                                                         manager: manager,
                                                                         node: c.source,
@@ -353,6 +357,8 @@ function main() {
                                                             }
                                                             if (!hasCleanCacheCommand) {
                                                                 fixInfo_1.list.push({
+                                                                    isManagerRelated: true,
+                                                                    code: rule.code,
                                                                     rule: rule,
                                                                     manager: manager,
                                                                     node: ic.source,
@@ -362,11 +368,24 @@ function main() {
                                                                 addAbsoluteSmell(absoluteSmells, rule);
                                                             }
                                                             if (!hasCleanCacheCommand && manager.afterInstall.length > 0) {
-                                                                fixInfo_1.list.push({
-                                                                    rule: "DL3009",
-                                                                    manager: manager,
-                                                                    node: ic.source,
-                                                                });
+                                                                if (manager.command == "apt-get") {
+                                                                    fixInfo_1.list.push({
+                                                                        isManagerRelated: false,
+                                                                        code: "DL3009",
+                                                                        rule: "DL3009",
+                                                                        manager: manager,
+                                                                        node: ic.source,
+                                                                    });
+                                                                }
+                                                                else {
+                                                                    fixInfo_1.list.push({
+                                                                        isManagerRelated: false,
+                                                                        code: "DL9021",
+                                                                        rule: "DL9021",
+                                                                        manager: manager,
+                                                                        node: ic.source,
+                                                                    });
+                                                                }
                                                                 set_1.add("DL3009");
                                                                 fileReport_1 += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
                                                             }
@@ -385,6 +404,8 @@ function main() {
                                                             }
                                                             else {
                                                                 fixInfo_1.list.push({
+                                                                    isManagerRelated: true,
+                                                                    code: rule.code,
                                                                     rule: rule,
                                                                     manager: manager,
                                                                     node: c.source,

@@ -8,14 +8,12 @@ export class Fixer{
     
     convertAstToFile(fixInfo: {root: ding.nodeType.DockerFile, list: any[]}){
         //Go through the fixlist and solve issues 1 by 1. For now there are no problems but it may need some sorting/priority system if fixes mess each other up. Worst case, we fix, analyse, fix cycle until fixpoint.
-        console.log("BEFORE**");
-        console.log(fixInfo.root.toString(true));
-        console.log("*********");
+        // console.log("BEFORE**");
+        // console.log(fixInfo.root.toString(true));
+        // console.log("*********");
         fixInfo.list.forEach(fix => {
-            if(fix.rule == "DL3009"){
-                //console.log("fix DL3009 later");
-            } else {
-                //console.log("fixing");
+            //console.log(fix);
+            if(fix.isManagerRelated){
                 switch(fix.rule.detection.type){
                     case "NO-INTERACTION":
                         this.insertLiteralInCommand(fix.node, fix.manager.installOption[0], fix.manager.installOptionFlags.find(f => f.type == "NO-INTERACTION").value);
@@ -37,12 +35,25 @@ export class Fixer{
                         this.insertLiteralInCommand(fix.node, fix.manager.installOption[0], fix.manager.installOptionFlags.find(f => f.type == "NO-RECOMMENDS").value);
                         break;
                 }
+            } else {
+                switch(fix.code){
+                    case "DL3009":
+                        console.log("trying to fix");
+                        break;
+                    case "DL9021":
+                        console.log("trying to fix");
+                        break;
+                    case "DL3059":
+                        this.consolidateRunInstruction(fix.context);
+                        break;
+
+                }
             }
         });
 
-        console.log("AFTER***");
-        console.log(fixInfo.root.toString(true));
-        console.log("********");
+        // console.log("AFTER***");
+        // console.log(fixInfo.root.toString(true));
+        // console.log("********");
 
         // ast.children.forEach(node => {
         //     switch(node.type){
@@ -77,9 +88,9 @@ export class Fixer{
     handleDockerRun(run: ding.nodeType.DockerRun){
         let num = 0;
         let bool: boolean = true;
-        console.log("RUN**");
+        //console.log("RUN**");
         run.traverseDF(node => {
-            console.log(node.annotations);
+            //console.log(node.annotations);
             if(node.type == "BASH-COMMAND" && bool){
                 if(num == 1){
                     let command = this.createCommand("apt-get", ["clean", "-all"]);
@@ -89,7 +100,7 @@ export class Fixer{
                 num ++;
             }
         });
-        console.log("****");
+        //console.log("****");
     }
 
     insertBinaryOpCommand(node: ding.nodeType.BashCommand, command: ding.nodeType.BashCommand, left: boolean): void{
@@ -164,9 +175,9 @@ export class Fixer{
         }
 
         node.isChanged = true;
-        console.log("RESULT");
-        console.log(node.toString());
-        console.log("ENDRESULT");
+        // console.log("RESULT");
+        // console.log(node.toString());
+        // console.log("ENDRESULT");
     }
 
     createCommand(command: string, args: string[]): ding.nodeType.BashCommand{
@@ -192,5 +203,12 @@ export class Fixer{
         });
 
         return bashCommand;
+    }
+
+    //Todo (like literally, it needs to be done)
+    consolidateRunInstruction(instructions: ding.nodeType.DockerRun[]): void{
+        instructions.forEach(instruction => {
+            console.log(instruction.getChild(ding.nodeType.BashScript).children);
+        })
     }
 }
