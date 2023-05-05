@@ -211,4 +211,8 @@ export class Fixer{
             console.log(instruction.getChild(ding.nodeType.BashScript).children);
         })
     }
+
+    optimizeCache(){
+        
+    }
 }

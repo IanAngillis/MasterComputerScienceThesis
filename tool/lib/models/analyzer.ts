@@ -1,5 +1,6 @@
 import { DockerCopy } from '../../../Dinghy-main/Dinghy-main/build/docker-type.js';
 import * as ding from './../../../Dinghy-main/Dinghy-main/build/index.js';
+import {File} from "./file.js"
 
 /**
  * Class that can perform analysis on Dockerfile
@@ -20,8 +21,23 @@ export class Analyzer {
         let exports: {key: string, value:string, updateInLayer?:number}[] = [];
 
         // Add introducedCommand, deletedCommand, compressedCommand such that it can be used as relevant statements that hook into the AST.
-        let files: {absolutePath: string, file: string, extractedLayer?:number, introducedLayer?:number, deletedLayer?:number, urlOrigin?:boolean, isDirectory?:boolean, introducedBy: "COPY"|"ADD"|"BUILT-IN"}[] = [];
+        // let files: {absolutePath: string, 
+        //     file: string, 
+        //     extractedLayer?:number, 
+        //     extractedStatement?:ding.nodeType.BashCommand,
+        //     introducedLayer?:number, 
+        //     introducedStatement?:ding.nodeType.DockerOpsNodeType, 
+        //     deletedLayer?:number, 
+        //     deletedStatement?:ding.nodeType.BashCommand,
+        //     urlOrigin?:boolean, 
+        //     isDirectory?:boolean, 
+        //     isCompressed:boolean,
+        //     introducedBy: "COPY"|"ADD"|"BUILT-IN"}[] = [];
+
+        let files: File[] = [];
+
         let containerpath = "/";
+
         /**
          * Procedure that adds a docker ARG to the ARGS.
          * @param arg DockerArg
@@ -45,6 +61,15 @@ export class Analyzer {
                 value: value,
                 updatedInLayer: arg.layer
             });
+        }
+
+        /**
+         * Procedure that returns wheter a file is compressed or not
+         * @param file 
+         * @returns 
+         */
+        function fileIsCompressed(file): boolean{
+            return file.toString().includes(".tar.gz") || file.toString().includes(".tar.xz") || file.toString().includes(".tar.bzip2");
         }
 
         /**
@@ -163,8 +188,17 @@ export class Analyzer {
         function addEvnToEnvs(env: ding.nodeType.DockerEnv){
             let newEnvs: string[]= env.toString().replace(/\n/g, "").replace("ENV", "").split("\\").map(x => x.trim());
 
+            console.log(newEnvs);
+
             newEnvs.forEach(newEnv => {
-                let keyValuePair: string[] = newEnv.split("=");
+                let keyValuePair: string[];
+
+                if(newEnv.includes("=")){
+                    keyValuePair = newEnv.split("=");
+                } else {
+                    keyValuePair = newEnv.split(" ");
+                }
+
                 let key: string = keyValuePair[0];
                 let value: string = keyValuePair[1];
                 let idx: number = envs.findIndex(x => x.key == key);
@@ -208,9 +242,10 @@ export class Analyzer {
         }
 
         function addExportToExports(exp: string[], node: ding.nodeType.BashCommand){
+            console.log(exp);
             exp = exp.filter(w => w != "export");
             
-            if(exp.length == 0){
+            if(exp.length == 0 || exp.includes("cd")){
                 return;
             }
 
@@ -270,7 +305,7 @@ export class Analyzer {
                 if(source.toString().startsWith("https") || source.toString().startsWith("http")){
                     isUrl = true;
                     let splitSource: string[] = source.toString().split("/");
-                    file = splitSource[splitSource.length-1];
+                    file = splitSource[splitSource.length-1];    
                 }
 
                 if(source.toString().includes(".tar.gz") || source.toString().includes(".tar.xz") || source.toString().includes(".tar.bzip2")){
@@ -291,9 +326,12 @@ export class Analyzer {
                     file: file,
                     absolutePath: finalPath,
                     introducedLayer: add.layer,
+                    introducedStatement: add,
                     introducedBy: "ADD",
-                    urlOrigin: isUrl
-                });
+                    urlOrigin: isUrl,
+                    isCompressed: fileIsCompressed(file)
+                });        
+
             });
         }
 
@@ -334,12 +372,13 @@ export class Analyzer {
                     finalPath += file;
                 }
 
-
                 files.push({
                     file: file,
                     absolutePath: finalPath,
                     introducedLayer: copy.layer,
-                    introducedBy: "COPY"
+                    introducedStatement: copy,
+                    introducedBy: "COPY",
+                    isCompressed: fileIsCompressed(file)
                 });
             });
         }
@@ -360,12 +399,14 @@ export class Analyzer {
                     if(containerpath == "/"){
                         containerpath = "";
                     }
-                    
+
                     files.push({
                         absolutePath: containerpath + "/" + file,
                         file: file,
                         introducedLayer: node.layer,
-                        introducedBy: "BUILT-IN"
+                        introducedStatement: node,
+                        introducedBy: "BUILT-IN",
+                        isCompressed: fileIsCompressed(file),
                     });
                 }
             });
@@ -385,7 +426,8 @@ export class Analyzer {
                         absolutePath: absoluteFile,
                         file: file, 
                         introducedLayer: node.layer,
-                        introducedBy: "BUILT-IN"
+                        introducedBy: "BUILT-IN",
+                        isCompressed: fileIsCompressed(file)
                     });
 
                     return;
@@ -411,7 +453,8 @@ export class Analyzer {
                         absolutePath: containerpath + "/" + file,
                         file: file, 
                         introducedLayer: node.layer,
-                        introducedBy: "BUILT-IN"
+                        introducedBy: "BUILT-IN",
+                        isCompressed: fileIsCompressed(file),
                     });
                 }
             });
@@ -430,6 +473,7 @@ export class Analyzer {
                     
                     if(resolvedFileName == file.file){
                         file.extractedLayer = node.layer;
+                        file.extractedStatement = node
                         matchFound = true;
                     }
                 });
@@ -451,13 +495,7 @@ export class Analyzer {
                                 return;
                             }
 
-                            let lastFile : {
-                                absolutePath: string;
-                                file: string;
-                                extractedLayer?: number;
-                                introducedLayer?: number;
-                                deletedLayer?: number;
-                            } = files[files.length - 1];
+                            let lastFile : File = files[files.length - 1];
 
                             // if(lastFile == undefined){
                             //     console.log("piped file not found");
@@ -470,6 +508,7 @@ export class Analyzer {
 
                                 if(resolvedFileName.includes(lastFile.file)){
                                     lastFile.extractedLayer = node.layer;
+                                    lastFile.extractedStatement = node;
                                 }
                             });
                         }
@@ -490,6 +529,7 @@ export class Analyzer {
 
                     if(resolvedFileName == file.absolutePath || (resolvedFileName == file.file && file.absolutePath == containerpath  + "/" + resolvedFileName)){
                         file.deletedLayer = node.layer;
+                        file.deletedStatement = node;
                         matchFound = true;
                     } else if(resolvedFileName == file.file && file.absolutePath != containerpath + "/" + resolvedFileName) {
                         console.log("trying to delete a file that does not exist at this location.");
@@ -659,11 +699,11 @@ export class Analyzer {
                                 code: "DL9015",
                                 manager: null,
                                 node: null,
-                                context: null //TODO
+                                context: file //TODO
                             });
                             break;
                     }
-                }else if (file.introducedLayer != undefined && file.extractedLayer != undefined && file.deletedLayer == undefined){
+                }else if (file.introducedLayer != undefined && file.extractedLayer != undefined && file.isCompressed && file.deletedLayer == undefined){
                     // Are we sure that when a file is introduced it isn't necessary a format that's been extracted?
                     // Double check this - would be a silly fucking mistake
 
@@ -687,13 +727,13 @@ export class Analyzer {
                                 code: "DL9018",
                                 manager: null,
                                 node: null,
-                                context: null //TODO
+                                context: file //TODO
                             });
                             break;
                     }
                 }
 
-                if(file.introducedLayer != undefined && file.introducedBy == "ADD" && file.urlOrigin && file.deletedLayer != undefined){
+                if(file.introducedLayer != undefined && file.introducedBy == "ADD" && file.isCompressed && file.urlOrigin && file.deletedLayer != undefined){
                     fileReport += "\tVOILATION DETECTED: compressed file introduced from URL through ADD :" + file.file + "\n";
                     set.add("DL9019"); //DL9019
                     // can be fixed by getting it from wget or url, as ADD doesn't decompress
@@ -702,11 +742,11 @@ export class Analyzer {
                         code: "DL9019",
                         manager: null,
                         node: null,
-                        context: null //TODO
+                        context: file //TODO
                     });
                 }
 
-                if(file.introducedLayer != undefined && file.introducedBy == "COPY" && file.extractedLayer != undefined){
+                if(file.introducedLayer != undefined && file.introducedBy == "COPY" && file.isCompressed && file.extractedLayer != undefined){
                     fileReport += "\tVOILATION DETECTED: replace COPY and extract statement with ADD :" + file.file + "\n";
                     set.add("DL3010");
 
@@ -716,7 +756,7 @@ export class Analyzer {
                         code: "DL9019",
                         manager: null,
                         node: null,
-                        context: null //TODO
+                        context: file //TODO
                     });
                 }
             });
@@ -742,7 +782,7 @@ export class Analyzer {
         // Needs to be enabled to find smells
         analyseResult();
         //console.log(fileReport);
-        //infoDump();
+        infoDump();
     }
 
     consecutiveRunInstructionAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>, fixInfo: {root: ding.nodeType.DockerFile, list: any[]}){
@@ -823,6 +863,7 @@ export class Analyzer {
             if(source.value == "."){
                 state.hasCopiedEntireContext = true;
                 state.hasCopiedEntireContextLayer = instruction.layer;
+                state.hasCopiedEntireContextCommand = instruction;
                 state.lastCopyLayer = instruction.layer;
                 relevantInstructions.push(instruction);
             } else {
@@ -845,6 +886,7 @@ export class Analyzer {
             
             if(runInstruction.includes("npm") && runInstruction.includes("install") && state.hasCopiedEntireContext){
                 relevantInstructions.push(instruction);
+                state.installCommand = instruction;
 
                 fixInfo.list.push({
                     isManagerRelated: false,
@@ -860,7 +902,7 @@ export class Analyzer {
        }
 
 
-       let state = {hasCopiedEntireContext: false, hasCopiedEntireContextLayer: -1, lastCopyLayer: -1, installLayer: -1};
+       let state = {hasCopiedEntireContext: false, hasCopiedEntireContextLayer: -1, hasCopiedEntireContextCommand: null, lastCopyLayer: -1, installLayer: -1, installCommand: null};
        let relevantInstructions: ding.nodeType.DockerOpsNodeType[] = [];
 
        ast.children.forEach(dockerInstruction => {

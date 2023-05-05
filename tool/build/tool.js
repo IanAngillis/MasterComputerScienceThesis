@@ -436,7 +436,6 @@ function main() {
                                         }
                                     });
                                     console.log("START FIXER");
-                                    fixer.convertAstToFile(fixInfo_1);
                                     console.log("DONE FIXER");
                                     return [3, 5];
                                 case 4:

@@ -423,7 +423,7 @@ async function main(){
         });
 
         console.log("START FIXER");
-        fixer.convertAstToFile(fixInfo);
+        //fixer.convertAstToFile(fixInfo);
         console.log("DONE FIXER");
 
     } catch(e){

@@ -24,9 +24,9 @@ RUN mkdir /goroot && curl https://storage.googleapis.com/golang/go${GOVERSION}.l
 RUN mkdir /gopath
 
 # Set Environmental variable for golang
-ENV GOROOT /goroot
-ENV GOPATH /gopath
-ENV PATH $PATH:$GOROOT/bin:$GOPATH/bin
+ENV GOROOT /goroot \
+    GOPATH /gopath \
+    PATH $PATH:$GOROOT/bin:$GOPATH/bin
 
 # Installing hugo
 RUN go get -v github.com/spf13/hugo
