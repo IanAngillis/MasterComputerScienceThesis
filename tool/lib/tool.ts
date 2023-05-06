@@ -130,7 +130,7 @@ async function main(){
     let stackoverflow = "./../data/stackoverflow/"
 
     // Variable that sets folder for program
-    let currentFolder = testFolder;
+    let currentFolder = folder;
 
     let analyzer: Analyzer = new Analyzer();
     let fixer: Fixer = new Fixer();
@@ -155,7 +155,7 @@ async function main(){
         
         analyzer.temporaryFileAnalysis(ast, fileReport, set, fixInfo);
         analyzer.consecutiveRunInstructionAnalysis(ast, fileReport, set, fixInfo);
-        analyzer.lowChurnAnalysis(ast, fileReport, set, fixInfo);
+        //analyzer.lowChurnAnalysis(ast, fileReport, set, fixInfo);
 
         // Create Bashamangercommands - intermediary representation
         let bashManagerCommands: BashManagerCommand[] = [];
@@ -229,7 +229,6 @@ async function main(){
 
                                 if(!nonInteractionFlagIsPresent){
                                     // Adding information to the fixlist
-                                    console.log(c);
                                     fixInfo.list.push({
                                         isManagerRelated: true,
                                         code: rule.code,
@@ -422,9 +421,9 @@ async function main(){
             }
         });
 
-        console.log("START FIXER");
-        //fixer.convertAstToFile(fixInfo);
-        console.log("DONE FIXER");
+        // console.log("START FIXER");
+        // fixer.convertAstToFile(fixInfo);
+        // console.log("DONE FIXER");
 
     } catch(e){
         console.log(e);

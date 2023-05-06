@@ -1,14 +1,19 @@
-FROM ubuntu:16.04
+FROM node:alpine
 
-RUN apt-get update && apt-get install -yq wget bzip2 gcc g++ make file libmpfr-dev libmpc-dev libpng-dev zlib1g-dev texinfo git && apt-get clean
+# Create app directory
+WORKDIR /usr/src/app
 
-ENV N64_INST=/usr/local
+# COPY package.json .
+# For npm@5 or later, copy package-lock.json as well
+COPY package.json package-lock.json ./
 
-COPY ./tools/build /tmp/tools/build
-WORKDIR /tmp/tools
-RUN JOBS=8 ./build && rm -rf /tmp/tools
+# Install app dependencies
+RUN npm install
 
-COPY . /libdragon
-WORKDIR /libdragon
+# Bundle app source
+COPY . .
 
-RUN make --jobs 8 && make install && make --jobs 8 tools && make tools-install && rm -rf /libdragon/* && git clone https://github.com/networkfusion/libmikmod.git /tmp/libmikmod && cd /tmp/libmikmod/n64 && make --jobs 8 && make install && rm -rf /tmp/libmikmod
+EXPOSE 3000
+
+# Start Node server
+CMD [ "npm", "start" ]

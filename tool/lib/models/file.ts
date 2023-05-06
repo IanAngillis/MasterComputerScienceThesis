@@ -12,5 +12,6 @@ export class File{
     urlOrigin?:boolean;
     isDirectory?:boolean; 
     isCompressed:boolean;
+    containerPath:string;
     introducedBy: "COPY"|"ADD"|"BUILT-IN";
 }

@@ -188,8 +188,6 @@ export class Analyzer {
         function addEvnToEnvs(env: ding.nodeType.DockerEnv){
             let newEnvs: string[]= env.toString().replace(/\n/g, "").replace("ENV", "").split("\\").map(x => x.trim());
 
-            console.log(newEnvs);
-
             newEnvs.forEach(newEnv => {
                 let keyValuePair: string[];
 
@@ -242,7 +240,6 @@ export class Analyzer {
         }
 
         function addExportToExports(exp: string[], node: ding.nodeType.BashCommand){
-            console.log(exp);
             exp = exp.filter(w => w != "export");
             
             if(exp.length == 0 || exp.includes("cd")){
@@ -279,7 +276,7 @@ export class Analyzer {
         function resolveAddStatement(add: ding.nodeType.DockerAdd){
             let sources: ding.nodeType.DockerAddSource[] = add.getChildren(ding.nodeType.DockerAddSource);
             let target: ding.nodeType.DockerAddTarget = add.getChild(ding.nodeType.DockerAddTarget);
-
+            let temp: string = "";
             let finalPath: string = "";
 
             if(target.toString().startsWith("./") || target.toString().startsWith(".")){
@@ -292,8 +289,11 @@ export class Analyzer {
                 finalPath = target.toString();
             }
 
+            temp = finalPath;
+
             // Tinker with the target path as that is not right yet -- does not deal with .
             sources.forEach(source => {
+                finalPath = temp;
                 let file = source.toString();
                 let isUrl = false;
                 let isDecompressedAndExtracted = false;
@@ -319,7 +319,11 @@ export class Analyzer {
                 file = resolveArgsAndEnvsInString(file);
 
                 if(!finalPath.includes(source.toString())){
-                    finalPath += file;
+                    if(finalPath[finalPath.length - 1] != "/" && file[0] != "/"){
+                        finalPath += "/" + file;
+                    } else {
+                        finalPath += file;
+                    }
                 }
 
                 files.push({
@@ -329,7 +333,8 @@ export class Analyzer {
                     introducedStatement: add,
                     introducedBy: "ADD",
                     urlOrigin: isUrl,
-                    isCompressed: fileIsCompressed(file)
+                    isCompressed: fileIsCompressed(file),
+                    containerPath: containerpath,
                 });        
 
             });
@@ -341,7 +346,11 @@ export class Analyzer {
         function resolveCopyStatement(copy: ding.nodeType.DockerCopy){
             let sources: ding.nodeType.DockerCopySource[] = copy.getChildren(ding.nodeType.DockerCopySource);
             let target: ding.nodeType.DockerCopyTarget = copy.getChild(ding.nodeType.DockerCopyTarget);
-
+            let temp: string = "";
+            // console.log("\n");
+            // console.log("we are here");
+            // console.log(copy.toString());
+            // console.log("\n");
             let finalPath: string = "";
 
             if(target.toString().startsWith("./") || target.toString().startsWith(".")){
@@ -354,7 +363,10 @@ export class Analyzer {
                 finalPath = target.toString();
             }
 
+            temp = finalPath;
+
             sources.forEach(source => {
+                finalPath = temp;
                 let file = source.toString();
 
                 if(file == "." ||file == "./"){
@@ -369,7 +381,11 @@ export class Analyzer {
                 file = resolveArgsAndEnvsInString(file);
 
                 if(!finalPath.includes(file)){
-                    finalPath += file;
+                    if(finalPath[finalPath.length - 1] != "/" && file[0] != "/"){
+                        finalPath += "/" + file;
+                    } else {
+                        finalPath += file;
+                    }
                 }
 
                 files.push({
@@ -378,7 +394,8 @@ export class Analyzer {
                     introducedLayer: copy.layer,
                     introducedStatement: copy,
                     introducedBy: "COPY",
-                    isCompressed: fileIsCompressed(file)
+                    isCompressed: fileIsCompressed(file),
+                    containerPath: containerpath,
                 });
             });
         }
@@ -407,6 +424,7 @@ export class Analyzer {
                         introducedStatement: node,
                         introducedBy: "BUILT-IN",
                         isCompressed: fileIsCompressed(file),
+                        containerPath: containerpath,
                     });
                 }
             });
@@ -427,7 +445,8 @@ export class Analyzer {
                         file: file, 
                         introducedLayer: node.layer,
                         introducedBy: "BUILT-IN",
-                        isCompressed: fileIsCompressed(file)
+                        isCompressed: fileIsCompressed(file),
+                        containerPath: containerpath,
                     });
 
                     return;
@@ -455,6 +474,7 @@ export class Analyzer {
                         introducedLayer: node.layer,
                         introducedBy: "BUILT-IN",
                         isCompressed: fileIsCompressed(file),
+                        containerPath: containerpath,
                     });
                 }
             });
@@ -471,7 +491,7 @@ export class Analyzer {
                 files.forEach(file => {
                     let resolvedFileName = resolveArgsAndEnvsInString(arg.replace(/\"/g, ""));
                     
-                    if(resolvedFileName == file.file){
+                    if(resolvedFileName == file.file || resolvedFileName == file.absolutePath){
                         file.extractedLayer = node.layer;
                         file.extractedStatement = node
                         matchFound = true;
@@ -591,6 +611,46 @@ export class Analyzer {
             }
         }
 
+        function resolveNpm(statements: string[], instruction: ding.nodeType.BashCommand): void{
+
+            let stmt: string[] = instruction.toString()
+                .replace(/\r?\n/g, " ")
+                .replace(/\\/g, " ")
+                .split(" ")
+                .filter(w => w != "")
+                .filter(w => w != "sudo")
+                .filter(w => !w.startsWith("-"))
+                .filter(w => w != "RUN");
+
+            if(stmt.length == 2 && stmt[0] == "npm" && stmt[1] == "install"){
+                // Added by ADD through urlorigin doesn't count
+                // Keep in mind multi-stage builds when copying from other images. Meaning we need an mapping of files for different images and keep in mind the copying. Do we need to simulate that? Would complicate things ... but we'd be the first
+                console.log("\n");
+                console.log(stmt);
+                console.log(containerpath);
+                console.log(files);
+                console.log("\n");
+
+                let fileContainsPackageJson: boolean = false;
+                let fileContainsPackageLockJson: boolean = false;
+
+                files.forEach(file => {
+                    if(file.file == "package.json" && file.containerPath == containerpath){
+                        fileContainsPackageJson = true;
+                    }
+
+                    if(file.file == "package-lock.json" && file.containerPath == containerpath){
+                        fileContainsPackageLockJson = true;
+                    }
+                });
+
+                console.log("**RESULT**\n");
+                console.log("package.json: " + fileContainsPackageJson);
+                console.log("package-lock.json: " + fileContainsPackageLockJson);
+                console.log("\n");
+            }
+        }
+
 
 
         function resolveRunStatement(run: ding.nodeType.DockerRun){
@@ -622,9 +682,15 @@ export class Analyzer {
                     case "cd":
                         //console.log("RUN-CD");
                         resolveCd(splitCommand, command);
+                        break;
                     case "export":
                         //console.log("RUN-EXPORT");
                         addExportToExports(splitCommand, command);
+                        break;
+                    case "npm":
+                        // Look for cache optimization
+                        resolveNpm(splitCommand, command);
+                        break;
                     default:
                         if(splitCommand[0].includes("=")){
                             addExportToExports(splitCommand, command);
@@ -632,6 +698,7 @@ export class Analyzer {
                         break;
                 }
             });
+
         }
 
         /**
@@ -782,7 +849,7 @@ export class Analyzer {
         // Needs to be enabled to find smells
         analyseResult();
         //console.log(fileReport);
-        infoDump();
+        //infoDump();
     }
 
     consecutiveRunInstructionAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>, fixInfo: {root: ding.nodeType.DockerFile, list: any[]}){
@@ -875,6 +942,32 @@ export class Analyzer {
        // - COPY . . is always a mistake, but maybe we have to start from NPM installs and then go back reversed? See if we can find the package.lock?
 
        function handleRun(instruction: ding.nodeType.DockerRun): void{
+            let statements: ding.nodeType.BashCommand[] = [];
+
+            instruction.traverseDF(node => {
+                if(node instanceof ding.nodeType.BashCommand){
+                    statements.push(node);
+                }
+            });
+
+            statements.forEach(statement => {
+                let stmt: string[] = statement.toString()
+                    .replace(/\r?\n/g, " ")
+                    .replace(/\\/g, " ")
+                    .split(" ")
+                    .filter(w => w != "")
+                    .filter(w => w != "sudo")
+                    .filter(w => !w.startsWith("-"))
+                    .filter(w => w != "RUN");
+
+                if(stmt.length == 2 && stmt[0] == "npm" && stmt[1] == "install"){
+                    console.log(stmt);
+                }
+            })
+
+            return;
+        
+
             let runInstruction: string[] = instruction.toString()
                 .replace(/\r?\n/g, " ")
                 .replace(/\\/g, " ")
@@ -884,7 +977,12 @@ export class Analyzer {
                 .filter(w => !w.startsWith("-"))
                 .filter(w => w != "RUN");
             
+            if(runInstruction.includes("npm")){
+                console.log(runInstruction);
+            }
             if(runInstruction.includes("npm") && runInstruction.includes("install") && state.hasCopiedEntireContext){
+                //console.log(runInstruction);
+
                 relevantInstructions.push(instruction);
                 state.installCommand = instruction;
 

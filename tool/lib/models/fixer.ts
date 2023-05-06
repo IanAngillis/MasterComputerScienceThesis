@@ -19,6 +19,9 @@ export class Fixer{
                         this.insertLiteralInCommand(fix.node, fix.manager.installOption[0], fix.manager.installOptionFlags.find(f => f.type == "NO-INTERACTION").value);
                         break;
                     case "CLEAN-CACHE":
+                        let clean: ding.nodeType.BashCommand;
+                        let layer: number = fix.node.layer;
+
                         if(fix.manager.cleanCacheIsInstallFlag){
                             this.insertLiteralInCommand(fix.node, fix.manager.installOption[0], fix.managerinstallOptionFlags.find(f => f.type == "CLEAN-CACHE").value);
                         } else {
@@ -27,9 +30,43 @@ export class Fixer{
                                 args.push(flag.value);
                             });
 
-                            let command: ding.nodeType.BashCommand = this.createCommand(fix.manager.command, args);
-                            this.insertBinaryOpCommand(fix.node, command, false);
+                            clean = this.createCommand(fix.manager.command, args);
+                            this.insertBinaryOpCommand(fix.node, clean, false);
                         }
+                        
+                        // We look for other smells in the fixlist that we do not handle directly.
+
+                        if(fixInfo.list.findIndex(f => !f.isManagerRelated && f.code == "DL3009") != -1 && fix.manager.command == "apt-get" && fix.node.layer == layer){
+                            let cmd: string = fix.manager.afterInstall[0];
+                            let args: string[] = [];
+
+                            for(let i: number = 1; i < fix.manager.afterInstall.length; i++){
+                                args.push(fix.manager.afterInstall[i]);
+                            }
+
+                            this.insertBinaryOpCommand(
+                                clean,
+                                this.createCommand(cmd, args),
+                                false
+                            );
+                        }
+
+                        if(fixInfo.list.findIndex(f => !f.isManagerRelated && f.code == "DL9021") != -1 && fix.manager.command == "apt" && fix.node.layer == layer){
+                            let cmd: string = fix.manager.afterInstall[0];
+                            let args: string[] = [];
+
+                            for(let i: number = 1; i < fix.manager.afterInstall.length; i++){
+                                args.push(fix.manager.afterInstall[i]);
+                            }
+
+                            this.insertBinaryOpCommand(
+                                clean,
+                                this.createCommand(cmd, args),
+                                false
+                            );
+                        }
+                        
+
                         break;
                     case "NO-RECOMMENDS":
                         this.insertLiteralInCommand(fix.node, fix.manager.installOption[0], fix.manager.installOptionFlags.find(f => f.type == "NO-RECOMMENDS").value);
@@ -38,22 +75,19 @@ export class Fixer{
             } else {
                 switch(fix.code){
                     case "DL3009":
-                        console.log("trying to fix");
                         break;
                     case "DL9021":
-                        console.log("trying to fix");
                         break;
                     case "DL3059":
                         this.consolidateRunInstruction(fix.context);
                         break;
-
                 }
             }
         });
 
-        // console.log("AFTER***");
-        // console.log(fixInfo.root.toString(true));
-        // console.log("********");
+        console.log("AFTER***");
+        console.log(fixInfo.root.toString(true));
+        console.log("********");
 
         // ast.children.forEach(node => {
         //     switch(node.type){
@@ -206,13 +240,22 @@ export class Fixer{
     }
 
     //Todo (like literally, it needs to be done)
+    // This needs to be put as the last thing to do in the thing because removing layers is indeed the last thing to do as it does remove layers
+    // Need to check if the problem still persists maybe, imagine you have remove instruction that you need and was already replaced. Then this becomes invalid. Maybe fixpoint needed indeed, or analysis done again at the end.
+    // For now, we assume no problem
     consolidateRunInstruction(instructions: ding.nodeType.DockerRun[]): void{
-        instructions.forEach(instruction => {
-            console.log(instruction.getChild(ding.nodeType.BashScript).children);
-        })
+        for(let i: number = 1; i < instructions.length; i++){
+            this.insertBinaryOpCommand(
+                instructions[i-1].getChild(ding.nodeType.BashScript).getChild(ding.nodeType.BashCommand), 
+                instructions[i].getChild(ding.nodeType.BashScript).getChild(ding.nodeType.BashCommand), 
+                false);
+            
+                instructions[i].remove();
+        }
     }
 
     optimizeCache(){
+
         
     }
 }

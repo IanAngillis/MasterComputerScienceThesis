@@ -203,7 +203,7 @@ function main() {
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
                     stackoverflow = "./../data/stackoverflow/";
-                    currentFolder = testFolder;
+                    currentFolder = folder;
                     analyzer = new analyzer_1.Analyzer();
                     fixer = new fixer_js_1.Fixer();
                     managers_json_1.default.forEach(function (pm) {
@@ -239,7 +239,6 @@ function main() {
                                     fixInfo_1 = { root: ast, list: [] };
                                     analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1, fixInfo_1);
                                     analyzer.consecutiveRunInstructionAnalysis(ast, fileReport_1, set_1, fixInfo_1);
-                                    analyzer.lowChurnAnalysis(ast, fileReport_1, set_1, fixInfo_1);
                                     bashManagerCommands_1 = [];
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
@@ -288,7 +287,6 @@ function main() {
                                                                 }
                                                             });
                                                             if (!nonInteractionFlagIsPresent) {
-                                                                console.log(c);
                                                                 fixInfo_1.list.push({
                                                                     isManagerRelated: true,
                                                                     code: rule.code,
@@ -435,8 +433,6 @@ function main() {
                                             smells[idx].times += 1;
                                         }
                                     });
-                                    console.log("START FIXER");
-                                    console.log("DONE FIXER");
                                     return [3, 5];
                                 case 4:
                                     e_3 = _f.sent();
