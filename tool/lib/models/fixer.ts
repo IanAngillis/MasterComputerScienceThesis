@@ -183,6 +183,10 @@ export class Fixer{
         // }
     }
 
+    removeCommand(node: ding.nodeType.BashCommand): void{
+        
+    }
+
     insertLiteralInCommand(node: ding.nodeType.BashCommand, pivot: string, literal: string){
         //console.log(node.children);
         let idx: number = node.children.findIndex(child =>  child.find({type:ding.nodeType.BashCommandArgs, value:pivot})[0] != undefined);

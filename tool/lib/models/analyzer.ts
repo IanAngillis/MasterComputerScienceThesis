@@ -395,7 +395,7 @@ export class Analyzer {
                     introducedStatement: copy,
                     introducedBy: "COPY",
                     isCompressed: fileIsCompressed(file),
-                    containerPath: containerpath,
+                    containerPath: temp,
                 });
             });
         }
@@ -625,14 +625,16 @@ export class Analyzer {
             if(stmt.length == 2 && stmt[0] == "npm" && stmt[1] == "install"){
                 // Added by ADD through urlorigin doesn't count
                 // Keep in mind multi-stage builds when copying from other images. Meaning we need an mapping of files for different images and keep in mind the copying. Do we need to simulate that? Would complicate things ... but we'd be the first
-                console.log("\n");
-                console.log(stmt);
-                console.log(containerpath);
-                console.log(files);
-                console.log("\n");
+                // console.log("\n");
+                // console.log(stmt);
+                // console.log(containerpath);
+                // console.log(files);
+                // console.log("\n");
 
                 let fileContainsPackageJson: boolean = false;
                 let fileContainsPackageLockJson: boolean = false;
+                let relevantFiles: File[] = [];
+                //let relevantFile: File = [];
 
                 files.forEach(file => {
                     if(file.file == "package.json" && file.containerPath == containerpath){
@@ -642,12 +644,21 @@ export class Analyzer {
                     if(file.file == "package-lock.json" && file.containerPath == containerpath){
                         fileContainsPackageLockJson = true;
                     }
+
+                    if(file.containerPath == containerpath){
+                        console.log("RIGHT ON");
+                        console.log(file);
+                    }
                 });
 
                 console.log("**RESULT**\n");
+                console.log(containerpath);
+                console.log(relevantFiles)
                 console.log("package.json: " + fileContainsPackageJson);
                 console.log("package-lock.json: " + fileContainsPackageLockJson);
                 console.log("\n");
+
+                
             }
         }
 
