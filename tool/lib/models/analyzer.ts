@@ -636,29 +636,104 @@ export class Analyzer {
                 let relevantFiles: File[] = [];
                 //let relevantFile: File = [];
 
-                files.forEach(file => {
-                    if(file.file == "package.json" && file.containerPath == containerpath){
-                        fileContainsPackageJson = true;
+                if(files.length == 1){
+                    let file: File = files[0];
+                    let fileContainerPath: string = file.containerPath;
+                    let currentContainerPath: string = containerpath;
+
+                    // Even if that file is introduced, it doesn't matter because it is the only statement. Therefore it still needs to be split up and treated as if it doesn't exist. This shouldn't actually happen because you copy over a package but have no application at all? Unless it's something built in which I don't think happens
+                    if(file.file.includes("package.json")){
+                        // The file copied 
+                        return;
                     }
 
-                    if(file.file == "package-lock.json" && file.containerPath == containerpath){
-                        fileContainsPackageLockJson = true;
+                    if(!fileContainerPath.endsWith("/")){
+                        fileContainerPath += "/";
                     }
 
-                    if(file.containerPath == containerpath){
-                        console.log("RIGHT ON");
-                        console.log(file);
+                    if(!currentContainerPath.endsWith("/")){
+                        currentContainerPath += "/";
                     }
-                });
 
-                console.log("**RESULT**\n");
-                console.log(containerpath);
-                console.log(relevantFiles)
-                console.log("package.json: " + fileContainsPackageJson);
-                console.log("package-lock.json: " + fileContainsPackageLockJson);
-                console.log("\n");
+                    if(currentContainerPath == fileContainerPath){
+                        switch(file.introducedBy){
+                            case "COPY":
+                                console.log("single file same path detected");
+                                fixInfo.list.push({
+                                    isManagerRelated: false,
+                                    code: "TD0001",
+                                    manager: null,
+                                    node: null,
+                                    context: {
+                                        // For now we assume that this is the only case that we fix.
+                                        file: file,
+                                        runstatement: instruction
+                                    } 
+                                });
+                                break;
+                            case "ADD":
+                                if(file.isCompressed && file.urlOrigin){
+                                    console.log("temporary file error, might want to use wget for this. cannot handle this")
+                                } else if(file.urlOrigin) {
+                                    console.log("cannot help either");
+                                } else {
+                                    console.log("Can help");
+                                }
+                                break;
+                            case "BUILT-IN":
+                                console.log("Not handling built-in at the moment");
+                                break;
+                        }
+                    } else {
+                        // Directory was copied and WORKDIR was probably set to location or cd'd to it. This means we need to fix the WORKDIR as well.
+                        console.log("this is not the same, figure out the difference for the fix");
+                    }
 
-                
+                    console.log(currentContainerPath);
+                    console.log(fileContainerPath);
+
+                } else {
+                    console.log("multiple files not supported at the moment");
+                    // files.forEach(file => {
+                    //     if(file.file == "package.json" && file.containerPath == containerpath){
+                    //         fileContainsPackageJson = true;
+                    //     }
+    
+                    //     if(file.file == "package-lock.json" && file.containerPath == containerpath){
+                    //         fileContainsPackageLockJson = true;
+                    //     }
+    
+                    //     if(file.introducedLayer < instruction.layer){
+                    //         let fileContainerPath: string = file.containerPath;
+                    //         let currentContainerPath: string = containerpath;
+    
+                    //         if(!fileContainerPath.endsWith("/")){
+                    //             fileContainerPath += "/";
+                    //         }
+    
+                    //         if(!currentContainerPath.endsWith("/")){
+                    //             currentContainerPath += "/";
+                    //         }
+    
+    
+                    //         // paths can end with / or can end without it.
+    
+                    //         console.log("comparing containerpaths");
+                    //         console.log("file containerpath: " + fileContainerPath);
+                    //         console.log("containerpath:" + currentContainerPath);
+                            
+                    //         console.log(file);
+                            
+                    //     }
+                    // });
+                }
+
+                // console.log("**RESULT**\n");
+                // console.log(containerpath);
+                // console.log(relevantFiles)
+                // console.log("package.json: " + fileContainsPackageJson);
+                // console.log("package-lock.json: " + fileContainsPackageLockJson);
+                // console.log("\n");
             }
         }
 
@@ -752,6 +827,7 @@ export class Analyzer {
         });
 
         function analyseResult(): void{
+            //TODO add another smell: ADD with urlorigin and extracted and deleted -- no point in deleting, should be wget/url in one go.
             files.forEach(file => {
                 if(file.introducedLayer != undefined && file.deletedLayer != undefined && file.introducedLayer != file.deletedLayer){
                     switch(file.introducedBy){

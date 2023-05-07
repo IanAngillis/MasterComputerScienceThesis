@@ -1,5 +1,9 @@
 import { AnyRecord } from 'dns';
 import * as ding from './../../../Dinghy-main/Dinghy-main/build/index.js';
+import { File } from './file.js';
+import { DockerFile, DockerPath, DockerUser } from '../../../Dinghy-main/Dinghy-main/build/docker-type.js';
+import * as fs from 'fs';
+
 
 export class Fixer{
     newFile: string = "";
@@ -81,13 +85,20 @@ export class Fixer{
                     case "DL3059":
                         this.consolidateRunInstruction(fix.context);
                         break;
+                    case "TD0001":
+                        console.log("\n\n");
+                        this.handlingUnoptimizedCache(fix);
+                        console.log("\n\n");
+                        break;
                 }
             }
         });
 
-        console.log("AFTER***");
-        console.log(fixInfo.root.toString(true));
-        console.log("********");
+        fs.writeFileSync("./../data/repaired/" + "test" + ".Dockerfile", fixInfo.root.toString(true));
+
+        // console.log("AFTER***");
+        // console.log(fixInfo.root.toString(true));
+        // console.log("********");
 
         // ast.children.forEach(node => {
         //     switch(node.type){
@@ -105,6 +116,65 @@ export class Fixer{
         
         //console.log(this.createCommand("apt-get", ["clean", "-all"]).toString());
         //console.log(this.newFile);
+    }
+
+    handlingUnoptimizedCache(fix: any){
+        let file: File = fix.context.file as File;
+        let instr: ding.nodeType.DockerCopy = file.introducedStatement as ding.nodeType.DockerCopy;
+
+        let source: ding.nodeType.DockerCopySource = instr.getChild(ding.nodeType.DockerCopySource);
+        let target: ding.nodeType.DockerCopyTarget = instr.getChild(ding.nodeType.DockerCopyTarget);
+
+        // source was .
+        if(source.toString() == "."){
+            let copyInstruction: ding.nodeType.DockerCopy = new ding.nodeType.DockerCopy();
+
+            let dockerKeyword: ding.nodeType.DockerKeyword = new ding.nodeType.DockerKeyword("COPY");
+
+            let dockerCopySource: ding.nodeType.DockerCopySource = new ding.nodeType.DockerCopySource();
+            dockerCopySource.addChild(new ding.nodeType.DockerPath("package.json"));
+
+            let dockerCopyTarget: ding.nodeType.DockerCopyTarget = new ding.nodeType.DockerCopyTarget();
+            dockerCopyTarget.addChild(new ding.nodeType.DockerPath(target.getChild(ding.nodeType.DockerPath).value));
+
+            copyInstruction.addChild(dockerKeyword);
+            copyInstruction.addChild(dockerCopySource);
+            copyInstruction.addChild(dockerCopyTarget);
+
+            let dockerRun: ding.nodeType.DockerRun = new ding.nodeType.DockerRun();
+            let dockerRunKeyword: ding.nodeType.DockerKeyword = new ding.nodeType.DockerKeyword("RUN");
+            let bashScript:ding.nodeType.BashScript = new ding.nodeType.BashScript();
+
+            bashScript.addChild(this.insertBinaryOpCommand(this.createCommand("npm", ["install"]), this.createCommand("npm", ["cache"]), false));
+
+            dockerRun.addChild(dockerRunKeyword);
+            dockerRun.addChild(bashScript);
+
+            let dockerComment: ding.nodeType.DockerComment = new ding.nodeType.DockerComment("Fix for low-churn");
+
+            console.log(copyInstruction.toString());
+            console.log(dockerRun.toString());
+
+            //Statements are ok, they need to be added to the Dockerfile
+
+            let dockerFile: ding.nodeType.DockerFile = instr.parent as DockerFile;
+            let idx: number = dockerFile.children.findIndex(i => i.layer == instr.layer);
+
+            if(idx == -1){
+                console.log("Index not found ??");
+                return;
+            } 
+
+            // This messes up the layers - so this change could be done as the last change. 
+            // Or needs a system that can update the layers, if a node is given to the fixlist than the layer should update in the source
+            dockerFile.children.splice(idx, 0, dockerRun);
+            dockerFile.children.splice(idx, 0, copyInstruction);
+            //dockerFile.children.splice(idx, 0, dockerComment);
+
+            dockerFile.isChanged = true;
+
+            this.removeCommand(fix.context.runstatement);
+        }
     }
 
     handleDockerFrom(from: ding.nodeType.DockerFrom){
@@ -137,7 +207,7 @@ export class Fixer{
         //console.log("****");
     }
 
-    insertBinaryOpCommand(node: ding.nodeType.BashCommand, command: ding.nodeType.BashCommand, left: boolean): void{
+    insertBinaryOpCommand(node: ding.nodeType.BashCommand, command: ding.nodeType.BashCommand, left: boolean): ding.nodeType.BashConditionBinary{
         let bashConditionBinary: ding.nodeType.BashConditionBinary = new ding.nodeType.BashConditionBinary();
         let bashConditionBinaryLhs: ding.nodeType.BashConditionBinaryLhs = new ding.nodeType.BashConditionBinaryLhs();
         let bashConditionBinaryOp: ding.nodeType.BashConditionBinaryOp = new ding.nodeType.BashConditionBinaryOp();
@@ -145,7 +215,11 @@ export class Fixer{
         let bashOp: ding.nodeType.BashOp = new ding.nodeType.BashOp("10");
 
         //bashConditionBinary.replace(node);
-        node.replace(bashConditionBinary);
+        if(node.parent != undefined){
+            console.log("node did have a parent");
+            node.replace(bashConditionBinary);
+        }
+        
         // parent.addChild(bashConditionBinary);
 
         bashConditionBinaryOp.addChild(bashOp);
@@ -181,10 +255,45 @@ export class Fixer{
         //     console.log("in non binary");
         //     this.insertCommandInNonBinaryOp(node, command, left);
         // }
+        return bashConditionBinary;
     }
 
     removeCommand(node: ding.nodeType.BashCommand): void{
-        
+        switch(node.parent.type){
+            case "BASH-SCRIPT":
+                // Difference between single child or not
+                if(node.parent.children.length == 1){
+                    node.remove();
+                } else {
+                    console.log("not implemented");
+                }
+                
+                break;
+            case "BASH-CONDITION-BINARY-LHS":
+                let rhs: ding.nodeType.BashConditionBinaryRhs = node.parent.parent.getChild(ding.nodeType.BashConditionBinaryRhs);
+                
+                // Difference between single child or not
+                if(rhs.children.length == 1){
+                    node.parent.parent.replace(rhs.children[0]);
+                } else {
+                    console.log("not implemented");
+                }
+                // remove LHS and replace BinaryConditionLHS with RHS
+                break;
+            case "BASH-CONDITION-BINARY-RHS":
+                let newParent: ding.nodeType.DockerOpsNodeType = node.parent.parent.parent;
+                let lhs: ding.nodeType.BashConditionBinaryLhs = node.parent.parent.getChild(ding.nodeType.BashConditionBinaryLhs);
+
+                if(lhs.children.length == 1){
+                    node.parent.parent.replace(lhs.children[0]);
+                } else {
+                    console.log("not implemented");
+                }
+                // remove RHS and replace BinaryCondition RHS with LHS
+                break;
+            default:
+                break;
+        }
     }
 
     insertLiteralInCommand(node: ding.nodeType.BashCommand, pivot: string, literal: string){

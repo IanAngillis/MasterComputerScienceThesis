@@ -130,7 +130,7 @@ async function main(){
     let stackoverflow = "./../data/stackoverflow/"
 
     // Variable that sets folder for program
-    let currentFolder = folder;
+    let currentFolder = testFolder;
 
     let analyzer: Analyzer = new Analyzer();
     let fixer: Fixer = new Fixer();
@@ -422,7 +422,7 @@ async function main(){
         });
 
         // console.log("START FIXER");
-        // fixer.convertAstToFile(fixInfo);
+        fixer.convertAstToFile(fixInfo);
         // console.log("DONE FIXER");
 
     } catch(e){

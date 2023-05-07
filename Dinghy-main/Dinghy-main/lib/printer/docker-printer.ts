@@ -210,7 +210,6 @@ export class Printer {
         if(node.value != undefined){
           this.append(node.value.replace(/\n/g, "\\\n"));
         }
-
         break;
       case "DOCKER-NAME":
       case "DOCKER-KEYWORD":
@@ -550,7 +549,7 @@ export class Printer {
         );
         break;
       case "DOCKER-COMMENT":
-        this.append("# " + node.value);
+        this.append("# " + node.value + "\n");
         break;
       case "DOCKER-RUN":
         this.indentLevel = 0;
@@ -586,6 +585,7 @@ export class Printer {
       case "DOCKER-LABEL":
       case "DOCKER-MAINTAINER":
       case "DOCKER-ONBUILD":
+        this.append("\n");
         this.indentLevel = 0;
         this.indent().inCommand();
         node.iterate((i) => this._generate(i));

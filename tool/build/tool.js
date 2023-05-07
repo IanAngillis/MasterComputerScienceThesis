@@ -203,7 +203,7 @@ function main() {
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
                     stackoverflow = "./../data/stackoverflow/";
-                    currentFolder = folder;
+                    currentFolder = testFolder;
                     analyzer = new analyzer_1.Analyzer();
                     fixer = new fixer_js_1.Fixer();
                     managers_json_1.default.forEach(function (pm) {
@@ -433,6 +433,7 @@ function main() {
                                             smells[idx].times += 1;
                                         }
                                     });
+                                    fixer.convertAstToFile(fixInfo_1);
                                     return [3, 5];
                                 case 4:
                                     e_3 = _f.sent();

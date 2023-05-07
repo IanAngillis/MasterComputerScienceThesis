@@ -51,7 +51,11 @@ export class PrettyPrinter extends Printer {
 
   // detect the indentation used in the original file
   private _detectIndentation(node: DockerOpsNodeType) {
-    if (!this.originalFile) return;
+    // console.log("\n\n");
+    // console.log("In Printer where it chrashes");
+    // console.log(node);
+    // console.log("\n\ndone\n\n");
+    if (!this.originalFile || node.position == null) return;
     const lines = this.originalFile.content.split("\n");
     for (let i = node.position.lineStart; i < lines.length; i++) {
       const line = lines[i];
@@ -92,6 +96,7 @@ export class PrettyPrinter extends Printer {
 
     // the file did not changed, just reprint the original file
     if (node instanceof DockerFile && !node.hasChanges()) {
+      console.log("we're here");
       this.append(node.position.file.content);
       return this;
     }

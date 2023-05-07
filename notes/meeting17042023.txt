@@ -56,3 +56,10 @@ CMD ["node","index.js"]
 
 Detection:
 * Fix-list -- if that doesn't work we go fixpoint.
+* Maybe not a fixlist but 2 passes are required.
+    * Pass over all the smells that need removal of files -- then fix -- then repeat with ones that only add.
+        Could have problems as the repair isn't that neat... preferably everything in one pass. Then again, if layers are the problem those should be able to get updated.
+        Actually, every time we add a statement we can derive the layer from the surrounding nodes.
+        Actually, every time we add a dockerstatement, we can assign new layers, these should update in the fixlist.
+        This way - replaces can be done without harm. And deleted ones can be deleted from the fixlist.
+* I require the building context in order to build the images ... 
