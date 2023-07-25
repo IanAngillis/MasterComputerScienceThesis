@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17018.Dockerfile:4 SC1072 [1m[91merror[0m: Expected test to end here (don't wrap commands in []/[[]]). Fix any mentioned problems and try again.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17018.Dockerfile:7 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17018.Dockerfile:8 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

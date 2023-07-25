@@ -1,6 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_366.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_366.Dockerfile:4 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_366.Dockerfile:6 SC3010 [1m[93mwarning[0m: In POSIX sh, [[ ]] is undefined.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_366.Dockerfile:7 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_366.Dockerfile:8 SC3010 [1m[93mwarning[0m: In POSIX sh, [[ ]] is undefined.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_366.Dockerfile:8 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

@@ -1,7 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20271.Dockerfile:3 DL3000 [1m[91merror[0m: Use absolute WORKDIR
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20271.Dockerfile:10 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20271.Dockerfile:12 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20271.Dockerfile:14 DL3042 [1m[93mwarning[0m: Avoid use of cache directory with pip. Use `pip install --no-cache-dir <package>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20271.Dockerfile:15 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20271.Dockerfile:16 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20271.Dockerfile:16 DL4003 [1m[93mwarning[0m: Multiple `CMD` instructions found. If you list more than one `CMD` then only the last `CMD` will take effect

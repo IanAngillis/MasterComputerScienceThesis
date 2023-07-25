@@ -1,5 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14662.Dockerfile:4 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14662.Dockerfile:4 SC1072 [1m[91merror[0m:  Fix any mentioned problems and try again.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14662.Dockerfile:23 DL3021 [1m[91merror[0m: COPY with more than 2 arguments requires the last argument to end with /
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14662.Dockerfile:24 SC1072 [1m[91merror[0m:  Fix any mentioned problems and try again.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14662.Dockerfile:25 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

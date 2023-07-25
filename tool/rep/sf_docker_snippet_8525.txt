@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_8525.Dockerfile:4 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory

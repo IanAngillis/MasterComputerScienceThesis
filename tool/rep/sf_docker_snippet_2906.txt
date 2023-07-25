@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_2906.Dockerfile:5 DL3047 [92minfo[0m: Avoid use of wget without progress bar. Use `wget --progress=dot:giga <url>`. Or consider using `-q` or `-nv` (shorthands for `--quiet` or `--no-verbose`).
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_2906.Dockerfile:5 SC2155 [1m[93mwarning[0m: Declare and assign separately to avoid masking return values.

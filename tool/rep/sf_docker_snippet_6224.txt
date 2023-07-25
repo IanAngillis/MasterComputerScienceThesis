@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6224.Dockerfile:2 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6224.Dockerfile:6 SC2046 [1m[93mwarning[0m: Quote this to prevent word splitting.

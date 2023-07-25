@@ -1,6 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9575.Dockerfile:5 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9575.Dockerfile:7 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9575.Dockerfile:9 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9575.Dockerfile:13 DL3042 [1m[93mwarning[0m: Avoid use of cache directory with pip. Use `pip install --no-cache-dir <package>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9575.Dockerfile:15 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9575.Dockerfile:17 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

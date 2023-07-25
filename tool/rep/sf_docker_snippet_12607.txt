@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12607.Dockerfile:10 SC1083 [1m[93mwarning[0m: This } is literal. Check expression (missing ;/\n?) or quote it.

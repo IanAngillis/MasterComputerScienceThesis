@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_19180.Dockerfile:8 SC1072 [1m[91merror[0m: Expected comparison operator (don't wrap commands in []/[[]]). Fix any mentioned problems and try again.

@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_23972.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_23972.Dockerfile:2 DL3002 [1m[93mwarning[0m: Last USER should not be root
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_23972.Dockerfile:4 DL3047 [92minfo[0m: Avoid use of wget without progress bar. Use `wget --progress=dot:giga <url>`. Or consider using `-q` or `-nv` (shorthands for `--quiet` or `--no-verbose`).
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_23972.Dockerfile:4 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.

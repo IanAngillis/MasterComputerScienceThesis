@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17496.Dockerfile:5 SC1072 [1m[91merror[0m: Expected end of single quoted string. Fix any mentioned problems and try again.

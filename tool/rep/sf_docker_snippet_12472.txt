@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12472.Dockerfile:15 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12472.Dockerfile:15 DL4003 [1m[93mwarning[0m: Multiple `CMD` instructions found. If you list more than one `CMD` then only the last `CMD` will take effect

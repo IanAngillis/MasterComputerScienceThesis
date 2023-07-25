@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1781.Dockerfile:2 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1781.Dockerfile:2 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1781.Dockerfile:2 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1781.Dockerfile:2 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`

@@ -1,9 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_16684.Dockerfile:5 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_16684.Dockerfile:12 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_16684.Dockerfile:14 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_16684.Dockerfile:15 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_16684.Dockerfile:16 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_16684.Dockerfile:17 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_16684.Dockerfile:18 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_16684.Dockerfile:19 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_16684.Dockerfile:21 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

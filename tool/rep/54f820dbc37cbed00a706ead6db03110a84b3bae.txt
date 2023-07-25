@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\54f820dbc37cbed00a706ead6db03110a84b3bae.Dockerfile:15 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\54f820dbc37cbed00a706ead6db03110a84b3bae.Dockerfile:16 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\54f820dbc37cbed00a706ead6db03110a84b3bae.Dockerfile:17 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

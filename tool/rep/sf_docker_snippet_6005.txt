@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6005.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6005.Dockerfile:3 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6005.Dockerfile:5 SC1001 [92minfo[0m: This \M will be a regular 'M' in this context.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6005.Dockerfile:20 SC1089 [1m[91merror[0m: Parsing stopped here. Is this keyword correctly matched up?

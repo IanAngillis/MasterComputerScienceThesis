@@ -1,6 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17400.Dockerfile:21 DL3032 [1m[93mwarning[0m: `yum clean all` missing after yum command.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17400.Dockerfile:21 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17400.Dockerfile:22 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17400.Dockerfile:31 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17400.Dockerfile:34 SC2050 [1m[93mwarning[0m: This expression is constant. Did you forget the $ on a variable?
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17400.Dockerfile:37 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

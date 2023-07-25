@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11153.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11153.Dockerfile:7 SC3003 [1m[93mwarning[0m: In POSIX sh, $'..' is undefined.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11153.Dockerfile:9 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

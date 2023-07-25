@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9332.Dockerfile:2 SC1072 [1m[91merror[0m: Missing space before ]. Fix any mentioned problems and try again.

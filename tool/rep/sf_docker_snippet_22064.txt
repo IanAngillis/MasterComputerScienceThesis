@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22064.Dockerfile:9 SC2005 [96mstyle[0m: Useless echo? Instead of 'echo $(cmd)', just use 'cmd'.

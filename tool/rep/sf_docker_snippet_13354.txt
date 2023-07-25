@@ -1,7 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13354.Dockerfile:1 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13354.Dockerfile:2 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13354.Dockerfile:3 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13354.Dockerfile:5 SC2005 [96mstyle[0m: Useless echo? Instead of 'echo $(cmd)', just use 'cmd'.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13354.Dockerfile:5 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13354.Dockerfile:9 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13354.Dockerfile:9 SC2005 [96mstyle[0m: Useless echo? Instead of 'echo $(cmd)', just use 'cmd'.

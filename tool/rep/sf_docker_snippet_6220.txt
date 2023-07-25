@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6220.Dockerfile:1 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6220.Dockerfile:2 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6220.Dockerfile:2 SC2015 [92minfo[0m: Note that A && B || C is not if-then-else. C may run when A is true.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6220.Dockerfile:3 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.

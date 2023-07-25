@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12953.Dockerfile:2 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12953.Dockerfile:5 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12953.Dockerfile:5 DL3019 [92minfo[0m: Use the `--no-cache` switch to avoid the need to use `--update` and remove `/var/cache/apk/*` when done installing packages

@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1822.Dockerfile:6 DL3046 [1m[93mwarning[0m: `useradd` without flag `-l` and high UID will result in excessively large Image.

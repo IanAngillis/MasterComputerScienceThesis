@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\81ce429e09269e237557adddcf1451db8e5300c0.Dockerfile:5 DL3016 [1m[93mwarning[0m: Pin versions in npm. Instead of `npm install <package>` use `npm install <package>@<version>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\81ce429e09269e237557adddcf1451db8e5300c0.Dockerfile:5 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\81ce429e09269e237557adddcf1451db8e5300c0.Dockerfile:8 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\81ce429e09269e237557adddcf1451db8e5300c0.Dockerfile:11 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

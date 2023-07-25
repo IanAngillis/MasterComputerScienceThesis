@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21805.Dockerfile:6 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21805.Dockerfile:6 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21805.Dockerfile:6 SC3046 [1m[93mwarning[0m: In POSIX sh, 'source' in place of '.' is undefined.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21805.Dockerfile:6 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`

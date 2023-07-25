@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_18016.Dockerfile:10 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_18016.Dockerfile:10 SC2164 [1m[93mwarning[0m: Use 'cd ... || exit' or 'cd ... || return' in case cd fails.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_18016.Dockerfile:19 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

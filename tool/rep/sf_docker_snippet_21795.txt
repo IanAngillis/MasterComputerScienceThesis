@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21795.Dockerfile:3 SC2211 [1m[93mwarning[0m: This is a glob used as a command name. Was it supposed to be in ${..}, array, or is it missing quoting?

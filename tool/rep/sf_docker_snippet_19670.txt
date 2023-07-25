@@ -1,5 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_19670.Dockerfile:7 SC1012 [1m[93mwarning[0m: \n is just literal 'n' here. For line feed, use a quoted, literal line feed instead.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_19670.Dockerfile:28 DL3021 [1m[91merror[0m: COPY with more than 2 arguments requires the last argument to end with /
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_19670.Dockerfile:32 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_19670.Dockerfile:32 SC1072 [1m[91merror[0m:  Fix any mentioned problems and try again.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_19670.Dockerfile:38 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

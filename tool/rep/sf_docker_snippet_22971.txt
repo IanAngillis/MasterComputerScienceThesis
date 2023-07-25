@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22971.Dockerfile:1 DL3001 [92minfo[0m: For some bash commands it makes no sense running them in a Docker container like `ssh`, `vim`, `shutdown`, `service`, `ps`, `free`, `top`, `kill`, `mount`, `ifconfig`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_22971.Dockerfile:1 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.

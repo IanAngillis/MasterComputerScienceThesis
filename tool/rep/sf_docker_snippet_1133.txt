@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1133.Dockerfile:1 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1133.Dockerfile:2 DL3061 [1m[91merror[0m: Invalid instruction order. Dockerfile must begin with `FROM`, `ARG` or comment.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1133.Dockerfile:2 SC2129 [96mstyle[0m: Consider using { cmd1; cmd2; } >> file instead of individual redirects.

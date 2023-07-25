@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17949.Dockerfile:4 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17949.Dockerfile:4 SC2035 [92minfo[0m: Use ./*glob* or -- *glob* so names with dashes won't become options.

@@ -16,6 +16,13 @@ WORKDIR /app
 # Install application dependencies  
 RUN npm install -g mocha && \  
 npm install  
+
+
+COPY . /app
+WORKDIR app/
+RUN python3 pip3 install --upgrade pip
+RUN python3 pip3 install -r requirements.txt
+RUN python3 pip3 install notebook
   
 # Set mocha test runner as entrypoint  
 ENTRYPOINT ["mocha"]  

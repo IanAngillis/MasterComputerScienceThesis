@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_18483.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_18483.Dockerfile:3 DL3002 [1m[93mwarning[0m: Last USER should not be root
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_18483.Dockerfile:10 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.

@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_10765.Dockerfile:2 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_10765.Dockerfile:4 DL3027 [1m[93mwarning[0m: Do not use apt as it is meant to be a end-user tool, use apt-get or apt-cache instead

@@ -1,7 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\0bae46f5de5c2ac7eb3ee42482f760b07ce0778c.Dockerfile:3 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\0bae46f5de5c2ac7eb3ee42482f760b07ce0778c.Dockerfile:6 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\0bae46f5de5c2ac7eb3ee42482f760b07ce0778c.Dockerfile:6 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\0bae46f5de5c2ac7eb3ee42482f760b07ce0778c.Dockerfile:6 DL3016 [1m[93mwarning[0m: Pin versions in npm. Instead of `npm install <package>` use `npm install <package>@<version>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\0bae46f5de5c2ac7eb3ee42482f760b07ce0778c.Dockerfile:6 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\0bae46f5de5c2ac7eb3ee42482f760b07ce0778c.Dockerfile:17 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\0bae46f5de5c2ac7eb3ee42482f760b07ce0778c.Dockerfile:18 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

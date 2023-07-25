@@ -1,5 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6975.Dockerfile:13 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6975.Dockerfile:13 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6975.Dockerfile:28 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6975.Dockerfile:28 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6975.Dockerfile:39 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12719.Dockerfile:1 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12719.Dockerfile:3 DL3032 [1m[93mwarning[0m: `yum clean all` missing after yum command.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12719.Dockerfile:3 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12719.Dockerfile:5 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

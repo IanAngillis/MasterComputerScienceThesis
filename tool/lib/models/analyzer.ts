@@ -1,6 +1,8 @@
 import { DockerCopy } from '../../../Dinghy-main/Dinghy-main/build/docker-type.js';
 import * as ding from './../../../Dinghy-main/Dinghy-main/build/index.js';
 import {File} from "./file.js"
+import { Logger } from './logger.js';
+import { SmellBox } from './smellbox.js';
 
 /**
  * Class that can perform analysis on Dockerfile
@@ -15,10 +17,12 @@ export class Analyzer {
      * Procedure that performs a temporary-file smell analysis on the file.
      * @param ast 
      */
-    temporaryFileAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>, fixInfo: {root: ding.nodeType.DockerFile, list: any[]}){
+    temporaryFileAnalysis(ast:ding.nodeType.DockerFile, logger: Logger, set: Set<string>, fixInfo: {root: ding.nodeType.DockerFile, list: any[]}, smellBox: SmellBox, absoluteSmells: {rule: string, times: number}[]){
         let args: {key:string, value:string, updatedInLayer?:number}[] = [];
         let envs: {key:string, value:string, updatedInLayer?:number}[] = [];
         let exports: {key: string, value:string, updateInLayer?:number}[] = [];
+        let state = {hasCopiedEntireContext: false, hasCopiedEntireContextLayer: -1, hasCopiedEntireContextCommand: null, lastCopyLayer: -1, installLayer: -1, installCommand: null};
+
 
         // Add introducedCommand, deletedCommand, compressedCommand such that it can be used as relevant statements that hook into the AST.
         // let files: {absolutePath: string, 
@@ -291,7 +295,6 @@ export class Analyzer {
 
             temp = finalPath;
 
-            // Tinker with the target path as that is not right yet -- does not deal with .
             sources.forEach(source => {
                 finalPath = temp;
                 let file = source.toString();
@@ -300,6 +303,15 @@ export class Analyzer {
 
                 if(file == "." ||file == "./"){
                     file = "/entire_build_context";
+                      // COPY . . || COPY . /foo
+                
+                    state.hasCopiedEntireContext = true;
+                    state.hasCopiedEntireContextLayer = add.layer;
+                    state.hasCopiedEntireContextCommand = add;
+                    state.lastCopyLayer = add.layer;
+                
+                } else {
+                    state.lastCopyLayer = add.layer;
                 }
 
                 if(source.toString().startsWith("https") || source.toString().startsWith("http")){
@@ -347,10 +359,7 @@ export class Analyzer {
             let sources: ding.nodeType.DockerCopySource[] = copy.getChildren(ding.nodeType.DockerCopySource);
             let target: ding.nodeType.DockerCopyTarget = copy.getChild(ding.nodeType.DockerCopyTarget);
             let temp: string = "";
-            // console.log("\n");
-            // console.log("we are here");
-            // console.log(copy.toString());
-            // console.log("\n");
+
             let finalPath: string = "";
 
             if(target.toString().startsWith("./") || target.toString().startsWith(".")){
@@ -371,6 +380,12 @@ export class Analyzer {
 
                 if(file == "." ||file == "./"){
                     file = "/entire_build_context";
+                    state.hasCopiedEntireContext = true;
+                    state.hasCopiedEntireContextLayer = copy.layer;
+                    state.hasCopiedEntireContextCommand = copy;
+                    state.lastCopyLayer = copy.layer;
+                } else {
+                    state.lastCopyLayer = copy.layer;
                 }
 
                 if(file.startsWith("https") || file.startsWith("http")){
@@ -611,6 +626,50 @@ export class Analyzer {
             }
         }
 
+        function resolvePython(statements: string[], instruction: ding.nodeType.BashCommand): void{
+            let stmt: String[] = instruction.toString()
+                .replace(/\r?\n/g, " ")
+                .replace(/\\/g, " ")
+                .split(" ")
+                .filter(w => w != "")
+                .filter(w => w != "sudo")
+                .filter(w => !w.startsWith("-"))
+                .filter(w => w != "RUN")
+                .filter(w => w != "python")
+                .filter(w => w != "python3");
+            
+
+            if(stmt.includes("pip") && stmt.includes("install") && stmt.find(e => e.includes(".txt"))){
+                let requirements: string = stmt.find(e => e.includes(".txt")).toString();
+
+                let fileIsFetchedOnline = files.reduce((a, b) => {
+                    return a || ((b.urlOrigin != undefined && b.urlOrigin) && b.absolutePath.includes(requirements));
+                }, false);
+                
+                if(state.hasCopiedEntireContext && !fileIsFetchedOnline){
+                    // Check files for file imported by url - otherwise it must be from context which was entirely copied.
+                    logger.log("VIOLATION DETECTED of rule DL9020: Context churn for pip at position " + instruction.position.toString());
+                    set.add("DL9020");
+                    smellBox.addSmell("DL9020");
+                }
+
+            } else if (stmt.includes("pip3") && stmt.includes("install") && stmt.find(e => e.includes(".txt"))){
+                //Just pip3
+                let requirements: string = stmt.find(e => e.includes(".txt")).toString();
+
+                let fileIsFetchedOnline = files.reduce((a, b) => {
+                    return a || ((b.urlOrigin != undefined && b.urlOrigin) && b.absolutePath.includes(requirements));
+                }, false);
+                
+                if(state.hasCopiedEntireContext && !fileIsFetchedOnline){
+                    // Check files for file imported by url - otherwise it must be from context which was entirely copied.
+                    logger.log("VIOLATION DETECTED of rule DL9020: Context churn for pip at position " + instruction.position.toString());
+                    set.add("DL9020");
+                    smellBox.addSmell("DL9020");
+                }
+            }
+        }
+
         function resolveNpm(statements: string[], instruction: ding.nodeType.BashCommand): void{
 
             let stmt: string[] = instruction.toString()
@@ -625,11 +684,12 @@ export class Analyzer {
             if(stmt.length == 2 && stmt[0] == "npm" && stmt[1] == "install"){
                 // Added by ADD through urlorigin doesn't count
                 // Keep in mind multi-stage builds when copying from other images. Meaning we need an mapping of files for different images and keep in mind the copying. Do we need to simulate that? Would complicate things ... but we'd be the first
-                // console.log("\n");
-                // console.log(stmt);
-                // console.log(containerpath);
-                // console.log(files);
-                // console.log("\n");
+
+                if(state.hasCopiedEntireContext){
+                    logger.log("VIOLATION DETECTED of rule DL9000: Context churn for npm at position " + instruction.position.toString());
+                    set.add("DL9000");
+                    smellBox.addSmell("DL9000");
+                }
 
                 let fileContainsPackageJson: boolean = false;
                 let fileContainsPackageLockJson: boolean = false;
@@ -641,7 +701,10 @@ export class Analyzer {
                     let fileContainerPath: string = file.containerPath;
                     let currentContainerPath: string = containerpath;
 
-                    // Even if that file is introduced, it doesn't matter because it is the only statement. Therefore it still needs to be split up and treated as if it doesn't exist. This shouldn't actually happen because you copy over a package but have no application at all? Unless it's something built in which I don't think happens
+                    // Even if that file is introduced, it doesn't matter because it is the only statement. 
+                    // Therefore it still needs to be split up and treated as if it doesn't exist. 
+                    // This shouldn't actually happen because you copy over a package but have no application at all? 
+                    // Unless it's something built in which I don't think happens
                     if(file.file.includes("package.json")){
                         // The file copied 
                         return;
@@ -734,6 +797,8 @@ export class Analyzer {
                 // console.log("package.json: " + fileContainsPackageJson);
                 // console.log("package-lock.json: " + fileContainsPackageLockJson);
                 // console.log("\n");
+            } else {
+                console.log("this is a statement installin dependencies");
             }
         }
 
@@ -780,6 +845,8 @@ export class Analyzer {
                     default:
                         if(splitCommand[0].includes("=")){
                             addExportToExports(splitCommand, command);
+                        } else {
+                            resolvePython(splitCommand, command);
                         }
                         break;
                 }
@@ -832,19 +899,25 @@ export class Analyzer {
                 if(file.introducedLayer != undefined && file.deletedLayer != undefined && file.introducedLayer != file.deletedLayer){
                     switch(file.introducedBy){
                         case "ADD":
-                            fileReport += "\tVOILATION DETECTED: ADD/rm temporary file smell for file" + file.file + "\n";
+                            logger.log("VIOLATION DETECTED of rule DL9013: ADD/rm temporary file smell for file " + file.file.toString());
+                            //fileReport += "\tVOILATION DETECTED: ADD/rm temporary file smell for file" + file.file + "\n";
                             //DL9013
-                            set.add("ADD/rm");
+                            set.add("DL9013");
+                            smellBox.addSmell("DL9013");
                             // NO fix unless we take it from a source like wget/curl- maybe delete the deleting command?
                             break;
                         case "COPY":
-                            fileReport += "\tVOILATION DETECTED: COPY/rm temporary file smell for file" + file.file + "\n";
-                            set.add("COPY/rm"); //DL9014
+                            logger.log("VIOLATION DETECTED of rule DL9014: COPY/rm temporary file smell for file " + file.file.toString());
+                            //fileReport += "\tVOILATION DETECTED: COPY/rm temporary file smell for file" + file.file + "\n";
+                            set.add("DL9014"); //DL9014
+                            smellBox.addSmell("DL9014");
                             // No fix unless we take from a source like wget/curl - maybe delete the deleting command?
                             break;
                         case "BUILT-IN":
-                            fileReport += "\tVOILATION DETECTED: BUILT-IN/rm temporary file smell for file" + file.file + "\n";
-                            set.add("BUILT-IN/rm"); //DL9015
+                            logger.log("VIOLATION DETECTED of rule DL9015: BUILT-IN/rm temporary file smell for file " + file.file.toString());
+                            //fileReport += "\tVOILATION DETECTED: BUILT-IN/rm temporary file smell for file" + file.file + "\n";
+                            set.add("DL9015"); //DL9015
+                            smellBox.addSmell("DL9015");
 
                             // Find the relevant nodes with context, can be built up given that we have a status for each file
                             // We need to hook the relevant statements to the files. 
@@ -863,18 +936,26 @@ export class Analyzer {
 
                     switch(file.introducedBy){
                         case "ADD":
-                            fileReport += "\tVOILATION DETECTED: ADD introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
-                            set.add("DL9016"); //DL9016
-                            // Cannot be fixed
+                            if(file.urlOrigin){
+                                logger.log("VIOLATION DETECTED of rule DL9016: ADD introduced compressed file which was decompressed but not deleted " + file.file.toString());
+                                //fileReport += "\tVOILATION DETECTED: ADD introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
+                                set.add("DL9016"); //DL9016
+                                smellBox.addSmell("DL9016");
+                            }
+                            
                             break;
                         case "COPY":
-                            fileReport += "\tVOILATION DETECTED: COPY introduced compressed file which was decompressed  but not deleted:" + file.file + "\n";
+                            logger.log("VIOLATION DETECTED of rule DL9017: COPY introduced compressed file which was decompressed  but not deleted " + file.file.toString());
+                            //fileReport += "\tVOILATION DETECTED: COPY introduced compressed file which was decompressed  but not deleted:" + file.file + "\n";
                             set.add("DL9017"); //DL9017
+                            smellBox.addSmell("DL9017");
                             break;
-                            // Cannot be fixed
+                            
                         case "BUILT-IN":
-                            fileReport += "\tVOILATION DETECTED: BUILT-IN introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
+                            logger.log("VIOLATION DETECTED of rule DL9018: BUILT-IN introduced compressed file which was decompressed but not deleted " + file.file.toString());
+                            //fileReport += "\tVOILATION DETECTED: BUILT-IN introduced compressed file which was decompressed but not deleted:" + file.file + "\n";
                             set.add("DL9018"); //DL9018
+                            smellBox.addSmell("DL9018");
                             // can be fixed
                             fixInfo.list.push({
                                 isManagerRelated: false,
@@ -888,8 +969,10 @@ export class Analyzer {
                 }
 
                 if(file.introducedLayer != undefined && file.introducedBy == "ADD" && file.isCompressed && file.urlOrigin && file.deletedLayer != undefined){
-                    fileReport += "\tVOILATION DETECTED: compressed file introduced from URL through ADD :" + file.file + "\n";
+                    logger.log("VIOLATION DETECTED of rule DL9019: compressed file introduced from URL through ADD " + file.file.toString());
+                    //fileReport += "\tVOILATION DETECTED: compressed file introduced from URL through ADD :" + file.file + "\n";
                     set.add("DL9019"); //DL9019
+                    smellBox.addSmell("DL9019");
                     // can be fixed by getting it from wget or url, as ADD doesn't decompress
                     fixInfo.list.push({
                         isManagerRelated: false,
@@ -901,8 +984,10 @@ export class Analyzer {
                 }
 
                 if(file.introducedLayer != undefined && file.introducedBy == "COPY" && file.isCompressed && file.extractedLayer != undefined){
-                    fileReport += "\tVOILATION DETECTED: replace COPY and extract statement with ADD :" + file.file + "\n";
+                    logger.log("VIOLATION DETECTED of rule DL3010: replace COPY instruction and extract statement with ADD instruction for " + file.file.toString());
+                    //fileReport += "\tVOILATION DETECTED: replace COPY and extract statement with ADD :" + file.file + "\n";
                     set.add("DL3010");
+                    smellBox.addSmell("DL3010");
 
                     // Solved by replacing COPY by add and deleting extract statement. (this means - keep track of destination too!)
                     fixInfo.list.push({
@@ -939,7 +1024,7 @@ export class Analyzer {
         //infoDump();
     }
 
-    consecutiveRunInstructionAnalysis(ast:ding.nodeType.DockerFile, fileReport: string, set: Set<string>, fixInfo: {root: ding.nodeType.DockerFile, list: any[]}){
+    consecutiveRunInstructionAnalysis(ast:ding.nodeType.DockerFile, logger: Logger, set: Set<string>, fixInfo: {root: ding.nodeType.DockerFile, list: any[]}, smellBox: SmellBox, absoluteSmells: {rule: string, times: number}[]){
         //TODO Maybe be more specific such that a Bashscript only has one child that is a BashCommand
         /**
          * Procedure that serves as a hatch for the different kind of Docker instructions, which can all be assumed to be different layers.
@@ -965,8 +1050,11 @@ export class Analyzer {
                                 node: instruction.parent,
                                 context: relevantInstructions
                             });
-                            fileReport += "\tVOILATION DETECTED: Multiple consecutive RUN instructions \n";
+
+                            logger.logViolation("VOILATION DETECTED: Multiple consecutive RUN instructions at position " + instruction.position.toString());
+                            //fileReport += "\tVOILATION DETECTED: Multiple consecutive RUN instructions \n";
                             set.add("DL3059");
+                            smellBox.addSmell("DL3059");
                         }
                     }
                     
@@ -977,6 +1065,7 @@ export class Analyzer {
             }
         }
 
+        logger.log("Checking rule DL3059 -- Multiple consecutive RUN instructions at position");
         let consecutiveRunInstruction: number = 0;
         let relevantInstructions: ding.nodeType.DockerRun[] = [];
 
@@ -1007,7 +1096,8 @@ export class Analyzer {
 
        function handleCopy(instruction: ding.nodeType.DockerCopy): void{
             if(instruction.children.length != 3){
-                return; //Not amazing solution, what about . . . or other combinations when there are MORE? More bad practices!
+                return; //Not amazing solution, what about . . . or other combinations when there are MORE? More bad practices! -- More concrete instances that we can't apply. 
+
             }
     
             let source: ding.nodeType.DockerPath = instruction.getChild(ding.nodeType.DockerCopySource).getChild(ding.nodeType.DockerPath);
@@ -1027,8 +1117,11 @@ export class Analyzer {
 
        // Seems like the problem can be attacked from multiple angles
        // - COPY . . is always a mistake, but maybe we have to start from NPM installs and then go back reversed? See if we can find the package.lock?
-
+       
        function handleRun(instruction: ding.nodeType.DockerRun): void{
+            /**
+             * We are solving this for the simplest case. In which the entire context and no package.json is present.
+             */
             let statements: ding.nodeType.BashCommand[] = [];
 
             instruction.traverseDF(node => {
@@ -1048,7 +1141,10 @@ export class Analyzer {
                     .filter(w => w != "RUN");
 
                 if(stmt.length == 2 && stmt[0] == "npm" && stmt[1] == "install"){
-                    console.log(stmt);
+                    console.log("WE ARE RESOLVING NPM STUFF");
+                    console.log("PRINTING STATE:");
+                    console.log(state);
+                    console.log("it appears we need the file from the previous phase.")
                 }
             })
 

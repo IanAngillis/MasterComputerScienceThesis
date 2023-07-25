@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13506.Dockerfile:6 DL3005 [1m[91merror[0m: Do not use apt-get dist-upgrade
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13506.Dockerfile:19 DL3005 [1m[91merror[0m: Do not use apt-get dist-upgrade
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13506.Dockerfile:19 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13506.Dockerfile:24 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias

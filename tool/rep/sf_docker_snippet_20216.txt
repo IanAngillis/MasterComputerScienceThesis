@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20216.Dockerfile:3 DL3021 [1m[91merror[0m: COPY with more than 2 arguments requires the last argument to end with /
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20216.Dockerfile:12 DL3021 [1m[91merror[0m: COPY with more than 2 arguments requires the last argument to end with /
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_20216.Dockerfile:15 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

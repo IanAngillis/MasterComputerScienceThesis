@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_15959.Dockerfile:5 SC1072 [1m[91merror[0m: Expected test to end here (don't wrap commands in []/[[]]). Fix any mentioned problems and try again.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_15959.Dockerfile:10 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

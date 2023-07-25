@@ -44,6 +44,8 @@ def clear_docker_cache():
     subprocess.call(prune_command)
 
 
+
+#Idea - compute the new Dockerfiles and already build them. if they fail - fix, or keep them and blame the tool for bugs.
 def main():
     # Specify the paths
     project_folder = "C:\\Users\\Ian.IAN-RIG\\Desktop\\input"  # Path to the folder containing the projects

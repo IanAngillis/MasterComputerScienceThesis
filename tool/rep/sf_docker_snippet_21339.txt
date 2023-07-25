@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21339.Dockerfile:14 SC2217 [1m[93mwarning[0m: Redirecting to 'echo', a command that doesn't read stdin. Did you want 'cat' instead?
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21339.Dockerfile:17 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

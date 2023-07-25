@@ -1,5 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13535.Dockerfile:2 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13535.Dockerfile:7 DL3060 [92minfo[0m: `yarn cache clean` missing after `yarn install` was run.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13535.Dockerfile:11 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13535.Dockerfile:13 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_13535.Dockerfile:17 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

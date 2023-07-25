@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_1555.Dockerfile:4 DL3028 [1m[93mwarning[0m: Pin versions in gem install. Instead of `gem install <gem>` use `gem install <gem>:<version>`

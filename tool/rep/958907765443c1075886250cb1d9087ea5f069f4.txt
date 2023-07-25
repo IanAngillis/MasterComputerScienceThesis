@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\958907765443c1075886250cb1d9087ea5f069f4.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\958907765443c1075886250cb1d9087ea5f069f4.Dockerfile:3 DL3048 [96mstyle[0m: Invalid label key.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\958907765443c1075886250cb1d9087ea5f069f4.Dockerfile:14 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\958907765443c1075886250cb1d9087ea5f069f4.Dockerfile:14 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`

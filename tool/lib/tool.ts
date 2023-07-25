@@ -7,6 +7,8 @@ import {PackageManager} from "./models/package-manager";
 import {BashManagerCommand} from './models/tool-types'
 import {allRules as RULES} from './rules';
 import {Fixer} from "./models/fixer.js";
+import {Logger} from "./models/logger.js";
+import {SmellBox } from "./models/smellbox.js";
 
 //Defining constants
 
@@ -104,8 +106,8 @@ async function main(){
     let mapped_tool_smells: fs.WriteStream = fs.createWriteStream("../eval/mapped_tool_smells.txt", {flags: 'a'});
     let smells: {rule: string, times: number}[] = [];
     let absoluteSmells: {rule: string, times: number}[] = [];
+    let smellBox: SmellBox = new SmellBox();
    
-
     let packageManagers: PackageManager[] = [];
     // can be in a config object
     //delete reports (for now, don't do this in end product)
@@ -127,10 +129,11 @@ async function main(){
     let testFolder = "./../data/testfiles/";
     let binnacle = "./../data/binnacle/github/deduplicated-sources/";
     let crashed = "./../data/chrashedfiles/";
-    let stackoverflow = "./../data/stackoverflow/"
+    let stackoverflow = "./../data/stackoverflow/";
+    let pythonfolder = "./../data/python/";
 
     // Variable that sets folder for program
-    let currentFolder = testFolder;
+    let currentFolder = folder;
 
     let analyzer: Analyzer = new Analyzer();
     let fixer: Fixer = new Fixer();
@@ -147,14 +150,17 @@ async function main(){
         //TODO split up 
         try{ 
         console.log(dirent.name);
+        smellBox.setCurrent(dirent.name);
+        let logger: Logger = new Logger(dirent.name);
         let fileReport: string = "Report for: " + dirent.name + "\n";
         let ast: ding.nodeType.DockerFile = await ding.dockerfileParser.parseDocker(currentFolder + dirent.name);
         let nodes: ding.nodeType.DockerOpsNodeType[] = ast.find({type:ding.nodeType.BashCommand});
         let set: Set<string> = new Set<string>();
         let fixInfo: {root: ding.nodeType.DockerFile, list: any[]} = {root: ast, list: []};
         
-        analyzer.temporaryFileAnalysis(ast, fileReport, set, fixInfo);
-        analyzer.consecutiveRunInstructionAnalysis(ast, fileReport, set, fixInfo);
+        analyzer.temporaryFileAnalysis(ast, logger, set, fixInfo, smellBox, absoluteSmells);
+        analyzer.consecutiveRunInstructionAnalysis(ast, logger, set, fixInfo, smellBox, absoluteSmells);
+        // We need the files in order to check
         //analyzer.lowChurnAnalysis(ast, fileReport, set, fixInfo);
 
         // Create Bashamangercommands - intermediary representation
@@ -176,6 +182,7 @@ async function main(){
 
         RULES.forEach(rule => {
             fileReport += "Checking rule " + rule.code + " -- " + rule.message +":\n";
+            logger.log("Checking rule " + rule.code + " -- " + rule.message + ":");
             //For now assume package manager smells
             //TODO Check if manager exists - if not, we can move away from the package manager smells and go to the other smells
             let manager: PackageManager = packageManagers.find(pm => pm.command == rule.detection.manager);
@@ -196,8 +203,10 @@ async function main(){
                                     if(arg.indexOf(".txt") == -1 && arg.indexOf(".rpm") == -1 && !arg.startsWith(".")){
                                          //We report in case that we apt-install from a link, as we should specify the version. We don't do this when it comes from a file.
                                          //log.write("VIOLATION DETECTED: -- CODE " + rule.code + ": " + arg + " -- no version specified in file\n");
+                                         logger.logViolation("VOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command");
                                          fileReport += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                          set.add(rule.code);
+                                         smellBox.addSmell(rule.code);
                                          addAbsoluteSmell(absoluteSmells, rule);
                                          requiresVersionPinning = true;
                                     }
@@ -239,6 +248,8 @@ async function main(){
 
                                     set.add(rule.code);
                                     addAbsoluteSmell(absoluteSmells, rule);
+                                    logger.logViolation("VOILATION DETECTED: " + noninteractionflag.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command")
+                                    smellBox.addSmell(rule.code);
                                     fileReport += "\tVOILATION DETECTED: " + noninteractionflag.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                     //console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
                                 }
@@ -274,6 +285,8 @@ async function main(){
 
                                         addAbsoluteSmell(absoluteSmells, rule);
                                         set.add(rule.code);
+                                        logger.logViolation("VOILATION DETECTED: " + installFlag.value + " flag missing at position:" + c.position.toString() + " for command " + c.command);
+                                        smellBox.addSmell(rule.code);
                                         fileReport += "\tVOILATION DETECTED: " + installFlag.value + " flag missing at position:" + c.position.toString() + " for command " + c.command +  "\n";
                                     }
 
@@ -328,6 +341,8 @@ async function main(){
                                         node: ic.source,
                                     });
                                     set.add(rule.code);
+                                    logger.logViolation("VOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString());
+                                    smellBox.addSmell(rule.code);
                                     fileReport += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
                                     addAbsoluteSmell(absoluteSmells, rule);
                                     
@@ -337,6 +352,7 @@ async function main(){
                                 if(!hasCleanCacheCommand && manager.afterInstall.length > 0){
                                     // Adding information to the fixlist
                                     if(manager.command == "apt-get"){
+                                        smellBox.addSmell("DL3009");
                                         fixInfo.list.push({
                                             isManagerRelated: false,
                                             code: "DL3009",
@@ -345,6 +361,7 @@ async function main(){
                                             node: ic.source,
                                         });
                                     } else {
+                                        smellBox.addSmell(rule.code);
                                         fixInfo.list.push({
                                             isManagerRelated: false,
                                             code: "DL9021",
@@ -353,8 +370,9 @@ async function main(){
                                             node: ic.source,
                                         });
                                     }
-                                   
-                                    set.add("DL3009");
+                                
+                                    
+                                    logger.logViolation("VOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString());
                                     fileReport += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
                                     //console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
                                     //addAbsoluteSmell(absoluteSmells, rule);
@@ -390,6 +408,8 @@ async function main(){
 
                                     addAbsoluteSmell(absoluteSmells, rule);
                                     set.add(rule.code);
+                                    smellBox.addSmell(rule.code);
+                                    logger.logViolation("VOILATION DETECTED: No " + norecommendsflag.value + " flag detected for " + manager.command + " command at " + c.position.toString());
                                     fileReport += "\tVOILATION DETECTED: No " + norecommendsflag.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                 }
                             });
@@ -402,7 +422,10 @@ async function main(){
                     break;
             }     
         });
-
+        console.log("printing set");
+        console.log(set);
+        logger.logSmellSet(Array.from(set).join(" "));
+        smellBox.addSmellsPresentInFile(Array.from(set));
         fileReport += "RULE DETECTIONS: ";
         fileReport += Array.from(set).join(" ");
 
@@ -410,6 +433,7 @@ async function main(){
 
 
         fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport);
+        fs.writeFileSync("./reports/" + dirent.name + "_logger.txt", logger.getLog());
 
         set.forEach(smell => {
             let idx: number = smells.findIndex(s => s.rule == smell);
@@ -422,7 +446,7 @@ async function main(){
         });
 
         // console.log("START FIXER");
-        fixer.convertAstToFile(fixInfo);
+        //fixer.convertAstToFile(fixInfo);
         // console.log("DONE FIXER");
 
     } catch(e){
@@ -444,6 +468,14 @@ async function main(){
     // The problem with absolute smells is that Hadolint does not report them so the number is much higher for the tool.
     console.log("absolute");
     console.log(absoluteSmells);
+
+    console.log("Results from the smellbox");
+    console.log("Total smell count");
+    console.log(smellBox.getTotalSmells());
+    console.log("# files infected with particular smell");
+    console.log(smellBox.getSmellyFiles());
+    // console.log("Smells per file");
+    // console.log(JSON.stringify(smellBox.getSmellsPerFile()));
 
     // packageManagers.forEach(x => {
     //     let cmd = x.command;

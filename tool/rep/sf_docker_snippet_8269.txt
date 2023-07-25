@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_8269.Dockerfile:7 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_8269.Dockerfile:9 SC2153 [92minfo[0m: Possible misspelling: FILENAME may not be assigned. Did you mean FILE_NAME?

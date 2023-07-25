@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\508d83428497745ab159c6d44cbded28defbddce.Dockerfile:3 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\508d83428497745ab159c6d44cbded28defbddce.Dockerfile:6 DL3013 [1m[93mwarning[0m: Pin versions in pip. Instead of `pip install <package>` use `pip install <package>==<version>` or `pip install --requirement <requirements file>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\508d83428497745ab159c6d44cbded28defbddce.Dockerfile:25 DL3042 [1m[93mwarning[0m: Avoid use of cache directory with pip. Use `pip install --no-cache-dir <package>`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\508d83428497745ab159c6d44cbded28defbddce.Dockerfile:25 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

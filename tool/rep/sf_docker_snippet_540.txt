@@ -1,5 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_540.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_540.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_540.Dockerfile:5 DL3030 [1m[93mwarning[0m: Use the -y switch to avoid manual input `yum install -y <package`
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_540.Dockerfile:5 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_540.Dockerfile:5 DL3032 [1m[93mwarning[0m: `yum clean all` missing after yum command.

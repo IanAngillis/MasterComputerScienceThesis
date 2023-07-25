@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9489.Dockerfile:13 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9489.Dockerfile:17 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12591.Dockerfile:2 DL3009 [92minfo[0m: Delete the apt-get lists after installing something

@@ -1,5 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_24215.Dockerfile:8 DL3002 [1m[93mwarning[0m: Last USER should not be root
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_24215.Dockerfile:9 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_24215.Dockerfile:10 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_24215.Dockerfile:11 DL3046 [1m[93mwarning[0m: `useradd` without flag `-l` and high UID will result in excessively large Image.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_24215.Dockerfile:11 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

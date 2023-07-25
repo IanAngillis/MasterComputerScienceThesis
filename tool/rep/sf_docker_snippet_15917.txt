@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_15917.Dockerfile:2 SC1072 [1m[91merror[0m:  Fix any mentioned problems and try again.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_15917.Dockerfile:8 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17864.Dockerfile:5 SC1001 [92minfo[0m: This \p will be a regular 'p' in this context.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17864.Dockerfile:6 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

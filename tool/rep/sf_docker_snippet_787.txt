@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_787.Dockerfile:3 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_787.Dockerfile:4 SC2005 [96mstyle[0m: Useless echo? Instead of 'echo $(cmd)', just use 'cmd'.

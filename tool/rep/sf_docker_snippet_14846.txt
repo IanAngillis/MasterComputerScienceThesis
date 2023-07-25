@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14846.Dockerfile:15 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

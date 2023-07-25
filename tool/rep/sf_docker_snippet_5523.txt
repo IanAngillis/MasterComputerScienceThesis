@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_5523.Dockerfile:13 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`

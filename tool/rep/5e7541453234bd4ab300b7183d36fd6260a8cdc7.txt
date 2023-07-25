@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\5e7541453234bd4ab300b7183d36fd6260a8cdc7.Dockerfile:4:58 unexpected ':' expecting '@', '\', a new line followed by the next instruction, or the image tag 

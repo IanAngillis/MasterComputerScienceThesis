@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11181.Dockerfile:5 DL3041 [1m[93mwarning[0m: Specify version with `dnf install -y <package>-<version>`.

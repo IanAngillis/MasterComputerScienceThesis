@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_8559.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_8559.Dockerfile:5 DL3010 [92minfo[0m: Use `ADD` for extracting archives into an image
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_8559.Dockerfile:5 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.

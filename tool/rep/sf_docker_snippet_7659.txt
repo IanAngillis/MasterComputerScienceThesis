@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_7659.Dockerfile:5 DL3021 [1m[91merror[0m: COPY with more than 2 arguments requires the last argument to end with /
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_7659.Dockerfile:5 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.

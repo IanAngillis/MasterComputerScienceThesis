@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12932.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12932.Dockerfile:7 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12932.Dockerfile:12 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias

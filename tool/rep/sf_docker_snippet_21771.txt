@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21771.Dockerfile:6 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21771.Dockerfile:7 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21771.Dockerfile:19 SC2046 [1m[93mwarning[0m: Quote this to prevent word splitting.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_21771.Dockerfile:34 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_10974.Dockerfile:1:34 unexpected "type=bind,so" expecting "from=", "readonly", "readonly=", "readwrite", "readwrite=", "ro", "ro=", "rw", "rw=", source=, or target= 

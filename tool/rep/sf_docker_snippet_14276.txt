@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14276.Dockerfile:8 DL3027 [1m[93mwarning[0m: Do not use apt as it is meant to be a end-user tool, use apt-get or apt-cache instead

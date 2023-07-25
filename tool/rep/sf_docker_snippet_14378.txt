@@ -1,6 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14378.Dockerfile:4 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14378.Dockerfile:6 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14378.Dockerfile:6 SC1001 [92minfo[0m: This \g will be a regular 'g' in this context.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14378.Dockerfile:12 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14378.Dockerfile:13 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_14378.Dockerfile:14 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias

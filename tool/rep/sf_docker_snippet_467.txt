@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_467.Dockerfile:5 DL3004 [1m[91merror[0m: Do not use sudo as it leads to unpredictable behavior. Use a tool like gosu to enforce root
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_467.Dockerfile:17 DL3004 [1m[91merror[0m: Do not use sudo as it leads to unpredictable behavior. Use a tool like gosu to enforce root
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_467.Dockerfile:18 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

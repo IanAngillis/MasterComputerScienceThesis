@@ -1,5 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\b4a59f6bb2994969666e347f47d5337aee19f558.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\b4a59f6bb2994969666e347f47d5337aee19f558.Dockerfile:29 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\b4a59f6bb2994969666e347f47d5337aee19f558.Dockerfile:29 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\b4a59f6bb2994969666e347f47d5337aee19f558.Dockerfile:42 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\b4a59f6bb2994969666e347f47d5337aee19f558.Dockerfile:48 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\ca2902cf99615dbf0be15aa7b86f96750f1fd3af.Dockerfile:4 SC1001 [92minfo[0m: This \- will be a regular '-' in this context.

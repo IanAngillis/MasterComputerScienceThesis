@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_5778.Dockerfile:2 DL3044 [1m[91merror[0m: Do not refer to an environment variable within the same `ENV` statement where it is defined.

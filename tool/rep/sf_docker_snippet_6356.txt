@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6356.Dockerfile:2 SC2034 [1m[93mwarning[0m: data appears unused. Verify use (or export if used externally).

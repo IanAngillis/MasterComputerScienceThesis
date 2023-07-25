@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11270.Dockerfile:2:16 unexpected newline expecting '"' or '\' 

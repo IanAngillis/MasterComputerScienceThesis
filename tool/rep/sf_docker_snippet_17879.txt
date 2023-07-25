@@ -1,7 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17879.Dockerfile:5 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17879.Dockerfile:6 DL3040 [1m[93mwarning[0m: `dnf clean all` missing after dnf command.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17879.Dockerfile:6 SC1001 [92minfo[0m: This \/ will be a regular '/' in this context.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17879.Dockerfile:10 DL3040 [1m[93mwarning[0m: `dnf clean all` missing after dnf command.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17879.Dockerfile:10 DL3041 [1m[93mwarning[0m: Specify version with `dnf install -y <package>-<version>`.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17879.Dockerfile:24 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17879.Dockerfile:25 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments

@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_2246.Dockerfile:3 DL3032 [1m[93mwarning[0m: `yum clean all` missing after yum command.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_2246.Dockerfile:4 DL3032 [1m[93mwarning[0m: `yum clean all` missing after yum command.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_2246.Dockerfile:4 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_2246.Dockerfile:4 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.

@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\4e6461373e8727010b29ae41fdaf1bdb5e045b5c.Dockerfile:1 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\4e6461373e8727010b29ae41fdaf1bdb5e045b5c.Dockerfile:2 DL4000 [1m[91merror[0m: MAINTAINER is deprecated

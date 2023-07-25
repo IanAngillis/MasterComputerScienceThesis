@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_8076.Dockerfile:2 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.

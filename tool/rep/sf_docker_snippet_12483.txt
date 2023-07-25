@@ -1,2 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12483.Dockerfile:4 SC2028 [92minfo[0m: echo may not expand escape sequences. Use printf.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12483.Dockerfile:14 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

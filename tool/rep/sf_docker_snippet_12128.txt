@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_12128.Dockerfile:1:15 unexpected '[' expecting '\', a new line followed by the next instruction, or at least one space 

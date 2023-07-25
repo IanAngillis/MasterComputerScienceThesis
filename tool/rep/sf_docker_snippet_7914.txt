@@ -1,3 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_7914.Dockerfile:2 DL3032 [1m[93mwarning[0m: `yum clean all` missing after yum command.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_7914.Dockerfile:2 DL3033 [1m[93mwarning[0m: Specify version with `yum install -y <package>-<version>`.
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_7914.Dockerfile:4 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

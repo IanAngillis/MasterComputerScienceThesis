@@ -76,6 +76,8 @@ var managers_json_1 = __importDefault(require("./json/managers.json"));
 var tool_types_1 = require("./models/tool-types");
 var rules_1 = require("./rules");
 var fixer_js_1 = require("./models/fixer.js");
+var logger_js_1 = require("./models/logger.js");
+var smellbox_js_1 = require("./models/smellbox.js");
 var delimiter = " ";
 function splitWithoutEmptyString(text, delimiter) {
     return text.replace(/\r?\n/g, delimiter).replace(/\\/g, delimiter).split(delimiter).filter(function (w) { return w != ""; });
@@ -176,7 +178,7 @@ function addAbsoluteSmell(lst, rule) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, log, log2, mapped_tool_smells, smells, absoluteSmells, packageManagers, folder, testFolder, binnacle, crashed, stackoverflow, currentFolder, analyzer, fixer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, log, log2, mapped_tool_smells, smells, absoluteSmells, smellBox, packageManagers, folder, testFolder, binnacle, crashed, stackoverflow, pythonfolder, currentFolder, analyzer, fixer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -186,6 +188,7 @@ function main() {
                     mapped_tool_smells = fs.createWriteStream("../eval/mapped_tool_smells.txt", { flags: 'a' });
                     smells = [];
                     absoluteSmells = [];
+                    smellBox = new smellbox_js_1.SmellBox();
                     packageManagers = [];
                     fs.readdir("./reports", function (err, files) {
                         if (err)
@@ -203,7 +206,8 @@ function main() {
                     binnacle = "./../data/binnacle/github/deduplicated-sources/";
                     crashed = "./../data/chrashedfiles/";
                     stackoverflow = "./../data/stackoverflow/";
-                    currentFolder = testFolder;
+                    pythonfolder = "./../data/python/";
+                    currentFolder = folder;
                     analyzer = new analyzer_1.Analyzer();
                     fixer = new fixer_js_1.Fixer();
                     managers_json_1.default.forEach(function (pm) {
@@ -216,7 +220,7 @@ function main() {
                 case 2:
                     _e.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
-                        var dirent, fileReport_1, ast, nodes, set_1, fixInfo_1, bashManagerCommands_1, text, e_3;
+                        var dirent, logger_1, fileReport_1, ast, nodes, set_1, fixInfo_1, bashManagerCommands_1, text, e_3;
                         return __generator(this, function (_f) {
                             switch (_f.label) {
                                 case 0:
@@ -230,6 +234,8 @@ function main() {
                                 case 2:
                                     _f.trys.push([2, 4, , 5]);
                                     console.log(dirent.name);
+                                    smellBox.setCurrent(dirent.name);
+                                    logger_1 = new logger_js_1.Logger(dirent.name);
                                     fileReport_1 = "Report for: " + dirent.name + "\n";
                                     return [4, ding.dockerfileParser.parseDocker(currentFolder + dirent.name)];
                                 case 3:
@@ -237,8 +243,8 @@ function main() {
                                     nodes = ast.find({ type: ding.nodeType.BashCommand });
                                     set_1 = new Set();
                                     fixInfo_1 = { root: ast, list: [] };
-                                    analyzer.temporaryFileAnalysis(ast, fileReport_1, set_1, fixInfo_1);
-                                    analyzer.consecutiveRunInstructionAnalysis(ast, fileReport_1, set_1, fixInfo_1);
+                                    analyzer.temporaryFileAnalysis(ast, logger_1, set_1, fixInfo_1, smellBox, absoluteSmells);
+                                    analyzer.consecutiveRunInstructionAnalysis(ast, logger_1, set_1, fixInfo_1, smellBox, absoluteSmells);
                                     bashManagerCommands_1 = [];
                                     nodes.forEach(function (node) {
                                         packageManagers.forEach(function (manager) {
@@ -252,6 +258,7 @@ function main() {
                                     log.write(text + "\n");
                                     rules_1.allRules.forEach(function (rule) {
                                         fileReport_1 += "Checking rule " + rule.code + " -- " + rule.message + ":\n";
+                                        logger_1.log("Checking rule " + rule.code + " -- " + rule.message + ":");
                                         var manager = packageManagers.find(function (pm) { return pm.command == rule.detection.manager; });
                                         switch (rule.detection.type) {
                                             case "VERSION-PINNING":
@@ -263,8 +270,10 @@ function main() {
                                                         c.arguments.forEach(function (arg) {
                                                             if (arg.search(manager.packageVersionFormatSplitter) == -1 || arg.search(manager.packageVersionFormatSplitter) == 0) {
                                                                 if (arg.indexOf(".txt") == -1 && arg.indexOf(".rpm") == -1 && !arg.startsWith(".")) {
+                                                                    logger_1.logViolation("VOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command");
                                                                     fileReport_1 += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                                     set_1.add(rule.code);
+                                                                    smellBox.addSmell(rule.code);
                                                                     addAbsoluteSmell(absoluteSmells, rule);
                                                                     requiresVersionPinning = true;
                                                                 }
@@ -296,6 +305,8 @@ function main() {
                                                                 });
                                                                 set_1.add(rule.code);
                                                                 addAbsoluteSmell(absoluteSmells, rule);
+                                                                logger_1.logViolation("VOILATION DETECTED: " + noninteractionflag_1.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command");
+                                                                smellBox.addSmell(rule.code);
                                                                 fileReport_1 += "\tVOILATION DETECTED: " + noninteractionflag_1.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
                                                             }
                                                         });
@@ -321,6 +332,8 @@ function main() {
                                                                     });
                                                                     addAbsoluteSmell(absoluteSmells, rule);
                                                                     set_1.add(rule.code);
+                                                                    logger_1.logViolation("VOILATION DETECTED: " + installFlag_1.value + " flag missing at position:" + c.position.toString() + " for command " + c.command);
+                                                                    smellBox.addSmell(rule.code);
                                                                     fileReport_1 += "\tVOILATION DETECTED: " + installFlag_1.value + " flag missing at position:" + c.position.toString() + " for command " + c.command + "\n";
                                                                 }
                                                             });
@@ -362,11 +375,14 @@ function main() {
                                                                     node: ic.source,
                                                                 });
                                                                 set_1.add(rule.code);
+                                                                logger_1.logViolation("VOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString());
+                                                                smellBox.addSmell(rule.code);
                                                                 fileReport_1 += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
                                                                 addAbsoluteSmell(absoluteSmells, rule);
                                                             }
                                                             if (!hasCleanCacheCommand && manager.afterInstall.length > 0) {
                                                                 if (manager.command == "apt-get") {
+                                                                    smellBox.addSmell("DL3009");
                                                                     fixInfo_1.list.push({
                                                                         isManagerRelated: false,
                                                                         code: "DL3009",
@@ -376,6 +392,7 @@ function main() {
                                                                     });
                                                                 }
                                                                 else {
+                                                                    smellBox.addSmell(rule.code);
                                                                     fixInfo_1.list.push({
                                                                         isManagerRelated: false,
                                                                         code: "DL9021",
@@ -384,7 +401,7 @@ function main() {
                                                                         node: ic.source,
                                                                     });
                                                                 }
-                                                                set_1.add("DL3009");
+                                                                logger_1.logViolation("VOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString());
                                                                 fileReport_1 += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
                                                             }
                                                         });
@@ -410,6 +427,8 @@ function main() {
                                                                 });
                                                                 addAbsoluteSmell(absoluteSmells, rule);
                                                                 set_1.add(rule.code);
+                                                                smellBox.addSmell(rule.code);
+                                                                logger_1.logViolation("VOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString());
                                                                 fileReport_1 += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
                                                             }
                                                         });
@@ -420,10 +439,15 @@ function main() {
                                                 break;
                                         }
                                     });
+                                    console.log("printing set");
+                                    console.log(set_1);
+                                    logger_1.logSmellSet(Array.from(set_1).join(" "));
+                                    smellBox.addSmellsPresentInFile(Array.from(set_1));
                                     fileReport_1 += "RULE DETECTIONS: ";
                                     fileReport_1 += Array.from(set_1).join(" ");
                                     mapped_tool_smells.write(dirent.name + "," + Array.from(set_1).join(",") + "\n");
                                     fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport_1);
+                                    fs.writeFileSync("./reports/" + dirent.name + "_logger.txt", logger_1.getLog());
                                     set_1.forEach(function (smell) {
                                         var idx = smells.findIndex(function (s) { return s.rule == smell; });
                                         if (idx == -1) {
@@ -433,7 +457,6 @@ function main() {
                                             smells[idx].times += 1;
                                         }
                                     });
-                                    fixer.convertAstToFile(fixInfo_1);
                                     return [3, 5];
                                 case 4:
                                     e_3 = _f.sent();
@@ -486,6 +509,11 @@ function main() {
                     console.log(smells);
                     console.log("absolute");
                     console.log(absoluteSmells);
+                    console.log("Results from the smellbox");
+                    console.log("Total smell count");
+                    console.log(smellBox.getTotalSmells());
+                    console.log("# files infected with particular smell");
+                    console.log(smellBox.getSmellyFiles());
                     return [2];
             }
         });

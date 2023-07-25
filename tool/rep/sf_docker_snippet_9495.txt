@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9495.Dockerfile:2 SC2046 [1m[93mwarning[0m: Quote this to prevent word splitting.

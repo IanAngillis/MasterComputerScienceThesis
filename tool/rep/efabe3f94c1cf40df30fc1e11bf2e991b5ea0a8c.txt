@@ -1,6 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\efabe3f94c1cf40df30fc1e11bf2e991b5ea0a8c.Dockerfile:31 DL3002 [1m[93mwarning[0m: Last USER should not be root
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\efabe3f94c1cf40df30fc1e11bf2e991b5ea0a8c.Dockerfile:33 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\efabe3f94c1cf40df30fc1e11bf2e991b5ea0a8c.Dockerfile:34 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\efabe3f94c1cf40df30fc1e11bf2e991b5ea0a8c.Dockerfile:35 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\efabe3f94c1cf40df30fc1e11bf2e991b5ea0a8c.Dockerfile:36 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\efabe3f94c1cf40df30fc1e11bf2e991b5ea0a8c.Dockerfile:56 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.

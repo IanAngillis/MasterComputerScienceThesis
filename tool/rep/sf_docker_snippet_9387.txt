@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_9387.Dockerfile:19 DL3000 [1m[91merror[0m: Use absolute WORKDIR

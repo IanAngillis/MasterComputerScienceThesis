@@ -1,4 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\c2a4315d1b8c0c6e484988cf8aca21e0ed34eded.Dockerfile:3 DL4000 [1m[91merror[0m: MAINTAINER is deprecated
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\c2a4315d1b8c0c6e484988cf8aca21e0ed34eded.Dockerfile:5 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\c2a4315d1b8c0c6e484988cf8aca21e0ed34eded.Dockerfile:5 DL4006 [1m[93mwarning[0m: Set the SHELL option -o pipefail before RUN with a pipe in it. If you are using /bin/sh in an alpine image or if your shell is symlinked to busybox then consider explicitly setting your SHELL to /bin/ash, or disable this check
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\dockerfiles\c2a4315d1b8c0c6e484988cf8aca21e0ed34eded.Dockerfile:5 SC2086 [92minfo[0m: Double quote to prevent globbing and word splitting.

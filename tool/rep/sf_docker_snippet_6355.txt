@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_6355.Dockerfile:2 SC2016 [92minfo[0m: Expressions don't expand in single quotes, use double quotes for that.

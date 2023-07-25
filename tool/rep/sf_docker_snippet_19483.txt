@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_19483.Dockerfile:12 SC1088 [1m[91merror[0m: Parsing stopped here. Invalid use of parentheses?

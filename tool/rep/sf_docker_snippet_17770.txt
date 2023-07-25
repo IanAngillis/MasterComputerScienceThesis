@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_17770.Dockerfile:3 SC1072 [1m[91merror[0m: Expected a command. Fix any mentioned problems and try again.

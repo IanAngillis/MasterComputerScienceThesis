@@ -1,1 +1,0 @@
-C:\Users\Ian Angillis\Workspace\MasterComputerScienceThesis\data\stackoverflow\sf_docker_snippet_11647.Dockerfile:3 DL3048 [96mstyle[0m: Invalid label key.
