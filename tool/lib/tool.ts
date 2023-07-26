@@ -22,7 +22,7 @@ function splitWithoutEmptyString(text: string, delimiter: string): string[] {
 async function loop(path) {
     const dir = await fs.promises.opendir(path)
     for await (const dirent of dir) {
-      console.log(dirent.name)
+      //console.log(dirent.name)
     }
 }
 
@@ -101,6 +101,7 @@ function addAbsoluteSmell(lst, rule){
   //    - Definitely need to split this up in more functions The package analyzer can be a class of its own - not sure yet what to do about repairing
 async function main(){
     let sum: number = 0;
+    let filesNotAbleToBuild = 0;
     let log : fs.WriteStream = fs.createWriteStream("./logs/" + createLogName(), {flags: 'a'});
     let log2: fs.WriteStream = fs.createWriteStream("./logs/" + "error_files", {flags: 'a'});
     let mapped_tool_smells: fs.WriteStream = fs.createWriteStream("../eval/mapped_tool_smells.txt", {flags: 'a'});
@@ -122,7 +123,7 @@ async function main(){
       });
       
 
-    //console.log(splitWithoutEmptyString("rm -rf /var/list/*", " "));
+    ////console.log(splitWithoutEmptyString("rm -rf /var/list/*", " "));
 
     // Folder which holds the data - should expand to folders eventually
     let folder = "./../data/dockerfiles/";
@@ -133,7 +134,7 @@ async function main(){
     let pythonfolder = "./../data/python/";
 
     // Variable that sets folder for program
-    let currentFolder = folder;
+    let currentFolder = testFolder;
 
     let analyzer: Analyzer = new Analyzer();
     let fixer: Fixer = new Fixer();
@@ -148,8 +149,10 @@ async function main(){
 
     for await (const dirent of dir) {
         //TODO split up 
+        const start = Date.now();
+
         try{ 
-        console.log(dirent.name);
+        //console.log(dirent.name);
         smellBox.setCurrent(dirent.name);
         let logger: Logger = new Logger(dirent.name);
         let fileReport: string = "Report for: " + dirent.name + "\n";
@@ -178,7 +181,7 @@ async function main(){
         // Apply rules
         let text = dirent.name + " has got " + bashManagerCommands.length + " package commands";
         log.write(text + "\n");
-        //console.log(text);
+        ////console.log(text);
 
         RULES.forEach(rule => {
             fileReport += "Checking rule " + rule.code + " -- " + rule.message +":\n";
@@ -189,12 +192,12 @@ async function main(){
             switch(rule.detection.type){
                 case "VERSION-PINNING": // Fix is not in the scope of the program.
                     if(manager == null){
-                        //console.log("No such manager found");
+                        ////console.log("No such manager found");
                     }else{
                         bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach(c => {
                             let requiresVersionPinning: boolean = false;
                             // if(dirent.name == "1c1994e05f61bfab226254e9b510e97547e5d148.Dockerfile"){
-                            //     console.log(c.arguments);
+                            ////     console.log(c.arguments);
                             // }
 
                             c.arguments.forEach(arg => {
@@ -211,7 +214,7 @@ async function main(){
                                          requiresVersionPinning = true;
                                     }
                                 }else {
-                                    //console.log("pinned version found");
+                                    ////console.log("pinned version found");
                                 }
                             });
                         });
@@ -222,16 +225,16 @@ async function main(){
                     if(manager!=null){
                         let noninteractionflag = manager.installOptionFlags.find(flag => flag.type == "NO-INTERACTION");
                         
-                        //console.log(noninteractionflag.value);
+                        ////console.log(noninteractionflag.value);
                         if(noninteractionflag != undefined){
                             bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach( c => {
-                                // console.log(c.flags);
-                                // console.log(c.source.toString());
-                                // console.log(noninteractionflag.value);
+                                //// console.log(c.flags);
+                                //// console.log(c.source.toString());
+                                //// console.log(noninteractionflag.value);
                                 let nonInteractionFlagIsPresent = false;
                                 c.flags.forEach(flag => {
                                     if(flag == noninteractionflag.value || flag == noninteractionflag.alternative|| flag.includes(noninteractionflag.value) || flag.includes(noninteractionflag.value.replace("-", ""))){
-                                        //console.log("noninteractionflag found");
+                                        ////console.log("noninteractionflag found");
                                         nonInteractionFlagIsPresent = true;
                                     }
                                 });
@@ -251,7 +254,7 @@ async function main(){
                                     logger.logViolation("VOILATION DETECTED: " + noninteractionflag.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command")
                                     smellBox.addSmell(rule.code);
                                     fileReport += "\tVOILATION DETECTED: " + noninteractionflag.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
-                                    //console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
+                                    ////console.log("VIOLATION DETECTED: -- CODE " + rule.code + ": " + manager.command + " -- no interaction prevented in file " + dirent.name + "\n");
                                 }
                             });
                         }
@@ -272,7 +275,7 @@ async function main(){
                                 bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach(c => {
                                     
                                     if(c.flags.find(flag => flag == installFlag.value) != undefined){
-                                        //console.log("clean cache flag found");
+                                        ////console.log("clean cache flag found");
                                     }else{
                                         // Adding information to the fixlist
                                         fixInfo.list.push({
@@ -374,7 +377,7 @@ async function main(){
                                     
                                     logger.logViolation("VOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString());
                                     fileReport += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
-                                    //console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
+                                    ////console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
                                     //addAbsoluteSmell(absoluteSmells, rule);
                                 }
                             });
@@ -384,18 +387,18 @@ async function main(){
 
                 case "NO-RECOMMENDS":
                     if(manager != null){
-                        //console.log("Checking for no-recommends");
+                        ////console.log("Checking for no-recommends");
                         let norecommendsflag = manager.installOptionFlags.find(flag => flag.type == "NO-RECOMMENDS");
                         if(norecommendsflag != undefined){
                             let found = false;
                             bashManagerCommands.filter(c => c.command == rule.detection.manager && c.option == manager.installOption[0]).forEach( c => {
-                                // console.log(norecommendsflag.value);
-                                // console.log(c.arguments);
+                                //// console.log(norecommendsflag.value);
+                                //// console.log(c.arguments);
                                 if(c.flags.find(arg => arg == norecommendsflag.value) != undefined){
-                                    //console.log("Recommends found");
+                                    ////console.log("Recommends found");
                                     found = true;
                                 } else {
-                                    //console.log("found NO-RECOMMENDS issue");
+                                    ////console.log("found NO-RECOMMENDS issue");
                                     
                                     // Adding information to the fixlist
                                     fixInfo.list.push({
@@ -418,12 +421,12 @@ async function main(){
                     break;
                 
                 default:
-                    //console.log("no such option");
+                    ////console.log("no such option");
                     break;
             }     
         });
-        console.log("printing set");
-        console.log(set);
+        //console.log("printing set");
+        //console.log(set);
         logger.logSmellSet(Array.from(set).join(" "));
         smellBox.addSmellsPresentInFile(Array.from(set));
         fileReport += "RULE DETECTIONS: ";
@@ -445,15 +448,22 @@ async function main(){
             }
         });
 
-        // console.log("START FIXER");
+        //Time:
+        const end = Date.now();
+        const difference = end - start;
+        // Record execution time
+        smellBox.setTime(difference);
+        //console.log(Date.now());
+        //console.log(smellBox);
+
+
+        //// console.log("START FIXER");
         //fixer.convertAstToFile(fixInfo);
-        // console.log("DONE FIXER");
+        //// console.log("DONE FIXER");
 
     } catch(e){
-        console.log(e);
         mapped_tool_smells.write(dirent.name + "\n");
-        log2.write(dirent.name + "\n");
-        console.log("ERROR");
+        filesNotAbleToBuild += 1;
     }
 
     }
@@ -461,39 +471,44 @@ async function main(){
     log.close();
     //log2.write(smells);
     log2.close();
-    console.log("**RESULTS**");
+    ////console.log("**RESULTS**");
     // Relative smells are fine but we are missing a lot of the DL42
-    console.log("relative");
-    console.log(smells)
+    //console.log("relative");
+    //console.log(smells)
     // The problem with absolute smells is that Hadolint does not report them so the number is much higher for the tool.
-    console.log("absolute");
-    console.log(absoluteSmells);
+    //console.log("absolute");
+    //console.log(absoluteSmells);
 
-    console.log("Results from the smellbox");
-    console.log("Total smell count");
-    console.log(smellBox.getTotalSmells());
-    console.log("# files infected with particular smell");
-    console.log(smellBox.getSmellyFiles());
-    // console.log("Smells per file");
-    // console.log(JSON.stringify(smellBox.getSmellsPerFile()));
+    //console.log("Results from the smellbox");
+    //console.log("Total smell count");
+    //console.log(smellBox.getTotalSmells());
+    //console.log("# files infected with particular smell");
+    //console.log(smellBox.getSmellyFiles());
+    let smellBoxResult: string = JSON.stringify(smellBox);
+    let now = Date.now().toString();
+    fs.writeFileSync("./run_results/" + now + "_run.json", smellBoxResult);
+    fs.writeFileSync("./run_results/" + now + "_failed_builds.txt", filesNotAbleToBuild.toString());
+
+    //// console.log("Smells per file");
+    //// console.log(JSON.stringify(smellBox.getSmellsPerFile()));
 
     // packageManagers.forEach(x => {
     //     let cmd = x.command;
-    //     console.log("looking for command: " + cmd);
+    ////     console.log("looking for command: " + cmd);
     //     let nodes = ast.find({type:BashCommand, value: cmd});
-    //     console.log(nodes);
+    ////     console.log(nodes);
     //     if(nodes.length != 0){
-    //         console.log("command " + x.command + " found");
+    ////         console.log("command " + x.command + " found");
     //     }else{
-    //         console.log("command " + x.command + " not found");
+    ////         console.log("command " + x.command + " not found");
     //     }
     // });
     //const folder = './../../data/dockerfiles/';
 
 
     //const ast = await ding.dockerfileParser.parseDocker("data/aptget.Dockerfile");
-    //console.log(ast);
-    //console.log(ast.find({type: BashCommand, value: "apt-get"}));    
+    ////console.log(ast);
+    ////console.log(ast.find({type: BashCommand, value: "apt-get"}));    
 }
 
 main()

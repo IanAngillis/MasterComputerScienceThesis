@@ -4,7 +4,7 @@
 export class SmellBox{
     private smellyFiles: {rule: string, times: number}[];
     private totalSmellsPresent: {rule: string, times: number}[];
-    private smellsPerFile: {filename: string, smells: {rule:string, times: number}[]}[];
+    private smellsPerFile: {filename: string, time?: number, smells: {rule:string, times: number}[]}[];
     private current: string;
     private currentIndex: number;
 
@@ -28,6 +28,10 @@ export class SmellBox{
 
     getSmellsPerFile(): {filename: string, smells: {rule:string, times: number}[]}[]{
         return this.smellsPerFile;
+    }
+
+    setTime(time: number){
+        this.smellsPerFile[this.currentIndex].time = time;
     }
 
     setCurrent(filename: string){

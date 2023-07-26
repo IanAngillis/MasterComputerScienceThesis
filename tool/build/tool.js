@@ -178,11 +178,12 @@ function addAbsoluteSmell(lst, rule) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, log, log2, mapped_tool_smells, smells, absoluteSmells, smellBox, packageManagers, folder, testFolder, binnacle, crashed, stackoverflow, pythonfolder, currentFolder, analyzer, fixer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1;
+        var sum, filesNotAbleToBuild, log, log2, mapped_tool_smells, smells, absoluteSmells, smellBox, packageManagers, folder, testFolder, binnacle, crashed, stackoverflow, pythonfolder, currentFolder, analyzer, fixer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1, smellBoxResult, now;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
                     sum = 0;
+                    filesNotAbleToBuild = 0;
                     log = fs.createWriteStream("./logs/" + createLogName(), { flags: 'a' });
                     log2 = fs.createWriteStream("./logs/" + "error_files", { flags: 'a' });
                     mapped_tool_smells = fs.createWriteStream("../eval/mapped_tool_smells.txt", { flags: 'a' });
@@ -207,7 +208,7 @@ function main() {
                     crashed = "./../data/chrashedfiles/";
                     stackoverflow = "./../data/stackoverflow/";
                     pythonfolder = "./../data/python/";
-                    currentFolder = folder;
+                    currentFolder = testFolder;
                     analyzer = new analyzer_1.Analyzer();
                     fixer = new fixer_js_1.Fixer();
                     managers_json_1.default.forEach(function (pm) {
@@ -220,7 +221,7 @@ function main() {
                 case 2:
                     _e.trys.push([2, 8, 9, 14]);
                     _loop_1 = function () {
-                        var dirent, logger_1, fileReport_1, ast, nodes, set_1, fixInfo_1, bashManagerCommands_1, text, e_3;
+                        var dirent, start, logger_1, fileReport_1, ast, nodes, set_1, fixInfo_1, bashManagerCommands_1, text, end, difference, e_3;
                         return __generator(this, function (_f) {
                             switch (_f.label) {
                                 case 0:
@@ -230,6 +231,7 @@ function main() {
                                 case 1:
                                     _f.trys.push([1, , 6, 7]);
                                     dirent = _c;
+                                    start = Date.now();
                                     _f.label = 2;
                                 case 2:
                                     _f.trys.push([2, 4, , 5]);
@@ -457,13 +459,16 @@ function main() {
                                             smells[idx].times += 1;
                                         }
                                     });
+                                    end = Date.now();
+                                    difference = end - start;
+                                    smellBox.setTime(difference);
+                                    console.log(Date.now());
+                                    console.log(smellBox);
                                     return [3, 5];
                                 case 4:
                                     e_3 = _f.sent();
-                                    console.log(e_3);
                                     mapped_tool_smells.write(dirent.name + "\n");
-                                    log2.write(dirent.name + "\n");
-                                    console.log("ERROR");
+                                    filesNotAbleToBuild += 1;
                                     return [3, 5];
                                 case 5: return [3, 7];
                                 case 6:
@@ -514,6 +519,9 @@ function main() {
                     console.log(smellBox.getTotalSmells());
                     console.log("# files infected with particular smell");
                     console.log(smellBox.getSmellyFiles());
+                    smellBoxResult = JSON.stringify(smellBox);
+                    now = Date.now().toString();
+                    fs.writeFileSync("./run_results/" + now + "_run.json", smellBoxResult);
                     return [2];
             }
         });

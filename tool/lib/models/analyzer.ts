@@ -515,9 +515,9 @@ export class Analyzer {
             });
 
             if(matchFound){
-                //console.log("match found - adjusting ...");
+                ////console.log("match found - adjusting ...");
             }else{
-                //console.log("We are checking for piping");
+                ////console.log("We are checking for piping");
                 // Check for piping - current only checks back 1 statement.
                 if(node.parent.parent != undefined && node.parent.parent.type == "BASH-CONDITION-BINARY"){
                     if(node.parent.parent.children[1].type == 'BASH-CONDITION-BINARY-OP'){
@@ -533,7 +533,7 @@ export class Analyzer {
                             let lastFile : File = files[files.length - 1];
 
                             // if(lastFile == undefined){
-                            //     console.log("piped file not found");
+                            ////     console.log("piped file not found");
                             //     return;
                             // }
 
@@ -567,15 +567,15 @@ export class Analyzer {
                         file.deletedStatement = node;
                         matchFound = true;
                     } else if(resolvedFileName == file.file && file.absolutePath != containerpath + "/" + resolvedFileName) {
-                        console.log("trying to delete a file that does not exist at this location.");
+                        //console.log("trying to delete a file that does not exist at this location.");
                     }
                 });
             });
 
             if(matchFound){
-                //console.log("Match found -- adjusting delete");
+                ////console.log("Match found -- adjusting delete");
             } else {
-                //console.log("No match found - check for piping?");
+                ////console.log("No match found - check for piping?");
             }
         }
 
@@ -721,7 +721,7 @@ export class Analyzer {
                     if(currentContainerPath == fileContainerPath){
                         switch(file.introducedBy){
                             case "COPY":
-                                console.log("single file same path detected");
+                                //console.log("single file same path detected");
                                 fixInfo.list.push({
                                     isManagerRelated: false,
                                     code: "TD0001",
@@ -736,27 +736,27 @@ export class Analyzer {
                                 break;
                             case "ADD":
                                 if(file.isCompressed && file.urlOrigin){
-                                    console.log("temporary file error, might want to use wget for this. cannot handle this")
+                                    //console.log("temporary file error, might want to use wget for this. cannot handle this")
                                 } else if(file.urlOrigin) {
-                                    console.log("cannot help either");
+                                    //console.log("cannot help either");
                                 } else {
-                                    console.log("Can help");
+                                    //console.log("Can help");
                                 }
                                 break;
                             case "BUILT-IN":
-                                console.log("Not handling built-in at the moment");
+                                //console.log("Not handling built-in at the moment");
                                 break;
                         }
                     } else {
                         // Directory was copied and WORKDIR was probably set to location or cd'd to it. This means we need to fix the WORKDIR as well.
-                        console.log("this is not the same, figure out the difference for the fix");
+                        //console.log("this is not the same, figure out the difference for the fix");
                     }
 
-                    console.log(currentContainerPath);
-                    console.log(fileContainerPath);
+                    //console.log(currentContainerPath);
+                    //console.log(fileContainerPath);
 
                 } else {
-                    console.log("multiple files not supported at the moment");
+                    //console.log("multiple files not supported at the moment");
                     // files.forEach(file => {
                     //     if(file.file == "package.json" && file.containerPath == containerpath){
                     //         fileContainsPackageJson = true;
@@ -781,24 +781,24 @@ export class Analyzer {
     
                     //         // paths can end with / or can end without it.
     
-                    //         console.log("comparing containerpaths");
-                    //         console.log("file containerpath: " + fileContainerPath);
-                    //         console.log("containerpath:" + currentContainerPath);
+                    ////         console.log("comparing containerpaths");
+                    ////         console.log("file containerpath: " + fileContainerPath);
+                    ////         console.log("containerpath:" + currentContainerPath);
                             
-                    //         console.log(file);
+                    ////         console.log(file);
                             
                     //     }
                     // });
                 }
 
-                // console.log("**RESULT**\n");
-                // console.log(containerpath);
-                // console.log(relevantFiles)
-                // console.log("package.json: " + fileContainsPackageJson);
-                // console.log("package-lock.json: " + fileContainsPackageLockJson);
-                // console.log("\n");
+                //// console.log("**RESULT**\n");
+                //// console.log(containerpath);
+                //// console.log(relevantFiles)
+                //// console.log("package.json: " + fileContainsPackageJson);
+                //// console.log("package-lock.json: " + fileContainsPackageLockJson);
+                //// console.log("\n");
             } else {
-                console.log("this is a statement installin dependencies");
+                //console.log("this is a statement installin dependencies");
             }
         }
 
@@ -813,29 +813,29 @@ export class Analyzer {
                 let splitCommand: string[] = command.toString().replace(/\r?\n/g, " ").replace(/\\/g, " ").split(" ").filter(w => w != "").filter(w => w != "sudo");
                 switch(splitCommand[0]){
                     case "wget":
-                        //console.log("RUN-WGET");
+                        ////console.log("RUN-WGET");
                         resolveWget(splitCommand, command);
                         break;
                     case "/usr/bin/wget":
                         resolveWget(splitCommand, command);
                         break;
                     case "tar":
-                        //console.log("RUN-TAR");
+                        ////console.log("RUN-TAR");
                         resolveTar(splitCommand, command);
                     case "curl":
-                        //console.log("RUN-CURL");
+                        ////console.log("RUN-CURL");
                         resolveCurl(splitCommand, command);
                         break;
                     case "rm":
-                        //console.log("RUN-RM");
+                        ////console.log("RUN-RM");
                         resolveRm(splitCommand, command);
                         break;
                     case "cd":
-                        //console.log("RUN-CD");
+                        ////console.log("RUN-CD");
                         resolveCd(splitCommand, command);
                         break;
                     case "export":
-                        //console.log("RUN-EXPORT");
+                        ////console.log("RUN-EXPORT");
                         addExportToExports(splitCommand, command);
                         break;
                     case "npm":
@@ -861,26 +861,26 @@ export class Analyzer {
         function handleInstruction(instruction: ding.nodeType.DockerOpsNodeType){
             switch(instruction.type){
                 case 'DOCKER-ARG': 
-                    //console.log("ARG");
+                    ////console.log("ARG");
                     addArgToArgs(instruction as ding.nodeType.DockerArg);
                     break;
                 case 'DOCKER-ENV':
-                    //console.log(instruction.toString());
+                    ////console.log(instruction.toString());
                     addEvnToEnvs(instruction as ding.nodeType.DockerEnv);
                     break;
                 case 'DOCKER-ADD':
                     resolveAddStatement(instruction as ding.nodeType.DockerAdd);
                     break;
                 case 'DOCKER-COPY':
-                    //console.log("COPY");
+                    ////console.log("COPY");
                     resolveCopyStatement(instruction as ding.nodeType.DockerCopy);
                     break;
                 case'DOCKER-RUN':
-                    //console.log("RUN");
+                    ////console.log("RUN");
                     resolveRunStatement(instruction as ding.nodeType.DockerRun);
                     break;
                 case 'DOCKER-WORKDIR':
-                    //console.log("WORKDIR");
+                    ////console.log("WORKDIR");
                     resolveWorkDir(instruction as ding.nodeType.DockerWorkdir);
                 default:
                     break;
@@ -1005,22 +1005,22 @@ export class Analyzer {
          * Procedure that dumps environmental information to the console -- TODO deal with . being copied over
          */
         function infoDump(): void{
-            console.log("******");
-            console.log("This info dump contains all the information about the environment that is being kept on the Dockerfile");
-            console.log("Args: ");
-            console.log(args);
-            console.log("Envs: ");
-            console.log(envs);
-            console.log("Exports: ");
-            console.log(exports);
-            console.log("files: ");
-            console.log(files);
-            console.log("*****");
+            //console.log("******");
+            //console.log("This info dump contains all the information about the environment that is being kept on the Dockerfile");
+            //console.log("Args: ");
+            //console.log(args);
+            //console.log("Envs: ");
+            //console.log(envs);
+            //console.log("Exports: ");
+            //console.log(exports);
+            //console.log("files: ");
+            //console.log(files);
+            //console.log("*****");
         }
 
         // Needs to be enabled to find smells
         analyseResult();
-        //console.log(fileReport);
+        ////console.log(fileReport);
         //infoDump();
     }
 
@@ -1141,10 +1141,10 @@ export class Analyzer {
                     .filter(w => w != "RUN");
 
                 if(stmt.length == 2 && stmt[0] == "npm" && stmt[1] == "install"){
-                    console.log("WE ARE RESOLVING NPM STUFF");
-                    console.log("PRINTING STATE:");
-                    console.log(state);
-                    console.log("it appears we need the file from the previous phase.")
+                    //console.log("WE ARE RESOLVING NPM STUFF");
+                    //console.log("PRINTING STATE:");
+                    //console.log(state);
+                    //console.log("it appears we need the file from the previous phase.")
                 }
             })
 
@@ -1161,10 +1161,10 @@ export class Analyzer {
                 .filter(w => w != "RUN");
             
             if(runInstruction.includes("npm")){
-                console.log(runInstruction);
+                //console.log(runInstruction);
             }
             if(runInstruction.includes("npm") && runInstruction.includes("install") && state.hasCopiedEntireContext){
-                //console.log(runInstruction);
+                ////console.log(runInstruction);
 
                 relevantInstructions.push(instruction);
                 state.installCommand = instruction;
