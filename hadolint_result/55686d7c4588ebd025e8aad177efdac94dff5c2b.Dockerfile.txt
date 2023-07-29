@@ -1,0 +1,3 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\55686d7c4588ebd025e8aad177efdac94dff5c2b.Dockerfile:3 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\55686d7c4588ebd025e8aad177efdac94dff5c2b.Dockerfile:4 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\55686d7c4588ebd025e8aad177efdac94dff5c2b.Dockerfile:6 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

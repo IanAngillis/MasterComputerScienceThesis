@@ -1,0 +1,2 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\54aae67509a8ceed783db0e4b5c78ac81222453b.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\54aae67509a8ceed783db0e4b5c78ac81222453b.Dockerfile:7 DL3041 [1m[93mwarning[0m: Specify version with `dnf install -y <package>-<version>`.

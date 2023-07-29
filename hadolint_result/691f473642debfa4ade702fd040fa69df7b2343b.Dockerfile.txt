@@ -1,0 +1,2 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\691f473642debfa4ade702fd040fa69df7b2343b.Dockerfile:3 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\691f473642debfa4ade702fd040fa69df7b2343b.Dockerfile:5 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`

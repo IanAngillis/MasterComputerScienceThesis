@@ -1,0 +1,2 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\25a42261fec4c0e443aaf15666122e4e89d4b4f7.Dockerfile:1 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\25a42261fec4c0e443aaf15666122e4e89d4b4f7.Dockerfile:4 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`

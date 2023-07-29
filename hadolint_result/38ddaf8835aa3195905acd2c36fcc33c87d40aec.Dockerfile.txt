@@ -1,0 +1,1 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\38ddaf8835aa3195905acd2c36fcc33c87d40aec.Dockerfile:5 DL3059 [92minfo[0m: Multiple consecutive `RUN` instructions. Consider consolidation.

@@ -1,0 +1,1 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\ca2902cf99615dbf0be15aa7b86f96750f1fd3af.Dockerfile:4 SC1001 [92minfo[0m: This \- will be a regular '-' in this context.

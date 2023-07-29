@@ -1,0 +1,2 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\8823264921b84f80355b685b78a2e4f7a61bce3d.Dockerfile:3 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\8823264921b84f80355b685b78a2e4f7a61bce3d.Dockerfile:4 DL3025 [1m[93mwarning[0m: Use arguments JSON notation for CMD and ENTRYPOINT arguments
