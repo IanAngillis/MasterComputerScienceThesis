@@ -1,0 +1,22 @@
+Merged Dataset:
+
+npm files: 25609
+pip: 10516
+pip3: 3159
+Python total: 10516 + 3159 = 13675
+
+pip churn: 4,313
+npm churn: 4,270
+
+occurences npm churn: 4270 / 25609 = 0,17
+occurences pip churn: 4313 / 13675 = 0,32
+
+Stackoverflow dataset:
+
+npm: 1673
+pip: 876
+pip3: 210
+python total: 876 + 210 = 1086
+
+occurences pip churn: 362 / 1086 = 0,33333
+occurences npm curn: 300 / 1673 = 0,18
