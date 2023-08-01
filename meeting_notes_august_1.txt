@@ -1,0 +1,10 @@
+Meeting notes.
+
+For the churn files, both npm and pip - filter files that have npm and pip respectively and see the percentage of churn
+Write an email to Camilo to understand how the StackOverflow dataset was formed.
+Make sure that merging the two datasets can harm the internal validity of the study
+Add what we are going to do both in background
+Add the contributions in the introduction
+Rewrite the second problem statement in the introduction
+Don't do evolutionary thing
+In the background, maybe have a n-dimensional table where you tick off things your tool does that other tools don't (if I have time)
