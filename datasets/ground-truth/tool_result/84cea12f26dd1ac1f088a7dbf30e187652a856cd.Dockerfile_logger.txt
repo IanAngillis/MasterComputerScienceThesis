@@ -1,0 +1,121 @@
+Report for: 84cea12f26dd1ac1f088a7dbf30e187652a856cd.Dockerfile
+Checking rule DL3059 -- Multiple consecutive RUN instructions at position
+Checking rule DL3008 -- Pin versions using apt-get install:
+	VOILATION DETECTED: apt-utils at position:28:4 to 28:113 for apt-get command
+	VOILATION DETECTED: 		curl at position:29:4 to 32:7 for apt-get command
+	VOILATION DETECTED: 		dirmngr at position:29:4 to 32:7 for apt-get command
+	VOILATION DETECTED: 		gnupg at position:29:4 to 32:7 for apt-get command
+	VOILATION DETECTED: 		ack-grep at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		aspell at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		autoconf at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		automake at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		bash-completion at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		binutils at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		blackfire-agent at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		build-essential at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		bzip2 at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		coreutils at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		dnsutils at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		dos2unix at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		file at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		gawk at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		gcc at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		git at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		git-flow at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		git-svn at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		graphviz at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		hostname at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		htop at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		imagemagick at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		iputils-ping at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		jq at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		less at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		libc-dev at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		libffi-dev at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		libssl-dev at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		libyaml-dev at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		make at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		mongodb-org-shell at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		mongodb-org-tools at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		moreutils at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		mysql-client at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		nano at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		net-tools at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		netcat at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		openssh-client at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		patch at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		patchelf at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		postgresql-client at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		redis-tools at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		rsync at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		rubygems at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		ruby-dev at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		shellcheck at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		silversearcher-ag at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		subversion at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		sudo at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		tig at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		tree at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		unzip at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		vim at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		w3m at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		wget at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		whois at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		xz-utils at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		yarn at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		zip at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		zlib1g-dev at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: 		zsh at position:46:4 to 107:5 for apt-get command
+	VOILATION DETECTED: libpython-dev at position:122:3 to 123:15 for apt-get command
+	VOILATION DETECTED: libfontenc1 at position:214:3 to 215:78 for apt-get command
+	VOILATION DETECTED: libxfont1 at position:214:3 to 215:78 for apt-get command
+	VOILATION DETECTED: xfonts-75dpi at position:214:3 to 215:78 for apt-get command
+	VOILATION DETECTED: xfonts-base at position:214:3 to 215:78 for apt-get command
+	VOILATION DETECTED: xfonts-encodings at position:214:3 to 215:78 for apt-get command
+	VOILATION DETECTED: xfonts-utils at position:214:3 to 215:78 for apt-get command
+Checking rule DL3013 -- Pin versions using pip:
+	VOILATION DETECTED: ansible at position:343:4 to 343:56 for pip command
+	VOILATION DETECTED: yamllint at position:345:4 to 345:57 for pip command
+	VOILATION DETECTED: yq at position:347:4 to 347:51 for pip command
+Checking rule DL3016 -- Pin versions in npm:
+Checking rule DL3018 -- Pin versions using apk:
+Checking rule DL3033 -- Pin versions using yum install:
+Checking rule DL3037 -- Pin versions using zypper install:
+Checking rule DL3041 -- Pin versions using dnf install:
+Checking rule DL9001 -- Pin versions using apt install:
+Checking rule DL9002 -- Pin versions using pip3 install:
+Checking rule DL3014 -- Use the -y when using apt-get install:
+Checking rule DL3030 -- Use the -y when using yum install:
+Checking rule DL3034 -- Use the -y when using zypper install:
+Checking rule DL3038 -- Use the -y when using dnf install:
+Checking rule DL9003 -- Use the -y when using apt install:
+Checking rule DL9004 -- Use the --no-input when using pip3 install:
+Checking rule DL9005 -- Use the --no-input when using pip install:
+	VOILATION DETECTED: --no-input flag missing at position:343:4 to 343:56 for pip command
+	VOILATION DETECTED: --no-input flag missing at position:345:4 to 345:57 for pip command
+	VOILATION DETECTED: --no-input flag missing at position:347:4 to 347:51 for pip command
+Checking rule DL9011 -- Clean cache for apt-get:
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 28:4 to 28:113
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 28:4 to 28:113
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 29:4 to 32:7
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 29:4 to 32:7
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 46:4 to 107:5
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 46:4 to 107:5
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 122:3 to 123:15
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 122:3 to 123:15
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 214:3 to 215:78
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 214:3 to 215:78
+Checking rule DL3019 -- Use the –no-cache switch:
+Checking rule DL3032 -- Use yum clean all to clean cache:
+Checking rule DL3036 -- Use zypper clean to clean cache:
+Checking rule DL3040 -- Use dnf clean all to clear cache:
+Checking rule DL3042 -- Use -no-cache-dir flag during pip install to avoid cache:
+Checking rule DL3060 -- Use yarn cache clean after yarn install to prevent cache:
+Checking rule DL9008 -- Use npm cache clean after npm install to prevent cache:
+Checking rule DL9009 -- Use --no-cache-dir flag during pip3 install to avoid cache:
+Checking rule DL9010 -- Use conda cache clean after conda install to prevent cache:
+Checking rule DL9012 -- Clean cache for apt:
+Checking rule DL9006 -- Avoid additional packages by specifying --no-install-recommends using apt:
+Checking rule DL9007 -- Avoid additional packages by specifying --no-recommends using zypper:
+Checking rule DL3015 -- Avoid additional packages by specifying --no-install-recommends using apt-get:
+RULE DETECTIONS: DL3008 DL3013 DL9005 DL9011

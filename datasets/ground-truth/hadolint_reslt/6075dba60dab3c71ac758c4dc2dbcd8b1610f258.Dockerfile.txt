@@ -1,0 +1,2 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\6075dba60dab3c71ac758c4dc2dbcd8b1610f258.Dockerfile:46 DL3018 [1m[93mwarning[0m: Pin versions in apk add. Instead of `apk add <package>` use `apk add <package>=<version>`
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\6075dba60dab3c71ac758c4dc2dbcd8b1610f258.Dockerfile:66 DL3022 [1m[93mwarning[0m: `COPY --from` should reference a previously defined `FROM` alias

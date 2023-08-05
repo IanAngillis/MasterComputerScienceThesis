@@ -1,0 +1,1 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\692c391ce489b40e9352f4e269b53ddb5d81dd0e.Dockerfile:3 DL4000 [1m[91merror[0m: MAINTAINER is deprecated

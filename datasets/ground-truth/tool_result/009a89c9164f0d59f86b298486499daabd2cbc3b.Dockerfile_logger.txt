@@ -1,0 +1,82 @@
+Report for: 009a89c9164f0d59f86b298486499daabd2cbc3b.Dockerfile
+Checking rule DL3059 -- Multiple consecutive RUN instructions at position
+Checking rule DL3008 -- Pin versions using apt-get install:
+	VOILATION DETECTED: jessie-backports at position:12:28 to 13:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jre at position:12:28 to 13:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jre-headless at position:12:28 to 13:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jdk at position:12:28 to 13:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jdk-headless at position:12:28 to 13:3 for apt-get command
+	VOILATION DETECTED: ; at position:12:28 to 13:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jre at position:17:28 to 18:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jre-headless at position:17:28 to 18:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jdk at position:17:28 to 18:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jdk-headless at position:17:28 to 18:3 for apt-get command
+	VOILATION DETECTED: ; at position:17:28 to 18:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jre at position:19:25 to 20:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jre-headless at position:19:25 to 20:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jdk at position:19:25 to 20:3 for apt-get command
+	VOILATION DETECTED: openjdk-8-jdk-headless at position:19:25 to 20:3 for apt-get command
+	VOILATION DETECTED: ; at position:19:25 to 20:3 for apt-get command
+	VOILATION DETECTED: libfontconfig at position:27:5 to 27:39 for apt-get command
+	VOILATION DETECTED: libgtk3.0-cil-dev at position:43:5 to 43:97 for apt-get command
+	VOILATION DETECTED: libasound2 at position:43:5 to 43:97 for apt-get command
+	VOILATION DETECTED: libasound2 at position:43:5 to 43:97 for apt-get command
+	VOILATION DETECTED: libdbus-glib-1-2 at position:43:5 to 43:97 for apt-get command
+	VOILATION DETECTED: libdbus-1-3 at position:43:5 to 43:97 for apt-get command
+	VOILATION DETECTED: libgconf-2-4 at position:77:4 to 77:40 for apt-get command
+Checking rule DL3013 -- Pin versions using pip:
+Checking rule DL3016 -- Pin versions in npm:
+Checking rule DL3018 -- Pin versions using apk:
+Checking rule DL3033 -- Pin versions using yum install:
+Checking rule DL3037 -- Pin versions using zypper install:
+Checking rule DL3041 -- Pin versions using dnf install:
+Checking rule DL9001 -- Pin versions using apt install:
+Checking rule DL9002 -- Pin versions using pip3 install:
+Checking rule DL3014 -- Use the -y when using apt-get install:
+	VOILATION DETECTED: -y flag missing at position:27:5 to 27:39 for apt-get command
+	VOILATION DETECTED: -y flag missing at position:42:38 to 42:61 for apt-get command
+Checking rule DL3030 -- Use the -y when using yum install:
+Checking rule DL3034 -- Use the -y when using zypper install:
+Checking rule DL3038 -- Use the -y when using dnf install:
+Checking rule DL9003 -- Use the -y when using apt install:
+Checking rule DL9004 -- Use the --no-input when using pip3 install:
+Checking rule DL9005 -- Use the --no-input when using pip install:
+Checking rule DL9011 -- Clean cache for apt-get:
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 12:28 to 13:3
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 12:28 to 13:3
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 17:28 to 18:3
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 17:28 to 18:3
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 19:25 to 20:3
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 19:25 to 20:3
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 27:5 to 27:39
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 27:5 to 27:39
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 42:38 to 42:61
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 42:38 to 42:61
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 43:5 to 43:97
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 43:5 to 43:97
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 61:70 to 61:94
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 61:70 to 61:94
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 77:4 to 77:40
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 77:4 to 77:40
+Checking rule DL3019 -- Use the –no-cache switch:
+Checking rule DL3032 -- Use yum clean all to clean cache:
+Checking rule DL3036 -- Use zypper clean to clean cache:
+Checking rule DL3040 -- Use dnf clean all to clear cache:
+Checking rule DL3042 -- Use -no-cache-dir flag during pip install to avoid cache:
+Checking rule DL3060 -- Use yarn cache clean after yarn install to prevent cache:
+Checking rule DL9008 -- Use npm cache clean after npm install to prevent cache:
+Checking rule DL9009 -- Use --no-cache-dir flag during pip3 install to avoid cache:
+Checking rule DL9010 -- Use conda cache clean after conda install to prevent cache:
+Checking rule DL9012 -- Clean cache for apt:
+Checking rule DL9006 -- Avoid additional packages by specifying --no-install-recommends using apt:
+Checking rule DL9007 -- Avoid additional packages by specifying --no-recommends using zypper:
+Checking rule DL3015 -- Avoid additional packages by specifying --no-install-recommends using apt-get:
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 12:28 to 13:3
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 17:28 to 18:3
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 19:25 to 20:3
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 27:5 to 27:39
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 42:38 to 42:61
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 43:5 to 43:97
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 61:70 to 61:94
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 77:4 to 77:40
+RULE DETECTIONS: DL3008 DL3014 DL9011 DL3015

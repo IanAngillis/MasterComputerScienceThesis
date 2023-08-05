@@ -1,0 +1,79 @@
+Report for: d6b53cbf7d097cf9f458ce7169603891eb6ef25f.Dockerfile
+Checking rule DL3059 -- Multiple consecutive RUN instructions at position
+Checking rule DL3008 -- Pin versions using apt-get install:
+Checking rule DL3013 -- Pin versions using pip:
+Checking rule DL3016 -- Pin versions in npm:
+Checking rule DL3018 -- Pin versions using apk:
+	VOILATION DETECTED: ca-certificates at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: curl at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: openssh-client at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: libmemcached-libs at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: libevent at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: libssl1.0 at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: musl at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: yaml at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7 at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-apcu at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-bcmath at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-ctype at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-curl at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-dom at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-fileinfo at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-iconv at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-intl at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-json at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-openssl at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-opcache at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-mbstring at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-memcached at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-mcrypt at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-mysqlnd at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-mysqli at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-pcntl at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-pgsql at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-pdo_mysql at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-pdo_pgsql at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-pdo_sqlite at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-phar at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-posix at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-session at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-simplexml at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-soap at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-sockets at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-tokenizer at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-xml at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-xmlreader at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-xmlwriter at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-zip at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: php7-zlib at position:13:7 to 55:13 for apk command
+	VOILATION DETECTED: http://dl-cdn.alpinelinux.org/alpine/edge/community/ at position:56:7 to 57:16 for apk command
+	VOILATION DETECTED: gnu-libiconv at position:56:7 to 57:16 for apk command
+	VOILATION DETECTED: "http://dl-cdn.alpinelinux.org/alpine/edge/testing" at position:66:7 to 68:16 for apk command
+	VOILATION DETECTED: $PHPIZE_DEPS at position:66:7 to 68:16 for apk command
+Checking rule DL3033 -- Pin versions using yum install:
+Checking rule DL3037 -- Pin versions using zypper install:
+Checking rule DL3041 -- Pin versions using dnf install:
+Checking rule DL9001 -- Pin versions using apt install:
+Checking rule DL9002 -- Pin versions using pip3 install:
+Checking rule DL3014 -- Use the -y when using apt-get install:
+Checking rule DL3030 -- Use the -y when using yum install:
+Checking rule DL3034 -- Use the -y when using zypper install:
+Checking rule DL3038 -- Use the -y when using dnf install:
+Checking rule DL9003 -- Use the -y when using apt install:
+Checking rule DL9004 -- Use the --no-input when using pip3 install:
+Checking rule DL9005 -- Use the --no-input when using pip install:
+Checking rule DL9011 -- Clean cache for apt-get:
+Checking rule DL3019 -- Use the –no-cache switch:
+Checking rule DL3032 -- Use yum clean all to clean cache:
+Checking rule DL3036 -- Use zypper clean to clean cache:
+Checking rule DL3040 -- Use dnf clean all to clear cache:
+Checking rule DL3042 -- Use -no-cache-dir flag during pip install to avoid cache:
+Checking rule DL3060 -- Use yarn cache clean after yarn install to prevent cache:
+Checking rule DL9008 -- Use npm cache clean after npm install to prevent cache:
+Checking rule DL9009 -- Use --no-cache-dir flag during pip3 install to avoid cache:
+Checking rule DL9010 -- Use conda cache clean after conda install to prevent cache:
+Checking rule DL9012 -- Clean cache for apt:
+Checking rule DL9006 -- Avoid additional packages by specifying --no-install-recommends using apt:
+Checking rule DL9007 -- Avoid additional packages by specifying --no-recommends using zypper:
+Checking rule DL3015 -- Avoid additional packages by specifying --no-install-recommends using apt-get:
+RULE DETECTIONS: DL3018

@@ -1,0 +1,1 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\5868fb80ed3f11ba854726339772a5b524ccf838.Dockerfile:1:49 unexpected '@' expecting '\', a new line followed by the next instruction, or the image digest 

@@ -1,0 +1,33 @@
+Report for: 081ba3d8ddaf601f520bc640d1b3532a71a10772.Dockerfile
+Checking rule DL3059 -- Multiple consecutive RUN instructions at position
+Checking rule DL3008 -- Pin versions using apt-get install:
+Checking rule DL3013 -- Pin versions using pip:
+Checking rule DL3016 -- Pin versions in npm:
+Checking rule DL3018 -- Pin versions using apk:
+Checking rule DL3033 -- Pin versions using yum install:
+Checking rule DL3037 -- Pin versions using zypper install:
+Checking rule DL3041 -- Pin versions using dnf install:
+Checking rule DL9001 -- Pin versions using apt install:
+Checking rule DL9002 -- Pin versions using pip3 install:
+Checking rule DL3014 -- Use the -y when using apt-get install:
+Checking rule DL3030 -- Use the -y when using yum install:
+Checking rule DL3034 -- Use the -y when using zypper install:
+Checking rule DL3038 -- Use the -y when using dnf install:
+Checking rule DL9003 -- Use the -y when using apt install:
+Checking rule DL9004 -- Use the --no-input when using pip3 install:
+Checking rule DL9005 -- Use the --no-input when using pip install:
+Checking rule DL9011 -- Clean cache for apt-get:
+Checking rule DL3019 -- Use the –no-cache switch:
+Checking rule DL3032 -- Use yum clean all to clean cache:
+Checking rule DL3036 -- Use zypper clean to clean cache:
+Checking rule DL3040 -- Use dnf clean all to clear cache:
+Checking rule DL3042 -- Use -no-cache-dir flag during pip install to avoid cache:
+Checking rule DL3060 -- Use yarn cache clean after yarn install to prevent cache:
+Checking rule DL9008 -- Use npm cache clean after npm install to prevent cache:
+Checking rule DL9009 -- Use --no-cache-dir flag during pip3 install to avoid cache:
+Checking rule DL9010 -- Use conda cache clean after conda install to prevent cache:
+Checking rule DL9012 -- Clean cache for apt:
+Checking rule DL9006 -- Avoid additional packages by specifying --no-install-recommends using apt:
+Checking rule DL9007 -- Avoid additional packages by specifying --no-recommends using zypper:
+Checking rule DL3015 -- Avoid additional packages by specifying --no-install-recommends using apt-get:
+RULE DETECTIONS: 

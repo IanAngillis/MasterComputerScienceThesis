@@ -1,0 +1,1 @@
+C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\bb55003f4a13129ea056984a61111baf76bd9393.Dockerfile:2 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly

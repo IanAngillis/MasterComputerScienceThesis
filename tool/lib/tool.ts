@@ -160,7 +160,7 @@ async function main(){
         let nodes: ding.nodeType.DockerOpsNodeType[] = ast.find({type:ding.nodeType.BashCommand});
         let set: Set<string> = new Set<string>();
         let fixInfo: {root: ding.nodeType.DockerFile, list: any[]} = {root: ast, list: []};
-        
+
         analyzer.temporaryFileAnalysis(ast, logger, set, fixInfo, smellBox, absoluteSmells);
         analyzer.consecutiveRunInstructionAnalysis(ast, logger, set, fixInfo, smellBox, absoluteSmells);
         // We need the files in order to check

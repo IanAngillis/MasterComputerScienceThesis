@@ -1,0 +1,74 @@
+Report for: 2aa7f5b5c945ae0bc7e79d9dfa17d0316bf331f3.Dockerfile
+VIOLATION DETECTED of rule DL9018: BUILT-IN introduced compressed file which was decompressed but not deleted go1.6.4.linux-amd64.tar.gz
+Checking rule DL3059 -- Multiple consecutive RUN instructions at position
+Checking rule DL3008 -- Pin versions using apt-get install:
+	VOILATION DETECTED: software-properties-common at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: vim at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: curl at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: wget at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: gawk at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: sed at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: findutils at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: bc at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: less at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: htop at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: man at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: unzip at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: git at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: lsb-release at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: build-essential at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: make at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: python-all at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: libssl-dev at position:18:4 to 36:12 for apt-get command
+	VOILATION DETECTED: openssh-server at position:38:4 to 39:16 for apt-get command
+	VOILATION DETECTED: ca-certificates at position:52:4 to 60:10 for apt-get command
+	VOILATION DETECTED: g++ at position:52:4 to 60:10 for apt-get command
+	VOILATION DETECTED: gcc at position:52:4 to 60:10 for apt-get command
+	VOILATION DETECTED: libc6-dev at position:52:4 to 60:10 for apt-get command
+	VOILATION DETECTED: curl at position:52:4 to 60:10 for apt-get command
+	VOILATION DETECTED: mercurial at position:52:4 to 60:10 for apt-get command
+	VOILATION DETECTED: bzr at position:52:4 to 60:10 for apt-get command
+	VOILATION DETECTED: git-core at position:52:4 to 60:10 for apt-get command
+Checking rule DL3013 -- Pin versions using pip:
+Checking rule DL3016 -- Pin versions in npm:
+	VOILATION DETECTED: source-map-support at position:78:2 to 81:22 for npm command
+Checking rule DL3018 -- Pin versions using apk:
+Checking rule DL3033 -- Pin versions using yum install:
+Checking rule DL3037 -- Pin versions using zypper install:
+Checking rule DL3041 -- Pin versions using dnf install:
+Checking rule DL9001 -- Pin versions using apt install:
+Checking rule DL9002 -- Pin versions using pip3 install:
+Checking rule DL3014 -- Use the -y when using apt-get install:
+Checking rule DL3030 -- Use the -y when using yum install:
+Checking rule DL3034 -- Use the -y when using zypper install:
+Checking rule DL3038 -- Use the -y when using dnf install:
+Checking rule DL9003 -- Use the -y when using apt install:
+Checking rule DL9004 -- Use the --no-input when using pip3 install:
+Checking rule DL9005 -- Use the --no-input when using pip install:
+Checking rule DL9011 -- Clean cache for apt-get:
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 18:4 to 36:12
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 18:4 to 36:12
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 38:4 to 39:16
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 38:4 to 39:16
+	VOILATION DETECTED: No cache clean command detected for apt-get command at 52:4 to 60:10
+	VOILATION DETECTED: No deleting of cache folder for apt-get command at 52:4 to 60:10
+Checking rule DL3019 -- Use the –no-cache switch:
+Checking rule DL3032 -- Use yum clean all to clean cache:
+Checking rule DL3036 -- Use zypper clean to clean cache:
+Checking rule DL3040 -- Use dnf clean all to clear cache:
+Checking rule DL3042 -- Use -no-cache-dir flag during pip install to avoid cache:
+Checking rule DL3060 -- Use yarn cache clean after yarn install to prevent cache:
+Checking rule DL9008 -- Use npm cache clean after npm install to prevent cache:
+	VOILATION DETECTED: No cache clean command detected for npm command at 78:2 to 81:22
+	VOILATION DETECTED: No cache clean command detected for npm command at 95:2 to 139:36
+	VOILATION DETECTED: No cache clean command detected for npm command at 143:2 to 147:20
+Checking rule DL9009 -- Use --no-cache-dir flag during pip3 install to avoid cache:
+Checking rule DL9010 -- Use conda cache clean after conda install to prevent cache:
+Checking rule DL9012 -- Clean cache for apt:
+Checking rule DL9006 -- Avoid additional packages by specifying --no-install-recommends using apt:
+Checking rule DL9007 -- Avoid additional packages by specifying --no-recommends using zypper:
+Checking rule DL3015 -- Avoid additional packages by specifying --no-install-recommends using apt-get:
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 18:4 to 36:12
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 38:4 to 39:16
+	VOILATION DETECTED: No --no-install-recommends flag detected for apt-get command at 52:4 to 60:10
+RULE DETECTIONS: DL9018 DL3008 DL3016 DL9011 DL9008 DL3015
