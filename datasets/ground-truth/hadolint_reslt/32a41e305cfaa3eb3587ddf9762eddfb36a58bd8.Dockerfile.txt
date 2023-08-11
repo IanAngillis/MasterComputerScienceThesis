@@ -1,1 +1,0 @@
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\32a41e305cfaa3eb3587ddf9762eddfb36a58bd8.Dockerfile:3 DL3003 [1m[93mwarning[0m: Use WORKDIR to switch to a directory

@@ -1,1 +1,0 @@
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\3d0969fa27c7b37e9b0a9a3e4f58ee47441c55d2.Dockerfile:2 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag

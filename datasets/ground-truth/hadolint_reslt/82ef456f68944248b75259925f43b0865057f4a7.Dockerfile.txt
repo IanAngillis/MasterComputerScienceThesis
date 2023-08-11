@@ -1,2 +1,0 @@
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\82ef456f68944248b75259925f43b0865057f4a7.Dockerfile:1 DL3007 [1m[93mwarning[0m: Using latest is prone to errors if the image will ever update. Pin the version explicitly to a release tag
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\82ef456f68944248b75259925f43b0865057f4a7.Dockerfile:6 DL3021 [1m[91merror[0m: COPY with more than 2 arguments requires the last argument to end with /

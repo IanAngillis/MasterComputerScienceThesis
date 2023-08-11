@@ -1,2 +1,0 @@
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\a76690ce4c2de2a59f4a5699862301f01675d06f.Dockerfile:1 DL3006 [1m[93mwarning[0m: Always tag the version of an image explicitly
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\a76690ce4c2de2a59f4a5699862301f01675d06f.Dockerfile:2 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders

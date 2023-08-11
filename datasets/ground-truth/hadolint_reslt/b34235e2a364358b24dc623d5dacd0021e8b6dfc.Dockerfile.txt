@@ -1,2 +1,0 @@
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\b34235e2a364358b24dc623d5dacd0021e8b6dfc.Dockerfile:19 DL3028 [1m[93mwarning[0m: Pin versions in gem install. Instead of `gem install <gem>` use `gem install <gem>:<version>`
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\b34235e2a364358b24dc623d5dacd0021e8b6dfc.Dockerfile:19 DL3041 [1m[93mwarning[0m: Specify version with `dnf install -y <package>-<version>`.

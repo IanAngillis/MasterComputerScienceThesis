@@ -1,1 +1,0 @@
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\5bbd17bd41420ff5552de135ea2a46b0764d81ae.Dockerfile:22 DL3002 [1m[93mwarning[0m: Last USER should not be root

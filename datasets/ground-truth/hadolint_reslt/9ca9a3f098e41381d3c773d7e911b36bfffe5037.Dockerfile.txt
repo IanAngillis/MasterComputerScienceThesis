@@ -1,3 +1,0 @@
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\9ca9a3f098e41381d3c773d7e911b36bfffe5037.Dockerfile:3 DL3008 [1m[93mwarning[0m: Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\9ca9a3f098e41381d3c773d7e911b36bfffe5037.Dockerfile:3 DL3009 [92minfo[0m: Delete the apt-get lists after installing something
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\9ca9a3f098e41381d3c773d7e911b36bfffe5037.Dockerfile:3 DL3015 [92minfo[0m: Avoid additional packages by specifying `--no-install-recommends`

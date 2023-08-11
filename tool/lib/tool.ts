@@ -351,35 +351,35 @@ async function main(){
                                     
                                 }
 
-                                // Specific for apt-get and apt
-                                if(!hasCleanCacheCommand && manager.afterInstall.length > 0){
-                                    // Adding information to the fixlist
-                                    if(manager.command == "apt-get"){
-                                        smellBox.addSmell("DL3009");
-                                        fixInfo.list.push({
-                                            isManagerRelated: false,
-                                            code: "DL3009",
-                                            rule: "DL3009",
-                                            manager: manager,
-                                            node: ic.source,
-                                        });
-                                    } else {
-                                        smellBox.addSmell(rule.code);
-                                        fixInfo.list.push({
-                                            isManagerRelated: false,
-                                            code: "DL9021",
-                                            rule: "DL9021",
-                                            manager: manager,
-                                            node: ic.source,
-                                        });
-                                    }
+                                // Specific for apt-get and apt -- has some bugs
+                                // if(!hasCleanCacheCommand && manager.afterInstall.length > 0){
+                                //     // Adding information to the fixlist
+                                //     if(manager.command == "apt-get"){
+                                //         smellBox.addSmell("DL3009");
+                                //         fixInfo.list.push({
+                                //             isManagerRelated: false,
+                                //             code: "DL3009",
+                                //             rule: "DL3009",
+                                //             manager: manager,
+                                //             node: ic.source,
+                                //         });
+                                //     } else {
+                                //         smellBox.addSmell(rule.code);
+                                //         fixInfo.list.push({
+                                //             isManagerRelated: false,
+                                //             code: "DL9021",
+                                //             rule: "DL9021",
+                                //             manager: manager,
+                                //             node: ic.source,
+                                //         });
+                                //     }
                                 
                                     
-                                    logger.logViolation("VOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString());
-                                    fileReport += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
-                                    ////console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
-                                    //addAbsoluteSmell(absoluteSmells, rule);
-                                }
+                                //     logger.logViolation("VOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString());
+                                //     fileReport += "\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n";
+                                //     ////console.log("\tVOILATION DETECTED: No deleting of cache folder for " + manager.command + " command at " + ic.position.toString() + "\n");
+                                //     //addAbsoluteSmell(absoluteSmells, rule);
+                                // }
                             });
                         }
                     }

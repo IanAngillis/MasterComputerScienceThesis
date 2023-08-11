@@ -1,1 +1,0 @@
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\9ea1afae823865af3527656a9759a20ec21f0478.Dockerfile:3 DL3045 [1m[93mwarning[0m: `COPY` to a relative destination without `WORKDIR` set.

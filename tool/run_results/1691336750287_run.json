@@ -1,0 +1,1 @@
+{"smellyFiles":[{"rule":"DL9011","times":1}],"totalSmellsPresent":[{"rule":"DL9011","times":1}],"smellsPerFile":[{"filename":"copy.Dockerfile","smells":[{"rule":"DL9011","times":1}],"time":36}],"current":"copy.Dockerfile","currentIndex":0}

@@ -177,7 +177,7 @@ function addAbsoluteSmell(lst, rule) {
 function main() {
     var _a, e_2, _b, _c;
     return __awaiter(this, void 0, void 0, function () {
-        var sum, filesNotAbleToBuild, log, log2, mapped_tool_smells, smells, absoluteSmells, smellBox, packageManagers, folder, testFolder, binnacle, crashed, stackoverflow, pythonfolder, currentFolder, analyzer, fixer, dir, _loop_1, _d, dir_2, dir_2_1, state_1, e_2_1, smellBoxResult, now;
+        var sum, filesNotAbleToBuild, log, log2, mapped_tool_smells, smells, absoluteSmells, smellBox, packageManagers, folder, testFolder, binnacle, crashed, stackoverflow, pythonfolder, currentFolder, analyzer, fixer, dir, _loop_1, _d, dir_2, dir_2_1, e_2_1, smellBoxResult, now;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -254,8 +254,187 @@ function main() {
                                             }
                                         });
                                     });
-                                    console.log(bashManagerCommands_1);
-                                    return [2, { value: void 0 }];
+                                    text = dirent.name + " has got " + bashManagerCommands_1.length + " package commands";
+                                    log.write(text + "\n");
+                                    rules_1.allRules.forEach(function (rule) {
+                                        fileReport_1 += "Checking rule " + rule.code + " -- " + rule.message + ":\n";
+                                        logger_1.log("Checking rule " + rule.code + " -- " + rule.message + ":");
+                                        var manager = packageManagers.find(function (pm) { return pm.command == rule.detection.manager; });
+                                        switch (rule.detection.type) {
+                                            case "VERSION-PINNING":
+                                                if (manager == null) {
+                                                }
+                                                else {
+                                                    bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                        var requiresVersionPinning = false;
+                                                        c.arguments.forEach(function (arg) {
+                                                            if (arg.search(manager.packageVersionFormatSplitter) == -1 || arg.search(manager.packageVersionFormatSplitter) == 0) {
+                                                                if (arg.indexOf(".txt") == -1 && arg.indexOf(".rpm") == -1 && !arg.startsWith(".")) {
+                                                                    logger_1.logViolation("VOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command");
+                                                                    fileReport_1 += "\tVOILATION DETECTED: " + arg + " at position:" + c.position.toString() + " for " + manager.command + " command\n";
+                                                                    set_1.add(rule.code);
+                                                                    smellBox.addSmell(rule.code);
+                                                                    addAbsoluteSmell(absoluteSmells, rule);
+                                                                    requiresVersionPinning = true;
+                                                                }
+                                                            }
+                                                            else {
+                                                            }
+                                                        });
+                                                    });
+                                                }
+                                                break;
+                                            case "NO-INTERACTION":
+                                                if (manager != null) {
+                                                    var noninteractionflag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "NO-INTERACTION"; });
+                                                    if (noninteractionflag_1 != undefined) {
+                                                        bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                            var nonInteractionFlagIsPresent = false;
+                                                            c.flags.forEach(function (flag) {
+                                                                if (flag == noninteractionflag_1.value || flag == noninteractionflag_1.alternative || flag.includes(noninteractionflag_1.value) || flag.includes(noninteractionflag_1.value.replace("-", ""))) {
+                                                                    nonInteractionFlagIsPresent = true;
+                                                                }
+                                                            });
+                                                            if (!nonInteractionFlagIsPresent) {
+                                                                fixInfo_1.list.push({
+                                                                    isManagerRelated: true,
+                                                                    code: rule.code,
+                                                                    rule: rule,
+                                                                    manager: manager,
+                                                                    node: c.source,
+                                                                });
+                                                                set_1.add(rule.code);
+                                                                addAbsoluteSmell(absoluteSmells, rule);
+                                                                logger_1.logViolation("VOILATION DETECTED: " + noninteractionflag_1.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command");
+                                                                smellBox.addSmell(rule.code);
+                                                                fileReport_1 += "\tVOILATION DETECTED: " + noninteractionflag_1.value + " flag missing at position:" + c.position.toString() + " for " + manager.command + " command\n";
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                                break;
+                                            case "CLEAN-CACHE":
+                                                if (manager != null) {
+                                                    if (manager.cleanCacheIsInstallFlag) {
+                                                        var installFlag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "CLEAN-CACHE"; });
+                                                        if (installFlag_1 != undefined) {
+                                                            var found = false;
+                                                            bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                                if (c.flags.find(function (flag) { return flag == installFlag_1.value; }) != undefined) {
+                                                                }
+                                                                else {
+                                                                    fixInfo_1.list.push({
+                                                                        isManagerRelated: true,
+                                                                        code: rule.code,
+                                                                        rule: rule,
+                                                                        manager: manager,
+                                                                        node: c.source,
+                                                                    });
+                                                                    addAbsoluteSmell(absoluteSmells, rule);
+                                                                    set_1.add(rule.code);
+                                                                    logger_1.logViolation("VOILATION DETECTED: " + installFlag_1.value + " flag missing at position:" + c.position.toString() + " for command " + c.command);
+                                                                    smellBox.addSmell(rule.code);
+                                                                    fileReport_1 += "\tVOILATION DETECTED: " + installFlag_1.value + " flag missing at position:" + c.position.toString() + " for command " + c.command + "\n";
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                    else {
+                                                        bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (ic) {
+                                                            var hasCleanCacheCommand = false;
+                                                            var hasPostInstall = false;
+                                                            bashManagerCommands_1.filter(function (cc) { return ic.layer == cc.layer && ic.command == cc.command && cc.option == manager.cleanCacheOption[0]; })
+                                                                .forEach(function (x) {
+                                                                if (ic.source.isBefore(x.source)) {
+                                                                    hasCleanCacheCommand = true;
+                                                                }
+                                                            });
+                                                            if (manager.afterInstall.length != 0) {
+                                                                var statement = ic.source;
+                                                                while (statement.type != 'BASH-SCRIPT') {
+                                                                    statement = statement.parent;
+                                                                }
+                                                                var rm = statement.find({ type: ding.nodeType.BashLiteral, value: manager.afterInstall[0] });
+                                                                if (rm.length == 0) {
+                                                                    hasPostInstall = false;
+                                                                }
+                                                                else {
+                                                                    rm.forEach(function (r) {
+                                                                        if (r.parent.parent.parent.toString() == manager.afterInstall.join(" ") && ic.isBefore(r.parent.parent.parent)) {
+                                                                            hasPostInstall = true;
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+                                                            if (!hasCleanCacheCommand) {
+                                                                fixInfo_1.list.push({
+                                                                    isManagerRelated: true,
+                                                                    code: rule.code,
+                                                                    rule: rule,
+                                                                    manager: manager,
+                                                                    node: ic.source,
+                                                                });
+                                                                set_1.add(rule.code);
+                                                                logger_1.logViolation("VOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString());
+                                                                smellBox.addSmell(rule.code);
+                                                                fileReport_1 += "\tVOILATION DETECTED: No cache clean command detected for " + manager.command + " command at " + ic.position.toString() + "\n";
+                                                                addAbsoluteSmell(absoluteSmells, rule);
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                                break;
+                                            case "NO-RECOMMENDS":
+                                                if (manager != null) {
+                                                    var norecommendsflag_1 = manager.installOptionFlags.find(function (flag) { return flag.type == "NO-RECOMMENDS"; });
+                                                    if (norecommendsflag_1 != undefined) {
+                                                        var found_1 = false;
+                                                        bashManagerCommands_1.filter(function (c) { return c.command == rule.detection.manager && c.option == manager.installOption[0]; }).forEach(function (c) {
+                                                            if (c.flags.find(function (arg) { return arg == norecommendsflag_1.value; }) != undefined) {
+                                                                found_1 = true;
+                                                            }
+                                                            else {
+                                                                fixInfo_1.list.push({
+                                                                    isManagerRelated: true,
+                                                                    code: rule.code,
+                                                                    rule: rule,
+                                                                    manager: manager,
+                                                                    node: c.source,
+                                                                });
+                                                                addAbsoluteSmell(absoluteSmells, rule);
+                                                                set_1.add(rule.code);
+                                                                smellBox.addSmell(rule.code);
+                                                                logger_1.logViolation("VOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString());
+                                                                fileReport_1 += "\tVOILATION DETECTED: No " + norecommendsflag_1.value + " flag detected for " + manager.command + " command at " + c.position.toString() + "\n";
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    });
+                                    logger_1.logSmellSet(Array.from(set_1).join(" "));
+                                    smellBox.addSmellsPresentInFile(Array.from(set_1));
+                                    fileReport_1 += "RULE DETECTIONS: ";
+                                    fileReport_1 += Array.from(set_1).join(" ");
+                                    mapped_tool_smells.write(dirent.name + "," + Array.from(set_1).join(",") + "\n");
+                                    fs.writeFileSync("./reports/" + dirent.name + ".txt", fileReport_1);
+                                    fs.writeFileSync("./reports/" + dirent.name + "_logger.txt", logger_1.getLog());
+                                    set_1.forEach(function (smell) {
+                                        var idx = smells.findIndex(function (s) { return s.rule == smell; });
+                                        if (idx == -1) {
+                                            smells.push({ rule: smell, times: 1 });
+                                        }
+                                        else {
+                                            smells[idx].times += 1;
+                                        }
+                                    });
+                                    end = Date.now();
+                                    difference = end - start;
+                                    smellBox.setTime(difference);
+                                    return [3, 5];
                                 case 4:
                                     e_3 = _f.sent();
                                     mapped_tool_smells.write(dirent.name + "\n");
@@ -276,9 +455,7 @@ function main() {
                     if (!(dir_2_1 = _e.sent(), _a = dir_2_1.done, !_a)) return [3, 7];
                     return [5, _loop_1()];
                 case 5:
-                    state_1 = _e.sent();
-                    if (typeof state_1 === "object")
-                        return [2, state_1.value];
+                    _e.sent();
                     _e.label = 6;
                 case 6: return [3, 3];
                 case 7: return [3, 14];

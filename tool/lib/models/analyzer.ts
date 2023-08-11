@@ -73,7 +73,7 @@ export class Analyzer {
          * @returns 
          */
         function fileIsCompressed(file): boolean{
-            return file.toString().includes(".tar.gz") || file.toString().includes(".tar.xz") || file.toString().includes(".tar.bzip2");
+            return file.toString().includes(".tar.gz") || file.toString().includes(".tar.xz") || file.toString().includes(".tar.bzip2"); //bz2 is another format
         }
 
         /**

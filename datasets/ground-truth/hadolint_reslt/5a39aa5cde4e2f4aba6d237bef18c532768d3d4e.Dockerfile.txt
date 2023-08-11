@@ -1,1 +1,0 @@
-C:\Users\Ian.IAN-RIG\Documents\thesis_experimental_on_ssd\MasterComputerScienceThesis\data\ground-truth\5a39aa5cde4e2f4aba6d237bef18c532768d3d4e.Dockerfile:2 DL3020 [1m[91merror[0m: Use COPY instead of ADD for files and folders
