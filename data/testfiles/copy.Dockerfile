@@ -1,7 +1,12 @@
 FROM ubuntu:trusty  
-
-COPY . /app  
-WORKDIR /app  
+MAINTAINER Tom <tom@py-co.de>  
   
-# Install application dependencies  
-RUN apt-get install --no-install-recommends -y python=2
+# Prevent dpkg errors  
+ENV TERM=xterm-256color  
+  
+COPY . /app
+WORKDIR app/
+RUN apt-get install python
+  
+# Set mocha test runner as entrypoint  
+ENTRYPOINT ["mocha"]  
